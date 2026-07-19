@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SURAAG AI | Probability Predictor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#c9c6c5",
+                    "surface-container-high": "#2a2a2a",
+                    "on-secondary-container": "#ffa99f",
+                    "surface-container-highest": "#353534",
+                    "outline-variant": "#5b403d",
+                    "primary-fixed-dim": "#ffb4ac",
+                    "inverse-surface": "#e5e2e1",
+                    "secondary-fixed-dim": "#ffb4ab",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "surface-container": "#201f1f",
+                    "on-primary-container": "#5c0005",
+                    "surface-dim": "#131313",
+                    "secondary": "#ffb4ab",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-tertiary": "#313030",
+                    "primary-container": "#ff544c",
+                    "secondary-container": "#a0030e",
+                    "on-error-container": "#ffdad6",
+                    "surface-bright": "#393939",
+                    "primary-fixed": "#ffdad6",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#410002",
+                    "tertiary-container": "#929090",
+                    "on-primary-fixed": "#410002",
+                    "outline": "#ab8985",
+                    "secondary-fixed": "#ffdad6",
+                    "tertiary-fixed": "#e5e2e1",
+                    "error": "#ffb4ab",
+                    "background": "#131313",
+                    "surface-tint": "#ffb4ac",
+                    "on-surface": "#e5e2e1",
+                    "surface-container-low": "#1c1b1b",
+                    "on-secondary-fixed-variant": "#93000b",
+                    "on-background": "#e5e2e1",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface": "#131313",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "primary": "#ffb4ac",
+                    "on-secondary": "#690005",
+                    "on-primary-fixed-variant": "#93000d",
+                    "on-primary": "#690006",
+                    "inverse-primary": "#bb171c",
+                    "inverse-on-surface": "#313030",
+                    "on-surface-variant": "#e4beb9",
+                    "surface-variant": "#353534",
+                    "on-tertiary-container": "#2a2a29",
+                    "error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "grid-unit": "4px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "panel-gap": "8px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Space Grotesk"],
+                    "display-lg": ["Space Grotesk"],
+                    "label-sm": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "tactical-data": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "tactical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.08em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+            overflow: hidden;
+        }
+
+        /* Scanline effect */
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.03;
+        }
+
+        /* Tactical Grid Background */
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+                linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid #2a2a2a;
+        }
+
+        .active-glow {
+            box-shadow: 0 0 10px rgba(229, 57, 53, 0.3);
+            border-color: #ffb4ac !important;
+        }
+
+        .pulse-critical {
+            animation: pulse-red 2s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(229, 57, 53, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
+        }
+
+        .glitch-text:hover {
+            animation: glitch 0.3s cubic-bezier(.25,.46,.45,.94) both infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0e0e0e; }
+        ::-webkit-scrollbar-thumb { background: #353534; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ffb4ac; }
+    </style>
+</head>
+<body class="font-body-md select-none">
+<div class="scanline-overlay"></div>
+<div class="grid-bg absolute inset-0 opacity-20 pointer-events-none"></div>
+<!-- Top Navigation Bar -->
+<header class="bg-surface/70 backdrop-blur-xl text-primary border-b border-outline-variant shadow-[0_0_10px_rgba(229,57,53,0.3)] flex justify-between items-center w-full px-margin-desktop h-16 z-50 fixed top-0">
+<div class="flex items-center gap-8">
+<span class="font-headline-lg text-headline-lg tracking-tighter text-primary uppercase">SURAAG AI</span>
+<div class="hidden md:flex gap-6 items-center">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+<input class="bg-surface-container-low border-none rounded-none text-label-sm font-tactical-data w-64 pl-10 focus:ring-1 focus:ring-primary transition-all" placeholder="QUERY SCENE ID..." type="text"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all duration-150 active:scale-95">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all duration-150 active:scale-95">terminal</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all duration-150 active:scale-95">settings</button>
+<div class="h-8 w-8 bg-primary rounded-full overflow-hidden border border-primary/50">
+<img class="w-full h-full object-cover" data-alt="A high-contrast profile portrait of a cybernetic forensic investigator wearing advanced AR glasses, illuminated by a deep crimson glow. The character has short dark hair and a neutral, determined expression, set against a dark, tech-filled command center background with subtle digital artifacts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAeFVbBo_jbNi5rq4cp1JMSiMTFAUWMLMnl5_PRhVjJDx0EV2vxLw6OPsAytR8yku2wt_CItdfRN14Y7gNEmOPmanhUv6lUQM9jyD7bcrDyODkZBe56Y6DpaMNgYs8echWhufHyZt8vdYExGdKK5Di_VjpRVQodSzXA7LvMjqE0EHk9KLJjlmEhiGK12esTO_Db54hmn2WA3Et5VqYrfZ--rnAApeJ2OFEL6T2_v_fDjuVXV9_p0ew"/>
+</div>
+</div>
+</header>
+<div class="flex h-screen pt-16">
+<!-- Side Navigation Bar -->
+<aside class="bg-surface-container-lowest text-tertiary-fixed-dim font-tactical-data text-label-sm h-screen w-64 docked left-0 border-r border-outline-variant flex flex-col pt-4 pb-4">
+<div class="px-6 py-4 mb-4 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-secondary-container rounded border border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">radar</span>
+</div>
+<div>
+<div class="font-headline-lg text-sm text-primary leading-none mb-1">OP-SUR-01</div>
+<div class="text-[10px] tracking-widest opacity-60">CLEARANCE: OMEGA</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="group flex items-center gap-3 px-6 py-3 text-on-tertiary-fixed-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">radar</span>
+<span>Mission Control</span>
+</a>
+<!-- ACTIVE TAB: Case Intelligence -->
+<a class="group flex items-center gap-3 px-6 py-3 bg-secondary-container/20 text-primary border-l-4 border-primary transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">query_stats</span>
+<span>Case Intelligence</span>
+</a>
+<a class="group flex items-center gap-3 px-6 py-3 text-on-tertiary-fixed-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">hub</span>
+<span>Network Trace</span>
+</a>
+<a class="group flex items-center gap-3 px-6 py-3 text-on-tertiary-fixed-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">fingerprint</span>
+<span>Entity Matrix</span>
+</a>
+<a class="group flex items-center gap-3 px-6 py-3 text-on-tertiary-fixed-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">database</span>
+<span>System Logs</span>
+</a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full bg-primary text-on-primary py-3 font-bold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(229,57,53,0.3)]">
+                    New Investigation
+                </button>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="flex-1 overflow-hidden p-6 relative">
+<div class="flex flex-col h-full gap-6">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end border-l-2 border-primary pl-4">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface leading-none">AI SCENE PROBABILITY PREDICTOR</h1>
+<p class="font-tactical-data text-on-surface-variant tracking-[0.2em] mt-2">ANALYTIC ENGINE: V4.82 // CASE ID: CR-9901-X</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<div class="font-tactical-data text-[10px] text-on-surface-variant uppercase mb-1">Neural Load</div>
+<div class="flex gap-1">
+<div class="h-4 w-1 bg-primary"></div>
+<div class="h-4 w-1 bg-primary"></div>
+<div class="h-4 w-1 bg-primary"></div>
+<div class="h-4 w-1 bg-primary"></div>
+<div class="h-4 w-1 bg-primary"></div>
+<div class="h-4 w-1 bg-primary/30"></div>
+<div class="h-4 w-1 bg-primary/30"></div>
+</div>
+</div>
+<div class="text-right border-l border-outline-variant pl-4">
+<div class="font-tactical-data text-[10px] text-on-surface-variant uppercase mb-1">Global Confidence</div>
+<div class="font-headline-lg text-2xl text-primary leading-none">89.4%</div>
+</div>
+</div>
+</div>
+<!-- Central Grid Content -->
+<div class="flex-1 grid grid-cols-12 gap-6 overflow-hidden">
+<!-- Probability Matrix (Bento Left) -->
+<div class="col-span-8 flex flex-col gap-6 overflow-hidden">
+<div class="glass-panel p-4 flex-1 overflow-hidden flex flex-col relative">
+<div class="absolute top-2 left-2 text-[8px] font-tactical-data text-on-surface-variant/50">MOD-ID: PRB_MAT_01</div>
+<div class="flex justify-between items-center mb-4 mt-2">
+<h3 class="font-headline-lg text-lg flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">view_quilt</span>
+                                    PROBABILITY MATRIX
+                                </h3>
+<div class="flex gap-2">
+<span class="px-2 py-0.5 bg-surface-container-highest text-[10px] font-tactical-data border border-outline-variant">LIVE STREAM</span>
+<span class="px-2 py-0.5 bg-secondary-container/20 text-primary text-[10px] font-tactical-data border border-primary">RECURSIVE MODE</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 flex-1 overflow-y-auto pr-2">
+<!-- Scenario A -->
+<div class="glass-panel p-4 active-glow flex flex-col cursor-pointer transition-all hover:translate-y-[-2px]">
+<div class="flex justify-between items-start mb-6">
+<div>
+<div class="text-[10px] font-tactical-data text-primary mb-1">SCENARIO A</div>
+<div class="font-headline-lg text-xl">TARGETED HIT</div>
+</div>
+<div class="text-3xl font-display-lg text-primary">64%</div>
+</div>
+<div class="flex-1 space-y-3">
+<div class="bg-surface-container-low h-1 w-full overflow-hidden">
+<div class="bg-primary h-full w-[64%]"></div>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed opacity-80">
+                                            High-precision grouping suggests professional execution. Weapon angle indicates premeditated position. Zero struggle markers detected in Primary Zone.
+                                        </p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<div class="flex -space-x-1">
+<span class="material-symbols-outlined text-xs text-primary">gps_fixed</span>
+<span class="material-symbols-outlined text-xs text-primary">fingerprint</span>
+</div>
+<span class="text-[10px] font-tactical-data uppercase text-primary">View Full Path</span>
+</div>
+</div>
+<!-- Scenario B -->
+<div class="glass-panel p-4 flex flex-col border-outline-variant/50 hover:border-primary/50 cursor-pointer transition-all hover:translate-y-[-2px]">
+<div class="flex justify-between items-start mb-6">
+<div>
+<div class="text-[10px] font-tactical-data text-on-surface-variant mb-1">SCENARIO B</div>
+<div class="font-headline-lg text-xl">ESCALATED CONFRONTATION</div>
+</div>
+<div class="text-3xl font-display-lg text-on-surface-variant">28%</div>
+</div>
+<div class="flex-1 space-y-3">
+<div class="bg-surface-container-low h-1 w-full overflow-hidden">
+<div class="bg-on-surface-variant h-full w-[28%]"></div>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed opacity-80">
+                                            Secondary blast pattern suggests reactionary fire. Overlapping audio logs indicate verbal escalation 42 seconds prior to discharge.
+                                        </p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<div class="flex -space-x-1">
+<span class="material-symbols-outlined text-xs text-on-surface-variant">mic</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant">biotech</span>
+</div>
+<span class="text-[10px] font-tactical-data uppercase text-on-surface-variant">Analyze Audio</span>
+</div>
+</div>
+<!-- Scenario C -->
+<div class="glass-panel p-4 flex flex-col border-outline-variant/50 hover:border-primary/50 cursor-pointer transition-all hover:translate-y-[-2px]">
+<div class="flex justify-between items-start mb-6">
+<div>
+<div class="text-[10px] font-tactical-data text-on-surface-variant mb-1">SCENARIO C</div>
+<div class="font-headline-lg text-xl">ROBBERY GONE WRONG</div>
+</div>
+<div class="text-3xl font-display-lg text-on-surface-variant">8%</div>
+</div>
+<div class="flex-1 space-y-3">
+<div class="bg-surface-container-low h-1 w-full overflow-hidden">
+<div class="bg-on-surface-variant h-full w-[8%]"></div>
+</div>
+<p class="text-xs text-on-surface-variant leading-relaxed opacity-80">
+                                            Low correlation with theft-motivated profiles. High-value assets remained untouched in immediate vicinity of the incident.
+                                        </p>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<div class="flex -space-x-1">
+<span class="material-symbols-outlined text-xs text-on-surface-variant">account_balance_wallet</span>
+</div>
+<span class="text-[10px] font-tactical-data uppercase text-on-surface-variant">Exclude Data</span>
+</div>
+</div>
+<!-- Empty Matrix Node -->
+<div class="glass-panel p-4 flex items-center justify-center border-dashed border-outline-variant/30 hover:bg-surface-container-high transition-all group">
+<div class="text-center">
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary mb-2">add_circle</span>
+<div class="font-tactical-data text-[10px] text-outline-variant uppercase">Define Custom Scenario</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Scene Timeline (Bottom Wide) -->
+<div class="glass-panel p-4 h-48 relative overflow-hidden flex flex-col">
+<div class="absolute top-2 left-2 text-[8px] font-tactical-data text-on-surface-variant/50">MOD-ID: TMLN_VIS_01</div>
+<div class="flex justify-between items-center mb-4 mt-2">
+<h3 class="font-headline-lg text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xs">timeline</span>
+                                    SCENE TIMELINE
+                                </h3>
+<div class="text-[10px] font-tactical-data text-on-surface-variant">T-MINUS 12:00 TO T-PLUS 05:00</div>
+</div>
+<div class="relative flex-1 flex items-center">
+<!-- Timeline Axis -->
+<div class="absolute w-full h-[1px] bg-outline-variant/50 top-1/2"></div>
+<div class="flex justify-between w-full relative z-10">
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-on-surface-variant mb-2"></div>
+<div class="text-[10px] font-tactical-data text-on-surface-variant">ENTRY</div>
+<div class="text-[8px] opacity-60">22:04:12</div>
+</div>
+<div class="flex flex-col items-center group">
+<div class="w-3 h-3 rounded-full bg-primary mb-2 pulse-critical"></div>
+<div class="text-[10px] font-tactical-data text-primary">PRIMARY CONTACT</div>
+<div class="text-[8px] opacity-80">22:08:44</div>
+<div class="absolute -top-12 opacity-0 group-hover:opacity-100 transition-opacity bg-surface border border-primary p-2 w-32 pointer-events-none">
+<p class="text-[9px] text-primary">Impact detected. High confidence trigger event.</p>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-on-surface-variant mb-2"></div>
+<div class="text-[10px] font-tactical-data text-on-surface-variant">EVICTION</div>
+<div class="text-[8px] opacity-60">22:09:01</div>
+</div>
+<div class="flex flex-col items-center">
+<div class="w-2 h-2 rounded-full bg-on-surface-variant mb-2"></div>
+<div class="text-[10px] font-tactical-data text-on-surface-variant">FIRST REPORT</div>
+<div class="text-[8px] opacity-60">22:12:30</div>
+</div>
+</div>
+<!-- Waveform Visualization -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<div class="flex items-end justify-between h-full w-full gap-1 px-4">
+<div class="bg-primary w-1 h-4"></div><div class="bg-primary w-1 h-8"></div><div class="bg-primary w-1 h-12"></div><div class="bg-primary w-1 h-6"></div><div class="bg-primary w-1 h-16"></div><div class="bg-primary w-1 h-32"></div><div class="bg-primary w-1 h-14"></div><div class="bg-primary w-1 h-20"></div><div class="bg-primary w-1 h-10"></div><div class="bg-primary w-1 h-4"></div><div class="bg-primary w-1 h-8"></div><div class="bg-primary w-1 h-12"></div><div class="bg-primary w-1 h-6"></div><div class="bg-primary w-1 h-16"></div><div class="bg-primary w-1 h-32"></div><div class="bg-primary w-1 h-14"></div><div class="bg-primary w-1 h-20"></div><div class="bg-primary w-1 h-10"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Evidence Explanation Engine (Right) -->
+<div class="col-span-4 flex flex-col gap-6 overflow-hidden">
+<div class="glass-panel p-4 flex-1 overflow-hidden flex flex-col relative">
+<div class="absolute top-2 left-2 text-[8px] font-tactical-data text-on-surface-variant/50">MOD-ID: EVID_ENG_99</div>
+<h3 class="font-headline-lg text-lg flex items-center gap-2 mb-6 mt-2">
+<span class="material-symbols-outlined text-primary text-sm">science</span>
+                                EVIDENCE WEIGHTING
+                            </h3>
+<div class="space-y-4 overflow-y-auto pr-2 flex-1">
+<!-- Evidence Item -->
+<div class="p-3 bg-surface-container border border-outline-variant/30 hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">biotech</span>
+<span class="font-headline-lg text-sm">DNA MATCH // 001</span>
+</div>
+<span class="text-primary font-tactical-data text-[10px]">+18.2% SceA</span>
+</div>
+<div class="text-[11px] text-on-surface-variant opacity-70 leading-normal mb-3">
+                                        Epidermal cells recovered from suspect's known entry point. Matches Profile 882-C.
+                                    </div>
+<div class="h-1 w-full bg-surface-container-high flex">
+<div class="h-full bg-primary" style="width: 85%;"></div>
+<div class="h-full bg-on-surface-variant/20" style="width: 15%;"></div>
+</div>
+</div>
+<!-- Evidence Item -->
+<div class="p-3 bg-surface-container border border-outline-variant/30 hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">straighten</span>
+<span class="font-headline-lg text-sm">BALLISTICS ANALYSIS</span>
+</div>
+<span class="text-primary font-tactical-data text-[10px]">+22.4% SceA</span>
+</div>
+<div class="text-[11px] text-on-surface-variant opacity-70 leading-normal mb-3">
+                                        9mm casing eject pattern confirms fixed stance at 22:08:44. High grouping consistency.
+                                    </div>
+<div class="h-1 w-full bg-surface-container-high flex">
+<div class="h-full bg-primary" style="width: 92%;"></div>
+</div>
+</div>
+<!-- Evidence Item -->
+<div class="p-3 bg-surface-container border border-outline-variant/30 hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">location_on</span>
+<span class="font-headline-lg text-sm">GPS TRACKING</span>
+</div>
+<span class="text-on-surface-variant font-tactical-data text-[10px]">-4.1% SceB</span>
+</div>
+<div class="text-[11px] text-on-surface-variant opacity-70 leading-normal mb-3">
+                                        Suspect device active 2.4km from site at T-minus 10:00. High speed approach confirms intent.
+                                    </div>
+<div class="h-1 w-full bg-surface-container-high flex">
+<div class="h-full bg-on-surface-variant" style="width: 45%;"></div>
+</div>
+</div>
+<!-- Evidence Item -->
+<div class="p-3 bg-surface-container border border-outline-variant/30 hover:border-primary/40 transition-colors">
+<div class="flex justify-between items-center mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-lg">chat_bubble</span>
+<span class="font-headline-lg text-sm">WITNESS STATEMENT</span>
+</div>
+<span class="text-on-surface-variant font-tactical-data text-[10px]">+1.2% SceC</span>
+</div>
+<div class="text-[11px] text-on-surface-variant opacity-70 leading-normal mb-3">
+                                        Inconsistent reporting regarding 'unidentified shouter'. Reliability score: 42%.
+                                    </div>
+<div class="h-1 w-full bg-surface-container-high flex">
+<div class="h-full bg-on-surface-variant" style="width: 12%;"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 p-4 border-t border-outline-variant/30">
+<div class="flex justify-between items-center mb-4">
+<div class="font-tactical-data text-xs text-primary">HUD OVERLAY CONFIG</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">info</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="bg-surface-container-highest border border-outline-variant p-2 text-[10px] font-tactical-data text-on-surface hover:bg-primary/10 transition-colors">TOGGLE HEATMAP</button>
+<button class="bg-surface-container-highest border border-outline-variant p-2 text-[10px] font-tactical-data text-on-surface hover:bg-primary/10 transition-colors">RE-WEIGHT AI</button>
+</div>
+</div>
+</div>
+<!-- Tactical HUD Stats (Bottom Right) -->
+<div class="glass-panel p-4 flex flex-col justify-between h-48 relative">
+<div class="absolute top-2 left-2 text-[8px] font-tactical-data text-on-surface-variant/50">MOD-ID: HUD_STT_A2</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="text-[10px] font-tactical-data text-primary mb-1">PROBABILITY CONFIDENCE</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-4xl text-primary">0.89</span>
+<span class="font-tactical-data text-xs text-on-surface-variant opacity-50">DELTA +0.02</span>
+</div>
+</div>
+<div class="w-16 h-16 border-4 border-primary/20 rounded-full flex items-center justify-center relative">
+<div class="absolute inset-0 border-t-4 border-primary rounded-full animate-spin duration-[3s]"></div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-tactical-data uppercase text-on-surface-variant">
+<span>Signal Quality</span>
+<span>Nominal</span>
+</div>
+<div class="h-1 bg-surface-container-high w-full">
+<div class="h-full bg-primary/40 w-[94%]"></div>
+</div>
+<div class="flex justify-between text-[10px] font-tactical-data uppercase text-on-surface-variant">
+<span>Data Integrity</span>
+<span>Verified</span>
+</div>
+<div class="h-1 bg-surface-container-high w-full">
+<div class="h-full bg-primary/40 w-[81%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer System Health Bar -->
+<footer class="bg-surface-container-lowest text-primary font-label-sm flex justify-between items-center px-margin-desktop py-2 w-full text-[10px] opacity-80 border-t border-outline-variant docked fixed bottom-0 z-50">
+<div class="flex gap-4">
+<span class="font-label-sm text-on-surface">SYSTEM HEALTH: 100%</span>
+<span class="text-on-tertiary-fixed-variant">|</span>
+<span class="hover:text-primary transition-colors cursor-pointer">PRIVACY PROTOCOL</span>
+<span class="hover:text-primary transition-colors cursor-pointer">LEGAL CLEARANCE</span>
+<span class="hover:text-primary transition-colors cursor-pointer">CONTACT COMMAND</span>
+</div>
+<div class="font-label-sm text-on-surface tracking-widest uppercase">
+            © 2024 SURAAG INTELLIGENCE. ALL RIGHTS RESERVED.
+        </div>
+</footer>
+<script>
+        // Micro-interactions for tactical feel
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            panel.addEventListener('mouseenter', () => {
+                panel.style.transition = 'all 0.3s ease';
+            });
+        });
+
+        // Simulating live data updates
+        setInterval(() => {
+            const confidence = document.querySelector('.font-display-lg.text-4xl');
+            if(confidence) {
+                let current = parseFloat(confidence.textContent);
+                let drift = (Math.random() - 0.5) * 0.01;
+                confidence.textContent = (current + drift).toFixed(2);
+            }
+        }, 3000);
+    </script>
+</body></html>

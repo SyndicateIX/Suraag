@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SURAAG AI | MISSION-WIDE AUDIT</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-low": "#1c1b1b",
+                    "surface-container-highest": "#353534",
+                    "on-secondary": "#690005",
+                    "tertiary": "#c9c6c5",
+                    "secondary-fixed": "#ffdad6",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#313030",
+                    "on-primary": "#690006",
+                    "on-primary-fixed-variant": "#93000d",
+                    "on-surface": "#e5e2e1",
+                    "secondary-fixed-dim": "#ffb4ab",
+                    "surface-tint": "#ffb4ac",
+                    "on-tertiary-container": "#2a2a29",
+                    "on-secondary-container": "#ffa99f",
+                    "tertiary-container": "#929090",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "primary": "#ffb4ac",
+                    "inverse-surface": "#e5e2e1",
+                    "primary-fixed-dim": "#ffb4ac",
+                    "inverse-on-surface": "#313030",
+                    "on-secondary-fixed": "#410002",
+                    "surface-bright": "#393939",
+                    "on-surface-variant": "#e4beb9",
+                    "on-error": "#690005",
+                    "surface-container-high": "#2a2a2a",
+                    "on-primary-fixed": "#410002",
+                    "error": "#ffb4ab",
+                    "surface-container": "#201f1f",
+                    "surface": "#131313",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "surface-dim": "#131313",
+                    "on-background": "#e5e2e1",
+                    "surface-variant": "#353534",
+                    "secondary-container": "#a0030e",
+                    "background": "#131313",
+                    "primary-fixed": "#ffdad6",
+                    "surface-container-lowest": "#0e0e0e",
+                    "error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#93000b",
+                    "inverse-primary": "#bb171c",
+                    "secondary": "#ffb4ab",
+                    "primary-container": "#ff544c",
+                    "on-primary-container": "#5c0005",
+                    "outline": "#ab8985",
+                    "outline-variant": "#5b403d",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-tertiary-fixed": "#1c1b1b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "grid-unit": "4px",
+                    "gutter": "16px",
+                    "margin-desktop": "32px",
+                    "panel-gap": "8px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "tactical-data": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Space Grotesk"],
+                    "label-sm": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "tactical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+            overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            background-size: 100% 2px, 3px 100%;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .tactical-grid {
+            background-image: linear-gradient(rgba(42, 42, 42, 0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(42, 42, 42, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid #2A2A2A;
+        }
+
+        .glass-panel:hover {
+            border-color: #E53935;
+            box-shadow: 0 0 15px rgba(229, 57, 53, 0.15);
+        }
+
+        .glow-red {
+            box-shadow: 0 0 10px rgba(229, 57, 53, 0.3);
+        }
+
+        .status-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.7); }
+            70% { opacity: 0.8; transform: scale(1.05); box-shadow: 0 0 0 10px rgba(229, 57, 53, 0); }
+            100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
+        }
+
+        .node-line {
+            stroke-dasharray: 5;
+            animation: dash 10s linear infinite;
+        }
+
+        @keyframes dash {
+            to { stroke-dashoffset: -100; }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2A2A2A;
+            border-radius: 2px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #E53935;
+        }
+    </style>
+</head>
+<body class="selection:bg-primary-container selection:text-on-primary-container">
+<div class="scanline-overlay"></div>
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full h-16 bg-surface/70 backdrop-blur-xl border-b border-outline-variant z-50 flex justify-between items-center px-margin-desktop shadow-[0_0_10px_rgba(229,57,53,0.3)]">
+<div class="flex items-center gap-8">
+<div class="font-headline-lg text-headline-lg tracking-tighter text-primary uppercase">SURAAG AI</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-primary border-b-2 border-primary font-label-sm text-label-sm tracking-widest uppercase py-5" href="#">Audit Dashboard</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-150 font-label-sm text-label-sm tracking-widest uppercase" href="#">Forensics</a>
+<a class="text-on-surface-variant hover:text-primary transition-all duration-150 font-label-sm text-label-sm tracking-widest uppercase" href="#">Archive</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high border border-outline-variant rounded">
+<span class="material-symbols-outlined text-primary text-sm">terminal</span>
+<span class="font-tactical-data text-tactical-data uppercase text-xs">ROOT: OMEGA-9</span>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-all"><span class="material-symbols-outlined text-on-surface-variant">notifications</span></button>
+<button class="w-10 h-10 flex items-center justify-center hover:bg-surface-container-highest transition-all"><span class="material-symbols-outlined text-on-surface-variant">settings</span></button>
+</div>
+<div class="w-10 h-10 bg-primary-container rounded-full flex items-center justify-center border border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up profile portrait of a futuristic tactical intelligence operator wearing a matte black cybernetic visor and high-collared technical apparel. The lighting is cold and moody with red highlights, matching the Suraag AI aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5EQ496CepHUjwPZNQJuVeBAXTYlFbU9Ela5BhgiC5p8lELtc5mc-gTgm7HmVtRdWJi9FtFN0GutlLyZeZf2iHW1QlmNr8tmrj4MdNMlxyouK8URh680qjy_uMkn2Ecf4hWsbbyfuiT1upWpen52NTMLR66Si-Nzo3lPOuaneXb5S_gnVqZh0k2SEID4FEv_JgArgbzPpNrK8co34XlTq3WlqiZ07KXPCiXDJGS6PdL1qdx1tw82tY"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest border-r border-outline-variant z-40 hidden md:flex flex-col pt-20 pb-4">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-2 h-2 rounded-full bg-primary status-pulse"></div>
+<div class="font-label-sm text-label-sm text-primary uppercase">OP-SUR-01</div>
+</div>
+<div class="font-tactical-data text-tactical-data text-[10px] text-tertiary-fixed-dim uppercase">Clearance: Omega-Level Access</div>
+</div>
+<div class="flex-1 space-y-1">
+<a class="flex items-center gap-4 px-6 py-3 bg-secondary-container/20 text-primary border-l-4 border-primary transition-all" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span class="font-tactical-data text-tactical-data">Mission Control</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-tertiary-fixed-dim hover:bg-surface-container-high hover:text-on-surface transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">query_stats</span>
+<span class="font-tactical-data text-tactical-data">Case Intelligence</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-tertiary-fixed-dim hover:bg-surface-container-high hover:text-on-surface transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">hub</span>
+<span class="font-tactical-data text-tactical-data">Network Trace</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-tertiary-fixed-dim hover:bg-surface-container-high hover:text-on-surface transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">fingerprint</span>
+<span class="font-tactical-data text-tactical-data">Entity Matrix</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-tertiary-fixed-dim hover:bg-surface-container-high hover:text-on-surface transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">database</span>
+<span class="font-tactical-data text-tactical-data">System Logs</span>
+</a>
+</div>
+<div class="px-4 mt-auto">
+<button class="w-full py-3 bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-widest rounded transition-all hover:shadow-[0_0_15px_rgba(229,57,53,0.5)] active:scale-95">
+                New Investigation
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-16 min-h-screen relative tactical-grid">
+<!-- Header Info Overlay -->
+<div class="absolute top-4 right-8 z-10 text-right opacity-40 pointer-events-none">
+<div class="font-tactical-data text-[10px] tracking-widest uppercase">Lat: 34.0522° N | Long: 118.2437° W</div>
+<div class="font-tactical-data text-[10px] tracking-widest uppercase">Kernel Entropy: 0.000412 RMS</div>
+<div class="font-tactical-data text-[10px] tracking-widest uppercase">Uptime: 1,442:12:09</div>
+</div>
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Section 1: System Interconnectivity Map (Central Node Visual) -->
+<section class="space-y-4">
+<div class="flex items-center justify-between border-l-2 border-primary pl-4">
+<h2 class="font-headline-lg text-headline-lg uppercase tracking-tight text-on-surface">System Interconnectivity Map</h2>
+<div class="font-tactical-data text-label-sm text-primary">AUDIT_LOG_STREAM: ENABLED</div>
+</div>
+<div class="glass-panel h-[400px] w-full rounded-lg relative overflow-hidden flex items-center justify-center p-4">
+
+<!-- SVG Overlay for Node Logic -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewbox="0 0 800 400">
+<defs>
+<marker id="arrow" markerheight="6" markerwidth="6" orient="auto-start-reverse" refx="5" refy="5" viewbox="0 0 10 10">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#E53935"></path>
+</marker>
+</defs>
+<!-- Paths between theoretical node positions -->
+<path class="node-line opacity-30" d="M120,200 L250,120" fill="none" stroke="#E53935" stroke-width="1"></path>
+<path class="node-line opacity-30" d="M120,200 L250,280" fill="none" stroke="#E53935" stroke-width="1"></path>
+<path class="node-line opacity-30" d="M250,120 L400,200" fill="none" stroke="#E53935" stroke-width="1"></path>
+<path class="node-line opacity-30" d="M250,280 L400,200" fill="none" stroke="#E53935" stroke-width="1"></path>
+<path class="node-line opacity-30" d="M400,200 L550,120" fill="none" stroke="#E53935" stroke-width="1"></path>
+<path class="node-line opacity-30" d="M400,200 L550,280" fill="none" stroke="#E53935" stroke-width="1"></path>
+<path class="node-line opacity-30" d="M550,120 L700,200" fill="none" stroke="#E53935" stroke-width="1"></path>
+<path class="node-line opacity-30" d="M550,280 L700,200" fill="none" stroke="#E53935" stroke-width="1"></path>
+</svg>
+<!-- Interactive Nodes -->
+<div class="relative w-full h-full flex items-center justify-between px-12 z-10">
+<!-- Ingestion -->
+<div class="group flex flex-col items-center">
+<div class="w-16 h-16 rounded-full border border-primary bg-surface flex items-center justify-center glow-red transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-primary text-3xl">upload_file</span>
+</div>
+<span class="mt-2 font-tactical-data text-xs uppercase text-on-surface">Evidence Ingestion</span>
+<span class="text-[8px] text-primary opacity-60">ACTIVE STREAM</span>
+</div>
+<div class="flex flex-col gap-32">
+<!-- 3D Recon -->
+<div class="group flex flex-col items-center">
+<div class="w-14 h-14 border border-outline bg-surface flex items-center justify-center transition-transform group-hover:border-primary group-hover:scale-110">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">view_in_ar</span>
+</div>
+<span class="mt-2 font-tactical-data text-xs uppercase text-on-surface">3D Recon</span>
+</div>
+<!-- Network Trace -->
+<div class="group flex flex-col items-center">
+<div class="w-14 h-14 border border-outline bg-surface flex items-center justify-center transition-transform group-hover:border-primary group-hover:scale-110">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">hub</span>
+</div>
+<span class="mt-2 font-tactical-data text-xs uppercase text-on-surface">Network Trace</span>
+</div>
+</div>
+<!-- Neural Hub -->
+<div class="group flex flex-col items-center">
+<div class="w-20 h-20 rounded-full border-2 border-primary bg-surface flex items-center justify-center glow-red transition-transform group-hover:scale-105 status-pulse">
+<span class="material-symbols-outlined text-primary text-4xl">psychology</span>
+</div>
+<span class="mt-2 font-tactical-data text-sm font-bold uppercase text-primary">SURAAG CORE</span>
+<span class="text-[10px] text-primary opacity-80">98.4% CONFIDENCE</span>
+</div>
+<div class="flex flex-col gap-32">
+<!-- Criminal History -->
+<div class="group flex flex-col items-center">
+<div class="w-14 h-14 border border-outline bg-surface flex items-center justify-center transition-transform group-hover:border-primary group-hover:scale-110">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">folder_shared</span>
+</div>
+<span class="mt-2 font-tactical-data text-xs uppercase text-on-surface">Criminal History</span>
+</div>
+<!-- Entity Matrix -->
+<div class="group flex flex-col items-center">
+<div class="w-14 h-14 border border-outline bg-surface flex items-center justify-center transition-transform group-hover:border-primary group-hover:scale-110">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">fingerprint</span>
+</div>
+<span class="mt-2 font-tactical-data text-xs uppercase text-on-surface">Entity Matrix</span>
+</div>
+</div>
+<!-- Investigation Report -->
+<div class="group flex flex-col items-center">
+<div class="w-16 h-16 border-2 border-primary bg-surface flex items-center justify-center transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-primary text-3xl">assignment_turned_in</span>
+</div>
+<span class="mt-2 font-tactical-data text-xs uppercase text-on-surface">Inv. Report</span>
+<span class="text-[8px] text-primary opacity-60">GENERATING</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 2: Module Status HUD & Section 4: Resource Allocation -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-panel-gap">
+<!-- Module Status HUD -->
+<div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Module Card: Mission Control -->
+<div class="glass-panel p-4 border-l-2 border-l-primary relative">
+<div class="absolute top-1 right-2 font-tactical-data text-[8px] text-outline">MOD_ID: MC_01</div>
+<div class="flex items-start justify-between mb-4">
+<div>
+<h3 class="font-tactical-data text-sm uppercase text-on-surface">Mission Control</h3>
+<p class="text-[10px] text-outline uppercase tracking-wider">Primary Orchestrator</p>
+</div>
+<div class="px-2 py-0.5 bg-secondary-container/20 border border-primary text-[10px] text-primary uppercase font-bold">Optimal</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-tertiary-fixed-dim uppercase">Data Integrity</span>
+<span class="font-tactical-data text-xs text-primary">99.2%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 99.2%"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-[10px] text-tertiary-fixed-dim uppercase">Last Sync</span>
+<span class="font-tactical-data text-xs text-on-surface">0.4s AGO</span>
+</div>
+</div>
+</div>
+<!-- Module Card: Case Intel -->
+<div class="glass-panel p-4 border-l-2 border-l-outline relative">
+<div class="absolute top-1 right-2 font-tactical-data text-[8px] text-outline">MOD_ID: CI_02</div>
+<div class="flex items-start justify-between mb-4">
+<div>
+<h3 class="font-tactical-data text-sm uppercase text-on-surface">Case Intel</h3>
+<p class="text-[10px] text-outline uppercase tracking-wider">Pattern Recognition</p>
+</div>
+<div class="px-2 py-0.5 bg-surface-container-high border border-outline text-[10px] text-on-surface-variant uppercase font-bold">Standby</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-tertiary-fixed-dim uppercase">Data Integrity</span>
+<span class="font-tactical-data text-xs text-on-surface">100.0%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-outline" style="width: 100%"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-[10px] text-tertiary-fixed-dim uppercase">Last Sync</span>
+<span class="font-tactical-data text-xs text-on-surface">12.1m AGO</span>
+</div>
+</div>
+</div>
+<!-- Module Card: Vault -->
+<div class="glass-panel p-4 border-l-2 border-l-primary relative">
+<div class="absolute top-1 right-2 font-tactical-data text-[8px] text-outline">MOD_ID: VT_03</div>
+<div class="flex items-start justify-between mb-4">
+<div>
+<h3 class="font-tactical-data text-sm uppercase text-on-surface">Vault</h3>
+<p class="text-[10px] text-outline uppercase tracking-wider">Evidence Secure Storage</p>
+</div>
+<div class="px-2 py-0.5 bg-secondary-container/20 border border-primary text-[10px] text-primary uppercase font-bold">Secured</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-tertiary-fixed-dim uppercase">Access Logs</span>
+<span class="font-tactical-data text-xs text-primary">ENCRYPTED</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 40%"></div>
+<div class="h-full bg-surface-container-highest" style="width: 2%"></div>
+<div class="h-full bg-primary" style="width: 58%"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-[10px] text-tertiary-fixed-dim uppercase">Chain of Custody</span>
+<span class="font-tactical-data text-xs text-on-surface">VERIFIED</span>
+</div>
+</div>
+</div>
+<!-- Module Card: Net Trace -->
+<div class="glass-panel p-4 border-l-2 border-l-primary relative">
+<div class="absolute top-1 right-2 font-tactical-data text-[8px] text-outline">MOD_ID: NT_05</div>
+<div class="flex items-start justify-between mb-4">
+<div>
+<h3 class="font-tactical-data text-sm uppercase text-on-surface">Net Trace</h3>
+<p class="text-[10px] text-outline uppercase tracking-wider">Digital Origin Mapping</p>
+</div>
+<div class="flex items-center gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-primary status-pulse"></div>
+<div class="px-2 py-0.5 text-[10px] text-primary uppercase font-bold">Scanning</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-tertiary-fixed-dim uppercase">Throughput</span>
+<span class="font-tactical-data text-xs text-primary">82 GB/S</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary animate-pulse" style="width: 82%"></div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<span class="text-[10px] text-tertiary-fixed-dim uppercase">Nodes Probed</span>
+<span class="font-tactical-data text-xs text-on-surface">1.2M</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Resource Allocation (Technical Chart) -->
+<div class="glass-panel p-6 flex flex-col">
+<h3 class="font-tactical-data text-sm uppercase text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">memory</span>
+                        Kernel Resource Load
+                    </h3>
+<div class="flex-1 flex items-end gap-2 px-2">
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high relative rounded-t overflow-hidden" style="height: 60%">
+<div class="absolute bottom-0 w-full bg-primary transition-all duration-1000" style="height: 85%"></div>
+</div>
+<span class="font-tactical-data text-[8px] text-outline uppercase">K-01</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high relative rounded-t overflow-hidden" style="height: 80%">
+<div class="absolute bottom-0 w-full bg-primary transition-all duration-1000 opacity-60" style="height: 40%"></div>
+</div>
+<span class="font-tactical-data text-[8px] text-outline uppercase">K-02</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high relative rounded-t overflow-hidden" style="height: 100%">
+<div class="absolute bottom-0 w-full bg-primary transition-all duration-1000" style="height: 92%"></div>
+</div>
+<span class="font-tactical-data text-[8px] text-outline uppercase">K-03</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high relative rounded-t overflow-hidden" style="height: 70%">
+<div class="absolute bottom-0 w-full bg-primary transition-all duration-1000 opacity-40" style="height: 20%"></div>
+</div>
+<span class="font-tactical-data text-[8px] text-outline uppercase">K-04</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-surface-container-high relative rounded-t overflow-hidden" style="height: 90%">
+<div class="absolute bottom-0 w-full bg-primary transition-all duration-1000" style="height: 75%"></div>
+</div>
+<span class="font-tactical-data text-[8px] text-outline uppercase">K-05</span>
+</div>
+</div>
+<div class="mt-8 pt-4 border-t border-outline-variant space-y-3">
+<div class="flex justify-between items-center text-[10px]">
+<span class="text-outline uppercase">Aggregate Load</span>
+<span class="font-tactical-data text-primary">62.4%</span>
+</div>
+<div class="flex justify-between items-center text-[10px]">
+<span class="text-outline uppercase">Thermal State</span>
+<span class="font-tactical-data text-on-surface">NOMINAL (42°C)</span>
+</div>
+<div class="flex justify-between items-center text-[10px]">
+<span class="text-outline uppercase">Thread Overflow</span>
+<span class="font-tactical-data text-on-surface">0.00%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Neural Link Audit (Specialized Panel) -->
+<section class="grid grid-cols-1 lg:grid-cols-4 gap-panel-gap">
+<div class="lg:col-span-3 glass-panel p-6">
+<h3 class="font-tactical-data text-sm uppercase text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">psychology</span>
+                        Reasoning Chain Audit
+                    </h3>
+<div class="space-y-4 custom-scrollbar overflow-y-auto max-h-[300px] pr-4">
+<!-- Chain Entry 1 -->
+<div class="border-l-2 border-primary pl-4 py-2 bg-surface-container-lowest/50">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-tactical-data text-[10px] text-primary">CH-842-1</span>
+<span class="text-[8px] text-outline uppercase">Timestamp: 12:44:02.112</span>
+</div>
+<p class="font-body-md text-sm text-on-surface leading-tight">Entity match identified between CCTV feed 04 and Criminal Database record #AZ-998. Cross-referencing facial geometry with social trace.</p>
+<div class="mt-2 flex gap-4">
+<span class="text-[9px] text-primary bg-primary/10 px-2 rounded uppercase">Confidence: 99.1%</span>
+<span class="text-[9px] text-outline uppercase">Logic Source: Case Intelligence</span>
+</div>
+</div>
+<!-- Chain Entry 2: Contradiction Detected -->
+<div class="border-l-2 border-error pl-4 py-2 bg-error-container/10">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-tactical-data text-[10px] text-error">CH-842-2 [CONTRADICTION]</span>
+<span class="text-[8px] text-outline uppercase">Timestamp: 12:44:02.890</span>
+</div>
+<p class="font-body-md text-sm text-on-surface leading-tight">Network Trace detected IP egress from different timezone (UTC+8) while Entity Matrix confirmed physical presence in UTC-5. GPS Spoofing suspected.</p>
+<div class="mt-2 flex gap-4">
+<span class="text-[9px] text-error bg-error/10 px-2 rounded uppercase">Conflict Status: UNRESOLVED</span>
+<span class="text-[9px] text-outline uppercase">Logic Source: Network Trace / Entity Matrix</span>
+</div>
+</div>
+<!-- Chain Entry 3: Resolution -->
+<div class="border-l-2 border-on-surface-variant pl-4 py-2 bg-surface-container-high/50">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-tactical-data text-[10px] text-on-surface-variant">CH-842-3 [RESOLVED]</span>
+<span class="text-[8px] text-outline uppercase">Timestamp: 12:44:03.015</span>
+</div>
+<p class="font-body-md text-sm text-on-surface leading-tight">Suraag Core resolved discrepancy: Subject used a hardware-based VPN tunneling via private relay in Singapore. Physical presence at site Alpha confirmed via secondary biometric gait analysis.</p>
+<div class="mt-2 flex gap-4">
+<span class="text-[9px] text-primary bg-primary/10 px-2 rounded uppercase">Confidence: 97.8%</span>
+<span class="text-[9px] text-outline uppercase">Logic Source: Suraag Core Override</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 5: Critical Action Center -->
+<div class="glass-panel p-6 flex flex-col justify-between">
+<h3 class="font-tactical-data text-sm uppercase text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">bolt</span>
+                        Tactical Actions
+                    </h3>
+<div class="space-y-4">
+<button class="w-full group relative overflow-hidden bg-surface-container-high border border-outline-variant p-4 text-left transition-all hover:border-primary">
+<div class="relative z-10">
+<div class="font-tactical-data text-[10px] text-primary uppercase mb-1">System Wide</div>
+<div class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Synchronize All Nodes</div>
+</div>
+<div class="absolute bottom-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">sync</span>
+</div>
+</button>
+<button class="w-full group relative overflow-hidden bg-surface-container-high border border-outline-variant p-4 text-left transition-all hover:border-primary">
+<div class="relative z-10">
+<div class="font-tactical-data text-[10px] text-primary uppercase mb-1">Data Output</div>
+<div class="font-label-sm text-label-sm text-on-surface uppercase tracking-wider">Export Full System Audit</div>
+</div>
+<div class="absolute bottom-0 right-0 p-1 opacity-20 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary">description</span>
+</div>
+</button>
+<button class="w-full group relative overflow-hidden bg-secondary-container p-4 text-left border border-primary transition-all hover:shadow-[0_0_15px_rgba(229,57,53,0.3)]">
+<div class="relative z-10">
+<div class="font-tactical-data text-[10px] text-on-primary uppercase mb-1">Investigation</div>
+<div class="font-label-sm text-label-sm text-on-primary uppercase tracking-wider">Initiate New Lead Search</div>
+</div>
+<div class="absolute bottom-0 right-0 p-1 opacity-40">
+<span class="material-symbols-outlined text-on-primary">search_insights</span>
+</div>
+</button>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 rounded-full bg-primary status-pulse"></div>
+<span class="font-tactical-data text-[8px] text-outline uppercase">System Idle: Waiting for Operator Input</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 left-0 w-full h-8 bg-surface-container-lowest border-t border-outline-variant z-50 flex justify-between items-center px-margin-desktop text-[10px] opacity-80 uppercase tracking-widest font-label-sm text-label-sm">
+<div class="text-on-surface">© 2024 SURAAG INTELLIGENCE. ALL RIGHTS RESERVED.</div>
+<div class="flex gap-8">
+<span class="text-primary">System Health: 100%</span>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors cursor-pointer" href="#">Privacy Protocol</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors cursor-pointer" href="#">Legal Clearance</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors cursor-pointer" href="#">Contact Command</a>
+</div>
+</footer>
+<!-- Atmosphere micro-interactions -->
+<script>
+        // Simple random noise generator for data aesthetics
+        setInterval(() => {
+            const dataIntegrityElements = document.querySelectorAll('.font-tactical-data.text-xs.text-primary');
+            dataIntegrityElements.forEach(el => {
+                if(el.innerText.includes('%')) {
+                    const currentVal = parseFloat(el.innerText);
+                    const noise = (Math.random() - 0.5) * 0.2;
+                    const newVal = Math.min(100, Math.max(95, currentVal + noise)).toFixed(1);
+                    el.innerText = newVal + '%';
+                }
+            });
+        }, 3000);
+
+        // Click effects for glass panels
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            panel.addEventListener('mousedown', () => {
+                panel.style.transform = 'scale(0.995)';
+                panel.style.borderColor = '#E53935';
+            });
+            panel.addEventListener('mouseup', () => {
+                panel.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

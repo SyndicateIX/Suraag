@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Suraag AI | Forensic Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "tertiary": "#c9c6c5",
+                    "on-primary": "#690006",
+                    "surface-bright": "#393939",
+                    "on-tertiary-container": "#2a2a29",
+                    "inverse-on-surface": "#313030",
+                    "primary-container": "#ff544c",
+                    "on-secondary": "#690005",
+                    "surface-container-high": "#2a2a2a",
+                    "on-primary-fixed": "#410002",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-secondary-fixed-variant": "#93000b",
+                    "secondary": "#ffb4ab",
+                    "secondary-container": "#a0030e",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-container-low": "#1c1b1b",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "surface-tint": "#ffb4ac",
+                    "tertiary-container": "#929090",
+                    "on-background": "#e5e2e1",
+                    "background": "#131313",
+                    "surface": "#131313",
+                    "on-primary-fixed-variant": "#93000d",
+                    "on-surface": "#e5e2e1",
+                    "primary": "#ffb4ac",
+                    "on-error-container": "#ffdad6",
+                    "surface-variant": "#353534",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-secondary-fixed": "#410002",
+                    "on-surface-variant": "#e4beb9",
+                    "inverse-primary": "#bb171c",
+                    "secondary-fixed-dim": "#ffb4ab",
+                    "error-container": "#93000a",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-secondary-container": "#ffa99f",
+                    "surface-dim": "#131313",
+                    "surface-container-highest": "#353534",
+                    "on-primary-container": "#5c0005",
+                    "outline": "#ab8985",
+                    "secondary-fixed": "#ffdad6",
+                    "primary-fixed": "#ffdad6",
+                    "on-tertiary": "#313030",
+                    "primary-fixed-dim": "#ffb4ac",
+                    "outline-variant": "#5b403d",
+                    "surface-container": "#201f1f",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "16px",
+                    "panel-gap": "8px",
+                    "grid-unit": "4px",
+                    "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "tactical-data": ["Space Grotesk"],
+                    "label-sm": ["Space Grotesk"],
+                    "headline-lg-mobile": ["Space Grotesk"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "tactical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 10px rgba(229, 57, 53, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(229, 57, 53, 0.6); }
+        }
+        .glow-red { animation: pulse-red 2s infinite; }
+        
+        .scanline {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 50%, rgba(0,0,0,0.03) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .tactical-grid {
+            background-image: radial-gradient(circle, #2A2A2A 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid #2A2A2A;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        @keyframes flow-line {
+            0% { stroke-dashoffset: 100; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .animate-flow {
+            stroke-dasharray: 10;
+            animation: flow-line 2s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary selection:text-on-primary overflow-x-hidden">
+<div class="scanline"></div>
+<!-- Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-desktop h-16 bg-background/70 backdrop-blur-xl border-b border-outline-variant shadow-[0_0_15px_rgba(255,84,76,0.1)]">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter uppercase">Suraag AI</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-tactical-data text-tactical-data text-primary border-b-2 border-primary hover:text-primary hover:shadow-[0_0_10px_rgba(255,84,76,0.3)] transition-all" href="#">Mission Control</a>
+<a class="font-tactical-data text-tactical-data text-on-surface-variant hover:text-primary hover:shadow-[0_0_10px_rgba(255,84,76,0.3)] transition-all" href="#">Intelligence</a>
+<a class="font-tactical-data text-tactical-data text-on-surface-variant hover:text-primary hover:shadow-[0_0_10px_rgba(255,84,76,0.3)] transition-all" href="#">Archive</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all">settings</button>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<button class="bg-primary text-on-primary px-4 py-1.5 rounded-none font-tactical-data text-tactical-data font-bold tracking-widest active:scale-95 duration-75">INVESTIGATOR PROFILE</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<!-- STITCH_SHADER_START:ANIMATION_2 class="absolute inset-0 w-full h-full opacity-60" -->
+<div class="absolute inset-0 w-full h-full opacity-60" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_2" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_2');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+varying vec2 v_texCoord;
+
+float grid(vec2 uv, float spacing) {
+    vec2 lines = step(0.98, fract(uv / spacing));
+    return max(lines.x, lines.y);
+}
+
+void main() {
+    vec2 uv = v_texCoord;
+    vec2 center = uv - 0.5;
+    center.x *= u_resolution.x / u_resolution.y;
+    
+    // Background
+    vec3 color = vec3(0.02, 0.02, 0.02);
+    
+    // Tactical Grid
+    float g1 = grid(uv * 10.0, 1.0) * 0.1;
+    float g2 = grid(uv * 50.0, 1.0) * 0.05;
+    color += (g1 + g2) * vec3(0.9, 0.2, 0.2);
+    
+    // Radar Sweep
+    float angle = atan(center.y, center.x);
+    float dist = length(center);
+    float sweep = fract(angle / 6.2831 - u_time * 0.2);
+    sweep = pow(sweep, 4.0) * step(dist, 0.45);
+    color += sweep * vec3(0.9, 0.1, 0.1) * 0.4;
+    
+    // Radar Rings
+    float ring = abs(sin(dist * 40.0 - u_time * 2.0));
+    ring = step(0.98, ring) * step(dist, 0.45) * 0.1;
+    color += ring * vec3(0.9, 0.2, 0.2);
+    
+    // Scanline effect
+    float scanline = sin(uv.y * 800.0 + u_time * 10.0) * 0.02;
+    color += scanline;
+    
+    // Vignette
+    float vig = 1.0 - smoothstep(0.4, 1.2, length(center));
+    color *= vig;
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_2 -->
+<!-- HUD Overlays -->
+<div class="absolute inset-0 tactical-grid pointer-events-none opacity-20"></div>
+<!-- World Map HUD -->
+<div class="absolute top-24 left-10 w-64 h-40 glass-panel p-2 hidden xl:block">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-tactical-data text-primary opacity-70">GLOBAL_NET_MONITOR</span>
+<span class="text-[10px] font-tactical-data text-primary animate-pulse">ACTIVE</span>
+</div>
+<div class="w-full h-24 bg-surface-container-low relative overflow-hidden">
+<div class="w-full h-full bg-cover opacity-50 grayscale contrast-150 brightness-50" data-alt="A futuristic digital world map visualization in high-contrast red and black, showing glowing connection nodes and data flows across continents. The aesthetic is cyber-brutalist with tactical grid overlays and floating data markers in a sophisticated military command center style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBORQWPxhgEzJmwA1SBlKgD5tFvg9mBupsO5uDHFiVO13f_eLI6wj_CrA7ulJxuNoddXuIocLyAI7RN_t8l1ol0xJxtITlQOSOEuhyTY9HJp4k9ONxFYt7rwIUzLzvBCyk9hIGvIBmFB2EMKhX35RuBki9uld7oLYeAiW9BDtWlY3fnIzaNZI1NAgSjk0Plap7ZgDq3bvzIKHEMaAxZOMajWbzxHvwmhvbKjYcaocvcCewZtzX2zgwO')"></div>
+</div>
+<div class="mt-2 h-4 w-full bg-surface-container flex items-end gap-0.5">
+<div class="bg-primary w-1 h-[60%]"></div>
+<div class="bg-primary w-1 h-[80%]"></div>
+<div class="bg-primary w-1 h-[40%]"></div>
+<div class="bg-primary w-1 h-[90%]"></div>
+<div class="bg-primary w-1 h-[70%]"></div>
+</div>
+</div>
+<!-- Crime Network Visualization (Floating) -->
+<div class="absolute bottom-24 right-10 w-72 h-56 glass-panel p-4 hidden lg:block border-primary/30">
+<div class="text-[10px] font-tactical-data text-primary mb-2">NETWORK_DECONSTRUCTION_V4</div>
+<div class="relative w-full h-40 flex items-center justify-center">
+<svg class="w-full h-full" viewbox="0 0 200 200">
+<circle cx="100" cy="100" fill="none" r="40" stroke="#ffb4ac" stroke-dasharray="2 2" stroke-width="0.5"></circle>
+<circle class="glow-red" cx="100" cy="100" fill="#ffb4ac" r="3"></circle>
+<line class="animate-flow" stroke="#ffb4ac" stroke-width="1" x1="100" x2="160" y1="100" y2="60"></line>
+<line class="animate-flow" stroke="#ffb4ac" stroke-width="1" x1="100" x2="40" y1="100" y2="140"></line>
+<circle cx="160" cy="60" fill="#690006" r="4" stroke="#ffb4ac" stroke-width="1"></circle>
+<circle cx="40" cy="140" fill="#690006" r="4" stroke="#ffb4ac" stroke-width="1"></circle>
+</svg>
+<div class="absolute top-0 left-0 text-[8px] text-primary/50">NODE_ID: 8824-A</div>
+<div class="absolute bottom-0 right-0 text-[8px] text-primary/50">CONFIDENCE: 99.2%</div>
+</div>
+</div>
+<div class="relative z-10 text-center px-4 max-w-5xl">
+<h1 class="font-display-lg text-[64px] md:text-[120px] font-bold text-primary tracking-[0.1em] uppercase drop-shadow-[0_0_30px_rgba(255,84,76,0.4)]">SURAAG AI</h1>
+<p class="font-tactical-data text-xl md:text-2xl text-on-surface-variant tracking-[0.4em] uppercase mt-4 mb-6">Reconstruct. Analyze. Reveal the Truth.</p>
+<p class="font-body-md text-on-surface/80 max-w-2xl mx-auto text-lg mb-12">
+                An Explainable AI forensic intelligence platform that transforms fragmented crime scene evidence into interactive 3D reconstructions and intelligent timelines.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+<button class="bg-primary text-on-primary px-10 py-4 font-tactical-data text-lg font-bold tracking-widest glow-red transition-all hover:scale-105 active:scale-95">LAUNCH INVESTIGATION</button>
+<button class="border border-primary text-primary px-10 py-4 font-tactical-data text-lg font-bold tracking-widest hover:bg-primary/10 transition-all hover:scale-105 active:scale-95">VIEW DEMO</button>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="py-16 bg-surface-container-lowest border-y border-outline-variant relative overflow-hidden">
+<div class="max-w-7xl mx-auto px-margin-desktop grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-gutter relative z-10">
+<!-- Metric 1 -->
+<div class="flex flex-col border-l border-outline-variant pl-4 py-2 hover:translate-x-1 transition-transform cursor-default">
+<span class="text-primary font-display-lg text-4xl mb-1">1,240+</span>
+<span class="text-on-surface-variant font-tactical-data text-xs uppercase tracking-tighter">Active Cases</span>
+</div>
+<!-- Metric 2 -->
+<div class="flex flex-col border-l border-outline-variant pl-4 py-2 hover:translate-x-1 transition-transform cursor-default">
+<span class="text-primary font-display-lg text-4xl mb-1">4.2M+</span>
+<span class="text-on-surface-variant font-tactical-data text-xs uppercase tracking-tighter">Evidence Processed</span>
+</div>
+<!-- Metric 3 -->
+<div class="flex flex-col border-l border-outline-variant pl-4 py-2 hover:translate-x-1 transition-transform cursor-default">
+<span class="text-primary font-display-lg text-4xl mb-1">99.8%</span>
+<span class="text-on-surface-variant font-tactical-data text-xs uppercase tracking-tighter">AI Confidence</span>
+</div>
+<!-- Metric 4 -->
+<div class="flex flex-col border-l border-outline-variant pl-4 py-2 hover:translate-x-1 transition-transform cursor-default">
+<span class="text-primary font-display-lg text-4xl mb-1">94%</span>
+<span class="text-on-surface-variant font-tactical-data text-xs uppercase tracking-tighter">Timeline Confidence</span>
+</div>
+<!-- Metric 5 -->
+<div class="flex flex-col border-l border-outline-variant pl-4 py-2 hover:translate-x-1 transition-transform cursor-default">
+<span class="text-primary font-display-lg text-4xl mb-1">892</span>
+<span class="text-on-surface-variant font-tactical-data text-xs uppercase tracking-tighter">Cases Solved</span>
+</div>
+<!-- Metric 6 -->
+<div class="flex flex-col border-l border-outline-variant pl-4 py-2 hover:translate-x-1 transition-transform cursor-default">
+<span class="text-primary font-display-lg text-4xl mb-1">450%</span>
+<span class="text-on-surface-variant font-tactical-data text-xs uppercase tracking-tighter">Speed Improvement</span>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-24 px-margin-desktop bg-background relative">
+<div class="max-w-7xl mx-auto">
+<div class="mb-16">
+<h2 class="font-display-lg text-headline-lg text-primary uppercase tracking-widest mb-4">Tactical Capabilities</h2>
+<div class="h-1 w-24 bg-primary"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-panel-gap">
+<!-- Feature 1 -->
+<div class="glass-panel p-6 border-l-4 border-l-primary hover:border-primary transition-all duration-300 group">
+<span class="text-[8px] font-tactical-data text-primary opacity-50 block mb-4">MODULE_01</span>
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">view_in_ar</span>
+<h3 class="font-headline-lg text-xl mb-3 uppercase tracking-tight">3D Reconstruction</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Automated 3D environment generation from static 2D crime scene imagery and lidar data.</p>
+</div>
+<!-- Feature 2 -->
+<div class="glass-panel p-6 border-l-4 border-l-primary/30 hover:border-l-primary transition-all duration-300 group">
+<span class="text-[8px] font-tactical-data text-primary opacity-50 block mb-4">MODULE_02</span>
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">inventory_2</span>
+<h3 class="font-headline-lg text-xl mb-3 uppercase tracking-tight">Evidence Detection</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Neural-network powered identification of microscopic evidence overlooked by human eyes.</p>
+</div>
+<!-- Feature 3 -->
+<div class="glass-panel p-6 border-l-4 border-l-primary/30 hover:border-l-primary transition-all duration-300 group">
+<span class="text-[8px] font-tactical-data text-primary opacity-50 block mb-4">MODULE_03</span>
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">science</span>
+<h3 class="font-headline-lg text-xl mb-3 uppercase tracking-tight">Physics Simulation</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">High-fidelity collision and fluid dynamics simulation to test hypothetical forensic scenarios.</p>
+</div>
+<!-- Feature 4 -->
+<div class="glass-panel p-6 border-l-4 border-l-primary/30 hover:border-l-primary transition-all duration-300 group">
+<span class="text-[8px] font-tactical-data text-primary opacity-50 block mb-4">MODULE_04</span>
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">timeline</span>
+<h3 class="font-headline-lg text-xl mb-3 uppercase tracking-tight">Trajectory Analysis</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Predictive ballistic and blood spatter mapping with millimeter-level precision metrics.</p>
+</div>
+<!-- Feature 5 -->
+<div class="glass-panel p-6 border-l-4 border-l-primary/30 hover:border-l-primary transition-all duration-300 group">
+<span class="text-[8px] font-tactical-data text-primary opacity-50 block mb-4">MODULE_05</span>
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">psychology</span>
+<h3 class="font-headline-lg text-xl mb-3 uppercase tracking-tight">Statement Analysis</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Natural Language Processing to analyze witness statements for emotional and logical integrity.</p>
+</div>
+<!-- Feature 6 -->
+<div class="glass-panel p-6 border-l-4 border-l-primary/30 hover:border-l-primary transition-all duration-300 group">
+<span class="text-[8px] font-tactical-data text-primary opacity-50 block mb-4">MODULE_06</span>
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">error</span>
+<h3 class="font-headline-lg text-xl mb-3 uppercase tracking-tight">Contradiction Detection</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Cross-referencing physical evidence against statements to flag irreconcilable differences.</p>
+</div>
+<!-- Feature 7 -->
+<div class="glass-panel p-6 border-l-4 border-l-primary/30 hover:border-l-primary transition-all duration-300 group">
+<span class="text-[8px] font-tactical-data text-primary opacity-50 block mb-4">MODULE_07</span>
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">visibility</span>
+<h3 class="font-headline-lg text-xl mb-3 uppercase tracking-tight">Explainable AI</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Full transparency into AI decision-making chains for court-admissible forensic validity.</p>
+</div>
+<!-- Feature 8 -->
+<div class="glass-panel p-6 border-l-4 border-l-primary/30 hover:border-l-primary transition-all duration-300 group">
+<span class="text-[8px] font-tactical-data text-primary opacity-50 block mb-4">MODULE_08</span>
+<span class="material-symbols-outlined text-4xl text-primary mb-4 block">description</span>
+<h3 class="font-headline-lg text-xl mb-3 uppercase tracking-tight">Report Generator</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed">Automatic generation of comprehensive, legally-compliant investigation dossiers.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Workflow Section -->
+<section class="py-24 bg-surface-container-low overflow-hidden">
+<div class="max-w-7xl mx-auto px-margin-desktop">
+<h2 class="font-display-lg text-headline-lg text-primary text-center mb-24 uppercase tracking-[0.2em]">Investigation Pipeline</h2>
+<div class="relative">
+<!-- Vertical Line -->
+<div class="absolute left-1/2 top-0 bottom-0 w-px bg-outline-variant -translate-x-1/2"></div>
+<div class="space-y-24">
+<!-- Step 1 -->
+<div class="relative flex items-center justify-between group">
+<div class="w-5/12 text-right pr-12">
+<h3 class="font-headline-lg text-2xl text-primary mb-2">Evidence Ingestion</h3>
+<p class="text-on-surface-variant">Upload raw field data, 3D scans, and digital forensics files into the secure Suraag kernel.</p>
+</div>
+<div class="absolute left-1/2 -translate-x-1/2 w-12 h-12 bg-background border-2 border-primary flex items-center justify-center z-10 glow-red">
+<span class="font-tactical-data text-primary">01</span>
+</div>
+<div class="w-5/12 pl-12">
+<div class="h-32 w-full bg-surface-container relative border border-outline-variant">
+<div class="w-full h-full bg-cover" data-alt="A macro shot of a sleek, dark metallic server interface with glowing red indicator lights. The scene is illuminated with sharp tactical light, creating high-contrast shadows. The vibe is advanced technology used for high-security data processing in a futuristic forensic lab." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCbuZi7s2d7WYrhIwpNQspt5s2YzVlacb-maSODtfNoGw7NwfWjI31nJAYoNHj41q2TcU2m65oM4d5bKeDHogvo51z4HwqakhR-HW6euR7OBYXQctKAdJ5FGsyiCyVqRj-DBxR3iYldOP1mLIL8-kM1KurTXoYdyLyIujLCZEzO1sTlNZX0LQ0OqPbp7cflOlQxXgejKJ2K-DEjUtZPzh-Iox23RQRoVJNBAlC5Kmp8UgVm1J7eOank')"></div>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative flex flex-row-reverse items-center justify-between group">
+<div class="w-5/12 text-left pl-12">
+<h3 class="font-headline-lg text-2xl text-primary mb-2">Neural Analysis</h3>
+<p class="text-on-surface-variant">AI agents analyze the data pool to identify patterns, missing links, and structural anomalies.</p>
+</div>
+<div class="absolute left-1/2 -translate-x-1/2 w-12 h-12 bg-background border-2 border-primary flex items-center justify-center z-10 glow-red">
+<span class="font-tactical-data text-primary">02</span>
+</div>
+<div class="w-5/12 pr-12">
+<div class="h-32 w-full bg-surface-container relative border border-outline-variant">
+<div class="w-full h-full bg-cover" data-alt="A complex neural network visualization displayed on a transparent glass screen. Neon red lines connect nodes in a 3D space, with floating data streams and hexadecimal code appearing in the background. The lighting is cinematic, highlighting the intricate digital connections." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCMCyum1N_dMD_I3OPQZAAabDzQ7WG9XkDqsMVf__0iWHtONQseHk4pJxYOtY-DuVpgrbmtlXorxZuGBPQxeq7ZkgML9be86iuGvjkVLQisjA4bg8hDzRrD0XQXE817weQHcZbr5Dh50wnWwXEip3iGJy4qAKqMQ4NhbK0o6xxMCSRInk3tiA1TxnhWtnT4ZbraR88_ZKnwucjS-gwOjs9Na6-YeELMTmXl5ZPkHtCTPQQF6gfOs2c3')"></div>
+</div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative flex items-center justify-between group">
+<div class="w-5/12 text-right pr-12">
+<h3 class="font-headline-lg text-2xl text-primary mb-2">3D Reconstruction</h3>
+<p class="text-on-surface-variant">The system generates a photorealistic interactive model of the scene for virtual walkthroughs.</p>
+</div>
+<div class="absolute left-1/2 -translate-x-1/2 w-12 h-12 bg-background border-2 border-primary flex items-center justify-center z-10 glow-red">
+<span class="font-tactical-data text-primary">03</span>
+</div>
+<div class="w-5/12 pl-12">
+<div class="h-32 w-full bg-surface-container relative border border-outline-variant">
+<div class="w-full h-full bg-cover" data-alt="A sophisticated 3D wireframe reconstruction of an indoor environment. The scene features detailed architectural elements rendered in glowing red and white lines against a dark background, evoking a forensic reconstruction of a crime scene within a digital simulation." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFx5RfqoOZe16pbLUgyo6ABbpJD_uOxa0H8TxlTcmblDYLibzYLxdr0OZa6OmfQMBcANb9FO_wSHdzLDJtTfWGpIu_ezJwXTye5y09ttQexC09YHldR2hDQv3FqbJ0LkyGwfusyhKxgcYH0i7ig_GKf3dIQsqM1sliL3HpGw83AaWfGtvWzlHkFo7kYTxRnsaNRGH1KWP1s4VGHtcxKX4ANVtOZaU96XdWw_OpuOUdtFgQA4ePZJGp')"></div>
+</div>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative flex flex-row-reverse items-center justify-between group">
+<div class="w-5/12 text-left pl-12">
+<h3 class="font-headline-lg text-2xl text-primary mb-2">Dossier Finalization</h3>
+<p class="text-on-surface-variant">Export a cryptographically signed, court-admissible report containing all findings and simulations.</p>
+</div>
+<div class="absolute left-1/2 -translate-x-1/2 w-12 h-12 bg-background border-2 border-primary flex items-center justify-center z-10 glow-red">
+<span class="font-tactical-data text-primary">04</span>
+</div>
+<div class="w-5/12 pr-12">
+<div class="h-32 w-full bg-surface-container relative border border-outline-variant">
+<div class="w-full h-full bg-cover" data-alt="A high-end tactical tablet showing a digital forensic report. The screen displays charts, fingerprint analysis, and encrypted signatures. The device sits on a dark, textured metal surface under focused clinical lighting, conveying an atmosphere of official investigative finality." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDdP0rj98GNDfFbfuAktpxiu2WesnFaMCMQZYGL-uWsKKJKedoYveriwWHiXUcgGkED0fA6YH9Vowg1X5u6Yn2D-qUQNwJ-KP67rW4aynC9JyS8z4rN1E9j2sg8R36b05G8QO5YbU_P9NmgP-hvbyVYivjhD2yAmM5k6LqmQ-4gNjrknZnrg5X4HFNp3ln560zknFz_3sKuUYGdIc2ExnAdoAWBgkaJN8t5bBZjncKkMVx71eVOnkTt')"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tech Stack Section -->
+<section class="py-24 border-t border-outline-variant bg-background">
+<div class="max-w-7xl mx-auto px-margin-desktop text-center">
+<h2 class="font-tactical-data text-label-sm text-primary uppercase tracking-[0.4em] mb-12">Core Technologies &amp; Frameworks</h2>
+<div class="flex flex-wrap justify-center gap-4">
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">REACT.JS</span>
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">THREE.JS</span>
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">OPENCV</span>
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">YOLO V9</span>
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">GEMINI LLM</span>
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">FASTAPI</span>
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">PYTORCH</span>
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">RUST.CORE</span>
+<span class="px-6 py-2 border border-outline-variant font-tactical-data text-xs hover:border-primary transition-colors bg-surface-container-low">KUBERNETES</span>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full mt-auto flex flex-col items-center gap-4 px-margin-desktop bg-surface-container-lowest py-12 border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between w-full max-w-7xl gap-8">
+<div class="flex flex-col gap-4">
+<span class="font-display-lg text-display-lg text-primary uppercase">Suraag AI</span>
+<p class="text-on-tertiary-fixed-variant font-label-sm max-w-sm">
+                    ADVANCED FORENSIC INTELLIGENCE. MISSION-CRITICAL ANALYTICS FOR LAW ENFORCEMENT AND PRIVATE INVESTIGATORS.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-12">
+<div class="flex flex-col gap-2">
+<span class="text-primary font-tactical-data text-xs uppercase mb-2">Directives</span>
+<a class="text-on-tertiary-fixed-variant font-label-sm hover:text-primary transition-colors" href="#">Privacy Protocol</a>
+<a class="text-on-tertiary-fixed-variant font-label-sm hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="text-on-tertiary-fixed-variant font-label-sm hover:text-primary transition-colors" href="#">Security Whitepaper</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-primary font-tactical-data text-xs uppercase mb-2">Systems</span>
+<a class="text-on-tertiary-fixed-variant font-label-sm hover:text-primary transition-colors" href="#">API Documentation</a>
+<a class="text-on-tertiary-fixed-variant font-label-sm hover:text-primary transition-colors" href="#">System Status</a>
+<a class="text-on-tertiary-fixed-variant font-label-sm hover:text-primary transition-colors" href="#">Request Access</a>
+</div>
+</div>
+</div>
+<div class="w-full h-px bg-outline-variant mt-8"></div>
+<div class="flex flex-col md:flex-row justify-between w-full max-w-7xl mt-4 items-center gap-4">
+<p class="font-label-sm text-label-sm text-on-tertiary-fixed-variant">© 2024 SURAAG AI FORENSICS. ALL RIGHTS RESERVED. CLASSIFIED.</p>
+<div class="flex gap-4">
+<div class="flex items-center gap-2 px-3 py-1 border border-primary/20">
+<div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+<span class="text-[10px] font-tactical-data text-on-surface-variant">NETWORK_UP</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 border border-primary/20">
+<span class="text-[10px] font-tactical-data text-on-surface-variant">ENCRYPTION: AES-256</span>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for interactive metric cards
+        document.querySelectorAll('.border-l').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.boxShadow = 'inset 4px 0 0 #ffb4ac';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.boxShadow = 'none';
+            });
+        });
+
+        // Simple parallax effect for HUD elements
+        window.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) / 50;
+            const moveY = (e.clientY - window.innerHeight / 2) / 50;
+            
+            document.querySelectorAll('.glass-panel').forEach(panel => {
+                panel.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,124 @@
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ShieldAlert, Activity, Radio, Search, Bell, Database, ExternalLink } from 'lucide-react';
+import { useSuraagStore } from '../../store/useSuraagStore';
+import { Badge } from './Badge';
+
+export const TopBar: React.FC = () => {
+  const navigate = useNavigate();
+  const { selectedCaseId, setSelectedCaseId } = useSuraagStore();
+  const [currentTime, setCurrentTime] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC');
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleCaseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCaseId(e.target.value);
+  };
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/cases?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
+
+  return (
+    <header className="fixed top-0 left-0 right-0 h-16 z-40 bg-background/85 backdrop-blur-xl border-b border-outline-variant/50 shadow-[0_4px_20px_rgba(0,0,0,0.6)] flex items-center justify-between px-6">
+      {/* Brand & Landing Link */}
+      <div className="flex items-center gap-6">
+        <Link to="/" className="flex items-center gap-3 group">
+          <div className="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center border border-primary/60 shadow-[0_0_15px_rgba(255,84,76,0.3)] group-hover:scale-105 transition-transform">
+            <ShieldAlert className="w-6 h-6 text-primary animate-pulse" />
+          </div>
+          <div className="flex flex-col">
+            <div className="flex items-center gap-2">
+              <span className="font-display-lg text-xl font-bold tracking-tighter uppercase text-primary">
+                Suraag AI
+              </span>
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-tactical-data bg-primary/20 text-primary border border-primary/50 uppercase">
+                Enterprise v4.2
+              </span>
+            </div>
+            <span className="text-[11px] font-tactical-data tracking-widest text-on-surface-variant uppercase">
+              Reconstruct. Analyze. Reveal the Truth.
+            </span>
+          </div>
+        </Link>
+
+        <div className="hidden lg:flex items-center gap-3 pl-6 border-l border-outline-variant/40">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-surface-container border border-outline-variant/40">
+            <Activity className="w-4 h-4 text-emerald-400 animate-pulse" />
+            <span className="text-xs font-tactical-data text-on-surface">MULTI-SENSOR FUSION:</span>
+            <Badge variant="active" pulse>94.2% CONFIDENCE</Badge>
+          </div>
+
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-surface-container border border-outline-variant/40">
+            <Radio className="w-4 h-4 text-primary animate-spin" style={{ animationDuration: '6s' }} />
+            <span className="text-xs font-tactical-data text-on-surface-variant">LATTICE LINK:</span>
+            <span className="text-xs font-tactical-data text-primary font-bold">ONLINE</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Center/Right Controls: Case Selector & Quick Search */}
+      <div className="flex items-center gap-4">
+        {/* Quick Search */}
+        <form onSubmit={handleSearchSubmit} className="hidden md:flex items-center relative">
+          <input
+            type="text"
+            placeholder="Search entities, suspects, GPS..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-60 h-9 bg-surface-container-low text-xs font-tactical-data text-on-surface rounded border border-outline-variant/60 pl-8 pr-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-on-surface-variant/60"
+          />
+          <Search className="w-4 h-4 text-on-surface-variant absolute left-2.5 top-2.5 pointer-events-none" />
+        </form>
+
+        {/* Active Case Selector */}
+        <div className="flex items-center gap-2 bg-surface-container-high px-3 py-1.5 rounded border border-primary/40 shadow-[0_0_10px_rgba(255,84,76,0.15)]">
+          <Database className="w-4 h-4 text-primary" />
+          <span className="text-[11px] font-tactical-data text-on-surface-variant uppercase">Active Case:</span>
+          <select
+            value={selectedCaseId}
+            onChange={handleCaseChange}
+            className="bg-transparent font-tactical-data text-xs text-primary font-bold focus:outline-none cursor-pointer"
+          >
+            <option value="CASE-2026-884A" className="bg-surface text-on-surface">CASE-2026-884A: Project Genesis Breach</option>
+            <option value="CASE-2026-712B" className="bg-surface text-on-surface">CASE-2026-712B: Orbital Uplink Sabotage</option>
+            <option value="CASE-2026-650C" className="bg-surface text-on-surface">CASE-2026-650C: Autonomous Transit Collision</option>
+            <option value="CASE-2026-599D" className="bg-surface text-on-surface">CASE-2026-599D: Deep-Water Data Conduit Tap</option>
+          </select>
+        </div>
+
+        {/* Live Timestamp */}
+        <div className="hidden xl:flex flex-col items-end border-l border-outline-variant/40 pl-4 font-tactical-data">
+          <span className="text-[10px] text-on-surface-variant">SYSTEM TIME</span>
+          <span className="text-xs text-on-surface font-semibold tracking-wider">{currentTime || 'SYNCING...'}</span>
+        </div>
+
+        {/* Action Buttons */}
+        <Link
+          to="/"
+          title="Return to Landing Page Overview"
+          className="p-2 rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50"
+        >
+          <ExternalLink className="w-4 h-4" />
+        </Link>
+
+        <button className="p-2 rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 relative">
+          <Bell className="w-4 h-4" />
+          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-primary animate-ping" />
+        </button>
+      </div>
+    </header>
+  );
+};

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Suraag AI | Professional Investigation Report</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --primary-glow: rgba(229, 57, 53, 0.3);
+            --scanline-color: rgba(255, 255, 255, 0.03);
+            --forensic-red: #ff544c;
+        }
+
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Tactical Scanning Grid Shader Animation */
+        .tactical-grid-bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: 
+                linear-gradient(to right, rgba(229, 57, 53, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(229, 57, 53, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-drift 20s linear infinite;
+        }
+
+        @keyframes grid-drift {
+            from { background-position: 0 0; }
+            to { background-position: 50px 50px; }
+        }
+
+        .scanline-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 0, 0, 0.2) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 100;
+            opacity: 0.15;
+        }
+
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(18, 18, 18, 0.7);
+            border: 1px solid #2a2a2a;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Forensic Glow Animation */
+        .forensic-glow {
+            animation: forensic-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes forensic-pulse {
+            0%, 100% { 
+                text-shadow: 0 0 5px var(--forensic-red);
+                filter: drop-shadow(0 0 2px var(--forensic-red));
+            }
+            50% { 
+                text-shadow: 0 0 15px var(--forensic-red);
+                filter: drop-shadow(0 0 8px var(--forensic-red));
+            }
+        }
+
+        /* Staggered Content Entrance */
+        .animate-fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fade-up {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Photo Scanning Effect */
+        .photo-scanner::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(229, 57, 53, 0.4), transparent);
+            animation: scan-vertical 3s ease-in-out infinite;
+        }
+
+        @keyframes scan-vertical {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        /* Tactical Button Hover */
+        .tactical-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .tactical-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: 0.5s;
+        }
+        .tactical-btn:hover::before {
+            left: 100%;
+        }
+
+        .serial-number {
+            font-family: 'Space Grotesk', monospace;
+            font-size: 8px;
+            letter-spacing: 1px;
+            color: #474646;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e53935;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#1c1b1b",
+                        "error": "#ffb4ab",
+                        "surface-container": "#201f1f",
+                        "primary-fixed": "#ffdad6",
+                        "on-secondary-fixed": "#410002",
+                        "on-primary-container": "#5c0005",
+                        "on-primary": "#690006",
+                        "on-background": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "secondary-fixed-dim": "#ffb4ab",
+                        "secondary-fixed": "#ffdad6",
+                        "on-tertiary-container": "#2a2a29",
+                        "on-secondary": "#690005",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-container": "#929090",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary": "#ffb4ab",
+                        "secondary-container": "#a0030e",
+                        "on-tertiary": "#313030",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-fixed": "#410002",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-surface": "#e5e2e1",
+                        "surface-bright": "#393939",
+                        "inverse-primary": "#bb171c",
+                        "outline-variant": "#5b403d",
+                        "on-secondary-container": "#ffa99f",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e5e2e1",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface": "#131313",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "background": "#131313",
+                        "tertiary": "#c9c6c5",
+                        "on-secondary-fixed-variant": "#93000b",
+                        "on-surface-variant": "#e4beb9",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#ffb4ac",
+                        "surface-container-lowest": "#0e0e0e",
+                        "outline": "#ab8985",
+                        "surface-variant": "#353534",
+                        "surface-dim": "#131313",
+                        "primary-container": "#ff544c",
+                        "primary": "#ffb4ac",
+                        "on-primary-fixed-variant": "#93000d",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#ffb4ac"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "tactical-data": ["Space Grotesk"],
+                        "label-sm": ["Space Grotesk"]
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "grid-unit": "4px",
+                        "margin-mobile": "16px",
+                        "panel-gap": "8px",
+                        "margin-desktop": "32px"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen">
+<!-- Tactical Grid Shader Background -->
+<div class="tactical-grid-bg"></div>
+<div class="scanline-overlay"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 border-b border-outline-variant bg-surface/70 backdrop-blur-xl shadow-[0_0_10px_rgba(229,57,53,0.3)] h-16 flex justify-between items-center px-margin-desktop">
+<div class="flex items-center gap-6">
+<h1 class="font-display-lg text-display-lg font-bold tracking-tighter text-primary uppercase text-[24px]">Suraag AI</h1>
+<div class="hidden md:flex h-8 w-[1px] bg-outline-variant"></div>
+<div class="hidden md:flex flex-col">
+<span class="text-[10px] font-tactical-data text-on-surface-variant tracking-[0.2em] uppercase">Security Clearance</span>
+<span class="text-primary font-bold font-tactical-data text-[12px]">LEVEL 09 // TS-SCI</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all duration-200 cursor-pointer active:scale-95" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all duration-200 cursor-pointer active:scale-95" data-icon="settings">settings</span>
+</div>
+<button class="bg-primary-container text-on-primary-container px-4 py-2 font-tactical-data text-[12px] font-bold uppercase hover:bg-primary transition-all active:scale-95 tactical-btn shadow-[0_0_15px_rgba(255,84,76,0.2)]">
+                Classified Dossier
+            </button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r border-outline-variant bg-surface-container-lowest/80 backdrop-blur-md flex flex-col py-4 hidden md:flex">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 bg-primary/20 border border-primary/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="person_search" style="font-variation-settings: 'FILL' 1;">person_search</span>
+</div>
+<div>
+<h2 class="text-on-surface font-headline-lg text-[14px]">Suraag AI</h2>
+<p class="text-on-tertiary-fixed-variant text-[10px] font-tactical-data">Terminal v4.0.2</p>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<a class="text-on-tertiary-fixed-variant p-4 flex items-center gap-3 hover:bg-surface-container-highest hover:text-on-surface transition-colors hover:translate-x-1 duration-150 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="dashboard">dashboard</span>
+<span class="font-tactical-data uppercase text-[12px]">Mission Control</span>
+</a>
+<a class="bg-primary/10 text-primary border-l-4 border-primary p-4 flex items-center gap-3 hover:translate-x-1 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-tactical-data uppercase text-[12px]">Case Intelligence</span>
+</a>
+<a class="text-on-tertiary-fixed-variant p-4 flex items-center gap-3 hover:bg-surface-container-highest hover:text-on-surface transition-colors hover:translate-x-1 duration-150 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="folder_managed">folder_managed</span>
+<span class="font-tactical-data uppercase text-[12px]">Evidence Vault</span>
+</a>
+<a class="text-on-tertiary-fixed-variant p-4 flex items-center gap-3 hover:bg-surface-container-highest hover:text-on-surface transition-colors hover:translate-x-1 duration-150 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="analytics">analytics</span>
+<span class="font-tactical-data uppercase text-[12px]">Reconstruction</span>
+</a>
+</nav>
+<div class="mt-auto px-4 pb-4">
+<button class="w-full py-3 border border-outline-variant text-on-surface-variant font-tactical-data uppercase text-[11px] mb-4 hover:border-primary hover:text-primary transition-all active:scale-95 tactical-btn">
+                New Investigation
+            </button>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 p-2 text-on-tertiary-fixed-variant hover:text-on-surface cursor-pointer text-[11px] font-tactical-data uppercase">
+<span class="material-symbols-outlined text-[16px]" data-icon="assignment_late">assignment_late</span> Classified Reports
+                </div>
+<div class="flex items-center gap-2 p-2 text-on-tertiary-fixed-variant hover:text-on-surface cursor-pointer text-[11px] font-tactical-data uppercase">
+<span class="material-symbols-outlined text-[16px]" data-icon="settings_input_component">settings_input_component</span> System Health
+                </div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-24 pb-12 px-margin-mobile md:px-margin-desktop">
+<!-- Report Header Section (Entrance Animation 1) -->
+<div class="max-w-7xl mx-auto mb-8 animate-fade-up" style="animation-delay: 0.1s;">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end border-l-2 border-primary pl-6 py-2 bg-gradient-to-r from-primary/5 to-transparent">
+<div>
+<h3 class="font-tactical-data text-primary text-[12px] tracking-[0.3em] uppercase mb-1">Classified // Professional Investigation Report</h3>
+<h2 class="font-display-lg text-on-surface text-[32px] md:text-[48px] uppercase tracking-tight font-bold">Case ID: CR-9901-X</h2>
+</div>
+<div class="mt-4 md:mt-0 flex flex-col items-end">
+<div class="flex items-center gap-2 mb-1">
+<span class="forensic-glow w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-primary font-tactical-data text-[12px] font-bold forensic-glow">STATUS: CRITICAL</span>
+</div>
+<span class="text-on-tertiary-fixed-variant font-tactical-data text-[10px]">TIMESTAMP: 2024-10-24 14:02:11Z</span>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left Column: Executive Summary & Suspect Profile (Entrance Animation 2) -->
+<div class="lg:col-span-4 space-y-6 animate-fade-up" style="animation-delay: 0.3s;">
+<!-- Executive Summary -->
+<div class="glass-panel p-6 relative overflow-hidden group hover:border-primary/50">
+<span class="serial-number absolute top-2 left-2">MOD_ID: EXEC_SUMM_01</span>
+<h4 class="font-tactical-data text-primary text-[11px] tracking-widest uppercase mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="summarize">summarize</span> Executive Summary
+                    </h4>
+<p class="text-on-surface-variant font-body-md text-[14px] leading-relaxed italic border-l border-primary/30 pl-4 py-1">
+                        "Initial forensic analysis indicates a high-velocity confrontation within Apartment 402. Suraag AI neural mapping has synthesized three distinct data vectors confirming the presence of Subject Vance at the nexus of the terminal event."
+                    </p>
+<div class="mt-6 flex justify-between items-center bg-surface-container-low p-3 border border-outline-variant/30">
+<span class="text-[10px] font-tactical-data uppercase text-on-tertiary-fixed-variant">Primary Conclusion</span>
+<span class="text-primary font-bold text-[12px] font-tactical-data forensic-glow">HOMICIDE // PREMEDITATED</span>
+</div>
+</div>
+<!-- Suspect Profile -->
+<div class="glass-panel p-6 relative hover:border-primary/50">
+<span class="serial-number absolute top-2 left-2">MOD_ID: SUSPECT_PRFL_09</span>
+<h4 class="font-tactical-data text-primary text-[11px] tracking-widest uppercase mb-6">Subject Identification</h4>
+<div class="flex items-center gap-4 mb-8">
+<div class="w-24 h-32 relative border-2 border-primary/50 group overflow-hidden photo-scanner">
+<img alt="Marcus Vance" class="w-full h-full object-cover grayscale brightness-75 group-hover:scale-110 transition-transform duration-1000" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfwPH7O4fz27FD6sJCirwL6Qx9_W0Ez50kSrrUO1NW81WSDwqro0g33wS_DCQrHMKlrptEUJv2ij_8VrVeVxQLRsMjfWYrjkE31eRK-TeOObKNVcodp1JZx1FVqRbyHL3rwamU8O2T_SiqWl80U7AxW3um86k47XeiBvD1xKJsol_cFerHBNApywPapV3GDck_hQKNdnijMz8nmoiVGT25VEaAE3o9CJJ58I-9L0fAvkJw8Hrn6c0-"/>
+<div class="absolute inset-0 bg-primary/10 mix-blend-overlay"></div>
+</div>
+<div class="flex-1">
+<h3 class="text-on-surface font-headline-lg text-[20px] font-bold">Marcus Vance</h3>
+<p class="text-primary font-tactical-data text-[12px] mb-2">REF ID: #009</p>
+<div class="space-y-2">
+<div class="w-full bg-surface-container h-1">
+<div class="bg-primary h-full shadow-[0_0_8px_rgba(255,84,76,0.6)]" style="width: 94.2%"></div>
+</div>
+<div class="flex justify-between">
+<span class="text-[10px] font-tactical-data uppercase text-on-tertiary-fixed-variant">Culpability Score</span>
+<span class="text-primary font-bold text-[14px] font-tactical-data forensic-glow">94.2%</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low border border-outline-variant/30 p-3">
+<span class="text-[10px] font-tactical-data uppercase text-on-tertiary-fixed-variant block mb-1">Blood Type</span>
+<span class="text-on-surface font-bold text-[12px] font-tactical-data">O- NEGATIVE</span>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 p-3">
+<span class="text-[10px] font-tactical-data uppercase text-on-tertiary-fixed-variant block mb-1">Status</span>
+<span class="text-primary font-bold text-[12px] font-tactical-data forensic-glow">DETENTION PENDING</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Evidence Synthesis & Logic Branch (Entrance Animation 3) -->
+<div class="lg:col-span-8 space-y-6 animate-fade-up" style="animation-delay: 0.5s;">
+<!-- Evidence Synthesis Grid -->
+<div class="glass-panel p-6 relative hover:border-primary/30">
+<span class="serial-number absolute top-2 left-2">MOD_ID: EV_SYN_GRID</span>
+<h4 class="font-tactical-data text-primary text-[11px] tracking-widest uppercase mb-6 flex justify-between">
+<span>Evidence Synthesis</span>
+<span class="text-on-tertiary-fixed-variant">Total Items: 03</span>
+</h4>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Evidence Card 1 -->
+<div class="bg-surface-container border border-outline-variant hover:border-primary transition-all p-4 flex flex-col group relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary text-[24px]" data-icon="biotech">biotech</span>
+<span class="text-[10px] font-tactical-data text-primary bg-primary/10 px-2 py-0.5 forensic-glow">HIGH STRENGTH</span>
+</div>
+<h5 class="text-on-surface font-bold text-[14px] font-tactical-data mb-1 uppercase">Ballistics Profile</h5>
+<p class="text-on-tertiary-fixed-variant text-[12px] font-body-md mb-4 flex-1">Striations on projectile match Subject Vance's registered 9mm sidearm with 99.8% precision.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-[10px] font-tactical-data uppercase">Correlation</span>
+<span class="text-primary font-bold text-[12px] forensic-glow">0.998</span>
+</div>
+</div>
+<!-- Evidence Card 2 -->
+<div class="bg-surface-container border border-outline-variant hover:border-primary transition-all p-4 flex flex-col group relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary text-[24px]" data-icon="dns">dns</span>
+<span class="text-[10px] font-tactical-data text-primary bg-primary/10 px-2 py-0.5 forensic-glow">DEFINITIVE</span>
+</div>
+<h5 class="text-on-surface font-bold text-[14px] font-tactical-data mb-1 uppercase">DNA Trace</h5>
+<p class="text-on-tertiary-fixed-variant text-[12px] font-body-md mb-4 flex-1">Epithelial cells found on crime scene entry point match subject's genetic profile.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-[10px] font-tactical-data uppercase">Correlation</span>
+<span class="text-primary font-bold text-[12px] forensic-glow">1.000</span>
+</div>
+</div>
+<!-- Evidence Card 3 -->
+<div class="bg-surface-container border border-outline-variant hover:border-primary transition-all p-4 flex flex-col group relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary text-[24px]" data-icon="location_on">location_on</span>
+<span class="text-[10px] font-tactical-data text-on-tertiary-fixed-variant bg-surface-container-high px-2 py-0.5">CONFLICTED</span>
+</div>
+<h5 class="text-on-surface font-bold text-[14px] font-tactical-data mb-1 uppercase">GPS Alibi</h5>
+<p class="text-on-tertiary-fixed-variant text-[12px] font-body-md mb-4 flex-1">Subject mobile device pinged 4.2km from scene, but signal masking was detected.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex items-center justify-between">
+<span class="text-[10px] font-tactical-data uppercase">Correlation</span>
+<span class="text-error font-bold text-[12px]">-0.421</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Neural Logic Path Reconstruction (Entrance Animation 4) -->
+<div class="glass-panel p-6 relative h-[320px] overflow-hidden animate-fade-up" style="animation-delay: 0.7s;">
+<span class="serial-number absolute top-2 left-2">MOD_ID: LOGIC_PATH_NODE</span>
+<h4 class="font-tactical-data text-primary text-[11px] tracking-widest uppercase mb-12">Neural Logic Path Reconstruction</h4>
+<div class="relative h-full flex justify-between items-center px-12">
+<!-- Node 1 -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-12 h-12 border border-primary bg-primary/10 flex items-center justify-center rotate-45 mb-4 group cursor-pointer hover:bg-primary/30 transition-all hover:scale-110">
+<span class="-rotate-45 material-symbols-outlined text-primary text-[20px]" data-icon="database">database</span>
+</div>
+<span class="text-[10px] font-tactical-data text-on-surface-variant uppercase">Data Ingest</span>
+</div>
+<!-- Logic Line -->
+<div class="flex-1 h-[1px] bg-gradient-to-r from-primary to-transparent mx-4 relative overflow-hidden">
+<div class="absolute inset-0 bg-primary/40 blur-sm animate-[move_3s_linear_infinite]"></div>
+</div>
+<!-- Node 2 -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-16 h-16 border-2 border-primary forensic-glow flex items-center justify-center rotate-45 mb-4 group cursor-pointer hover:scale-110">
+<div class="absolute inset-0 animate-spin duration-[10000ms] border border-dashed border-primary/40"></div>
+<span class="-rotate-45 material-symbols-outlined text-primary text-[28px]" data-icon="psychology">psychology</span>
+</div>
+<span class="text-[10px] font-tactical-data text-primary font-bold uppercase forensic-glow">Suraag Core</span>
+</div>
+<!-- Logic Line -->
+<div class="flex-1 h-[1px] bg-gradient-to-r from-transparent to-primary mx-4"></div>
+<!-- Node 3 -->
+<div class="relative z-10 flex flex-col items-center">
+<div class="w-12 h-12 border border-primary bg-primary/10 flex items-center justify-center rotate-45 mb-4 group cursor-pointer hover:bg-primary/30 transition-all hover:scale-110">
+<span class="-rotate-45 material-symbols-outlined text-primary text-[20px]" data-icon="gavel">gavel</span>
+</div>
+<span class="text-[10px] font-tactical-data text-on-surface-variant uppercase">Determination</span>
+</div>
+</div>
+<style>
+                        @keyframes move {
+                            0% { transform: translateX(-100%); }
+                            100% { transform: translateX(400%); }
+                        }
+                    </style>
+</div>
+<!-- Global Actions (Entrance Animation 5) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 animate-fade-up" style="animation-delay: 0.9s;">
+<button class="flex items-center justify-center gap-4 bg-transparent border-2 border-primary py-5 px-8 font-headline-lg text-[14px] uppercase tracking-widest text-primary hover:bg-primary/10 transition-all tactical-btn active:scale-95 group">
+<span class="material-symbols-outlined" data-icon="download">download</span>
+                        Download Encrypted Dossier
+                    </button>
+<button class="flex items-center justify-center gap-4 bg-primary border-2 border-primary py-5 px-8 font-headline-lg text-[14px] uppercase tracking-widest text-on-primary hover:brightness-110 transition-all tactical-btn active:scale-95 shadow-[0_0_20px_rgba(255,84,76,0.3)] group">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+                        Submit to Court
+                        <div class="hidden group-hover:block ml-2 animate-pulse">●</div>
+</button>
+</div>
+</div>
+</div>
+<!-- Footer Terminal Readout -->
+<footer class="max-w-7xl mx-auto mt-12 pt-8 border-t border-outline-variant flex flex-col md:flex-row justify-between items-center text-[10px] font-tactical-data text-on-tertiary-fixed-variant uppercase tracking-[0.2em]">
+<div class="flex gap-8 mb-4 md:mb-0">
+<span>System: Suraag_v4.0.2</span>
+<span>Node: US-EAST-01</span>
+<span>Encryption: AES-4096-QUANTUM</span>
+</div>
+<div>
+                © 2024 Suraag AI Tactical Division. Confidential Forensic Asset.
+            </div>
+</footer>
+</main>
+<script>
+        // Micro-interaction for hover glow and console logging simulation
+        document.querySelectorAll('.glass-panel, .bg-surface-container').forEach(panel => {
+            panel.addEventListener('mouseenter', () => {
+                const modId = panel.querySelector('.serial-number')?.innerText || 'UI_COMPONENT';
+                console.log(`[SYS] Accessing ${modId} - Security Auth Confirmed`);
+            });
+        });
+
+        // Initialize any dynamic shader elements if needed (placeholder for future GL context)
+        console.log("%c [SURAAG_AI] TACTICAL INTERFACE INITIALIZED ", "background: #ff544c; color: #fff; font-weight: bold; padding: 4px;");
+    </script>
+</body></html>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Suraag AI | Case Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .font-display-lg { font-family: 'Space Grotesk', sans-serif; }
+        .font-headline-lg { font-family: 'Space Grotesk', sans-serif; }
+        .font-tactical-data { font-family: 'Space Grotesk', sans-serif; }
+        .font-label-sm { font-family: 'Space Grotesk', sans-serif; }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(255, 255, 255, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .glow-primary {
+            box-shadow: 0 0 15px rgba(255, 84, 76, 0.2);
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid #2a2a2a;
+        }
+
+        .status-pulse {
+            position: relative;
+        }
+        .status-pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            border-radius: inherit;
+            background: currentColor;
+            animation: pulse 2s infinite;
+            opacity: 0.4;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.4; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .tactical-grid {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0e0e0e; }
+        ::-webkit-scrollbar-thumb { background: #ff544c; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary": "#ffb4ac",
+                      "on-primary": "#690006",
+                      "primary-container": "#ff544c",
+                      "on-primary-container": "#5c0005",
+                      "secondary": "#ffb4ab",
+                      "secondary-container": "#a0030e",
+                      "background": "#131313",
+                      "surface": "#131313",
+                      "surface-container-low": "#1c1b1b",
+                      "surface-container-highest": "#353534",
+                      "outline": "#ab8985",
+                      "outline-variant": "#5b403d",
+                      "on-surface": "#e5e2e1",
+                      "on-surface-variant": "#e4beb9",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "gutter": "16px",
+                      "panel-gap": "8px",
+                      "grid-unit": "4px",
+                      "margin-desktop": "32px"
+              }
+            }
+          }
+        }
+      </script>
+</head>
+<body class="bg-background tactical-grid min-h-screen">
+<div class="scanlines"></div>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-16 bg-background/70 backdrop-blur-xl border-b border-outline-variant shadow-[0_0_15px_rgba(255,84,76,0.1)]">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-4xl font-bold text-primary tracking-tighter uppercase">Suraag AI</span>
+<div class="hidden md:flex items-center bg-surface-container-low px-4 py-1.5 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-tactical-data text-on-surface w-64 placeholder:text-on-surface-variant/50" placeholder="QUERY CASE DATABASE..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">terminal</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">settings</button>
+</div>
+<div class="h-8 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-3 group cursor-pointer">
+<span class="text-tactical-data text-primary font-bold">Investigator Profile</span>
+<div class="w-8 h-8 rounded border border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-contrast cinematic headshot of a professional forensic investigator in a futuristic dark techwear uniform. The lighting is low-key with sharp red neon accents reflecting off their face. The background is a blurred high-tech control room with digital screens, matching the dark cyber-brutalist aesthetic of Suraag AI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAONSEbzb-MIqc0-_W5UeWsbk8VlUkC47RwBORqUocT6vF0Z8Pg1zbwGLHxwdNS2d29_9Ohvj2jLYHj26mJj4pWwwgChmCEScZ6V2xM_kE_V0mSQZVljfeduJdv2hiuedt0I1cKxIuDYEHNBoMIb0uiwBOV_m6DN0_YrVeNp98lvda-e0sGN0rCk2x6AChfSYn_IX3ynvzlrK9ajc0pdpdqKKzN9NOqRe2OZ2S0Gi3p9b4OCvFVbtc9"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col pt-20 pb-8 bg-surface-container-low/80 backdrop-blur-2xl border-r border-outline-variant w-64">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-2 h-2 rounded-full bg-primary status-pulse"></div>
+<span class="font-display-lg text-lg text-primary font-bold tracking-widest">SURAAG.OS</span>
+</div>
+<span class="font-tactical-data text-[10px] text-on-surface-variant tracking-[0.2em]">V2.04-ACTIVE</span>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-tactical-data text-xs uppercase tracking-widest">Mission Control</span>
+</a>
+<a class="bg-primary-container/20 text-primary border-r-4 border-primary px-6 py-3 flex items-center gap-3 transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-tactical-data text-xs uppercase tracking-widest">Case Intelligence</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-tactical-data text-xs uppercase tracking-widest">Evidence Vault</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined">view_in_ar</span>
+<span class="font-tactical-data text-xs uppercase tracking-widest">Reconstruction</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-tactical-data text-xs uppercase tracking-widest">Physics</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-3 transition-all hover:translate-x-1 group" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-tactical-data text-xs uppercase tracking-widest">Trajectory</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full py-3 bg-primary text-on-primary font-tactical-data text-xs font-bold tracking-widest hover:glow-primary transition-all active:scale-95 uppercase">
+                NEW INVESTIGATION
+            </button>
+<div class="space-y-1">
+<a class="text-on-surface-variant hover:text-primary px-4 py-2 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span class="font-tactical-data text-[10px] uppercase">Diagnostics</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary px-4 py-2 flex items-center gap-3 transition-all" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="font-tactical-data text-[10px] uppercase">Secure Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-16 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto space-y-8">
+<!-- Page Header & Department Summary -->
+<div class="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-outline-variant pb-8">
+<div class="space-y-1">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">shield</span>
+<span class="font-tactical-data text-[10px] tracking-widest">UNIT: FORENSIC ANALYTICS HUB</span>
+</div>
+<h1 class="font-headline-lg text-4xl uppercase tracking-tighter text-on-surface">Case Intelligence</h1>
+</div>
+<div class="grid grid-cols-3 gap-8 text-right">
+<div class="space-y-1">
+<span class="font-tactical-data text-[10px] text-on-surface-variant tracking-widest uppercase">Total Active</span>
+<div class="font-display-lg text-3xl text-primary font-bold">142</div>
+</div>
+<div class="space-y-1 border-x border-outline-variant px-8">
+<span class="font-tactical-data text-[10px] text-on-surface-variant tracking-widest uppercase">Solved Month</span>
+<div class="font-display-lg text-3xl text-on-surface font-bold">89</div>
+</div>
+<div class="space-y-1">
+<span class="font-tactical-data text-[10px] text-on-surface-variant tracking-widest uppercase">Avg Res Time</span>
+<div class="font-display-lg text-3xl text-on-surface font-bold">4.2<span class="text-sm font-normal ml-1">DAYS</span></div>
+</div>
+</div>
+</div>
+<!-- Global Shader Atmosphere (Background Element) -->
+<div class="relative w-full h-32 glass-panel overflow-hidden">
+
+<div class="absolute inset-0 flex items-center justify-between px-8">
+<div class="flex flex-col">
+<span class="font-tactical-data text-[10px] text-primary/60 tracking-widest uppercase">System Status</span>
+<span class="font-headline-lg text-xl">All Heuristics Synchronized</span>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-end">
+<span class="font-tactical-data text-[10px] text-on-surface-variant">NODE_01</span>
+<div class="w-16 h-1 bg-primary"></div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-tactical-data text-[10px] text-on-surface-variant">NODE_02</span>
+<div class="w-16 h-1 bg-outline-variant"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Filters & Actions -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 glass-panel text-primary border-primary font-tactical-data text-[10px] tracking-widest uppercase hover:bg-primary/10 transition-all">ALL CASES</button>
+<button class="px-4 py-2 glass-panel text-on-surface-variant font-tactical-data text-[10px] tracking-widest uppercase hover:text-primary transition-all">FORENSIC</button>
+<button class="px-4 py-2 glass-panel text-on-surface-variant font-tactical-data text-[10px] tracking-widest uppercase hover:text-primary transition-all">DIGITAL</button>
+<button class="px-4 py-2 glass-panel text-on-surface-variant font-tactical-data text-[10px] tracking-widest uppercase hover:text-primary transition-all">PHYSICAL</button>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span class="font-tactical-data text-[10px] tracking-widest uppercase">Sort By: Priority</span>
+</div>
+<button class="flex items-center gap-2 px-6 py-2 bg-surface-container-highest border border-outline-variant text-on-surface font-tactical-data text-[10px] tracking-widest uppercase hover:border-primary transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+                        Export Report
+                    </button>
+</div>
+</div>
+<!-- Case Intelligence Table -->
+<div class="glass-panel overflow-hidden border-outline-variant">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container-low">
+<th class="px-6 py-4 font-tactical-data text-[10px] text-on-surface-variant tracking-[0.2em] uppercase">Case ID</th>
+<th class="px-6 py-4 font-tactical-data text-[10px] text-on-surface-variant tracking-[0.2em] uppercase">Title</th>
+<th class="px-6 py-4 font-tactical-data text-[10px] text-on-surface-variant tracking-[0.2em] uppercase">Status</th>
+<th class="px-6 py-4 font-tactical-data text-[10px] text-on-surface-variant tracking-[0.2em] uppercase">Lead Investigator</th>
+<th class="px-6 py-4 font-tactical-data text-[10px] text-on-surface-variant tracking-[0.2em] uppercase">Priority</th>
+<th class="px-6 py-4 font-tactical-data text-[10px] text-on-surface-variant tracking-[0.2em] uppercase">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4 font-tactical-data text-xs text-on-surface-variant">#SRA-2024-001</td>
+<td class="px-6 py-4">
+<div class="font-headline-lg text-sm text-on-surface group-hover:text-primary transition-colors">Apartment Homicide</div>
+<div class="text-[10px] text-on-surface-variant font-tactical-data">Site: Sector 7, Residential Bld 4</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary status-pulse"></span>
+<span class="font-tactical-data text-[10px] text-primary uppercase">Active</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-outline-variant overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Close up avatar of a senior forensic analyst with tactical glasses, reflected light from computer screens, gritty professional look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1ycORGPI-BpqK4vMn5vFNRv0aeBiPeH5cbL7XB34UswCC6Qs0AaZ3UXHCtTJR9kwgUhZtsmxAJvEcKkJFZ9F37TyNzFiJzS6EjNT5eElZnJkz3H9sFkGAd57hTK5fnmcFNO62K1IjkbZMLY5JO8C8_TyScwdcMMUVWPUoPDeGdoP1BtzLP-3Ez69MTHzOaArWxsQn94HbYVNorT0KT6xVWO6wkRidKlWy6V7HRp_smVq46txZeR0q"/>
+</div>
+<span class="font-tactical-data text-xs">Det. Vance Miller</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 border border-primary text-primary text-[8px] font-bold tracking-widest uppercase">Critical</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 border border-outline-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4 font-tactical-data text-xs text-on-surface-variant">#SRA-2024-002</td>
+<td class="px-6 py-4">
+<div class="font-headline-lg text-sm text-on-surface group-hover:text-primary transition-colors">Jewelry Store Robbery</div>
+<div class="text-[10px] text-on-surface-variant font-tactical-data">Site: Central Commercial Plaza</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+<span class="font-tactical-data text-[10px] text-secondary uppercase">Reconstructing</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-outline-variant overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Portrait of a female digital forensic expert with sleek hair and a modern earpiece, working in a dimly lit server room." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsXJnAKcclCwJgKPKM31OWKljHOo3ukpMqnpQOvWzO2dee2IYRvv57bmVMOjdi7QOWnJ-CRzQ2mc9mPIeiJhow4Ka24lKkBbFSx80a5pSiZCIlrFA32BK9K8132bzssB_kBCRpjhNSAO798RHFUrrVdiVIVDekkOHRiXJGY-8O2TLqVXLLvByq5eo1u4zGAQb2bCpKTvkkBkcUyikQ65eaK6QfXC8EViH3SIDunL7AFuITs2WyfnxG"/>
+</div>
+<span class="font-tactical-data text-xs">Dr. Elena Kostic</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 border border-outline text-on-surface-variant text-[8px] font-bold tracking-widest uppercase">High</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 border border-outline-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4 font-tactical-data text-xs text-on-surface-variant">#SRA-2024-003</td>
+<td class="px-6 py-4">
+<div class="font-headline-lg text-sm text-on-surface group-hover:text-primary transition-colors">Hit and Run</div>
+<div class="text-[10px] text-on-surface-variant font-tactical-data">Site: Expressway Interchange A12</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+<span class="font-tactical-data text-[10px] text-on-surface-variant uppercase">Analyzed</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-outline-variant overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Medium shot of a forensic field agent in a heavy tactical coat standing in the rain with glowing red police tape in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6kpGK7FvF3EFlV3n9HDgRNCqlf6_bypNT3fEtAilPV9R5dbM0UXnNbhiMjgrHD4Xgx_SlWdLNtyF2dG8onw4E6X27bDWf052BG2vVZNmPSvo7QqJcsNI3_RmFxie2pickWgxZYkIpxc45EAu8U4D3JLAD534VzfFDF0VNODPW3JikcN1NRQIKG7-I843j2ejUqE1fKBS90fTNiEDDG34jqiYZdv2_MqL6CfAxWfhAnbGLqkdIo9ZH"/>
+</div>
+<span class="font-tactical-data text-xs">Sgt. Marcus Reed</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 border border-outline-variant text-on-surface-variant/50 text-[8px] font-bold tracking-widest uppercase">Medium</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 border border-outline-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4 font-tactical-data text-xs text-on-surface-variant">#SRA-2024-004</td>
+<td class="px-6 py-4">
+<div class="font-headline-lg text-sm text-on-surface group-hover:text-primary transition-colors">Warehouse Fire</div>
+<div class="text-[10px] text-on-surface-variant font-tactical-data">Site: Industrial Port District</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary status-pulse"></span>
+<span class="font-tactical-data text-[10px] text-primary uppercase">Active</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-outline-variant overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Cybernetic specialist profile with holographic displays reflecting on a glass eye, ultra-modern dark lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQdvzK_JbKXYn9irMTgMHdu2G2DavVPVtehGcZH6lbenyLgKBHiYBLR0i-vEyefJVFcPTDIQMod9_AFURw3Y-h0NxfBBQGhlyG_qrIUDsrWVOeCk7Xk3rffV49XR2kvDEPnY1G-0BPVV_GnkL_qamakDM3CbCKERGv1crTUamxYbi-WcOJ82cAqtz-Ge7yN9sXhPCUIhp-vavFCCF9xiwyMAARVmVzqr3_HRZ5E8MTXJHHFjUaJYPZ"/>
+</div>
+<span class="font-tactical-data text-xs">Spec. Aris Thorne</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 border border-primary text-primary text-[8px] font-bold tracking-widest uppercase">Critical</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 border border-outline-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4 font-tactical-data text-xs text-on-surface-variant">#SRA-2024-005</td>
+<td class="px-6 py-4">
+<div class="font-headline-lg text-sm text-on-surface group-hover:text-primary transition-colors">Kidnapping</div>
+<div class="text-[10px] text-on-surface-variant font-tactical-data">Site: Unknown / Last Ping: Sector 4</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+<span class="font-tactical-data text-[10px] text-secondary uppercase">Reconstructing</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-outline-variant overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Portrait of an intelligence analyst with headphones, focused intently on a glowing red map screen in a dark room." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjIaLchq1zHzS9OepaudCEhqJeuNs3BMBCgy1zSNq9wrHQy4mXfCQgG-7hj0oJRyQoTz1KE8NV7xl4NdTa7mjeIIES3kOpYfHeTzrSLjlyyc6AaiRXAwazs4LePhwUxQpswpMErCptdrICiDOrJ61wI0PxLIHUxiMkCfiOxFMUlI2DPta-ib1__Qpw8AH3C6r3vR4j4q98zQ1axBM30U42LriajUGHWa41poxwu4PK0xHiUCipCTIb"/>
+</div>
+<span class="font-tactical-data text-xs">Dr. Sarah Lynch</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 border border-outline text-on-surface-variant text-[8px] font-bold tracking-widest uppercase">High</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 border border-outline-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-6 py-4 font-tactical-data text-xs text-on-surface-variant">#SRA-2024-006</td>
+<td class="px-6 py-4">
+<div class="font-headline-lg text-sm text-on-surface group-hover:text-primary transition-colors">Cyber Fraud</div>
+<div class="text-[10px] text-on-surface-variant font-tactical-data">Node: Global Banking Hub</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+<span class="font-tactical-data text-[10px] text-on-surface-variant uppercase">Analyzed</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full border border-outline-variant overflow-hidden bg-surface">
+<img class="w-full h-full object-cover" data-alt="Abstract cinematic portrait of a hooded cyber security expert in a room filled with matrix-like data streams in dark red." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3tUaWsv5t7OxD8tmk7I_1S8rpKvPfOS9M2o7kxO_xjWXCeyaO3_jf9RPL1qXQCdQDm7aWiFOs707nlDiCViTHfLYPHYXDhV-vvE9wOQH_c2VTV_3G87bNUD8YF7COzNEGaMy7piAO2mpnyxb-Rc5XfkBUHZG1QMxJ8nmxF0FCdeVJG8BKY5CctnjlEL752n688BhcVc0MhCN1yGqfvKnuF8ndyYPdnebkXAtsTx1J0dO9X064Vb1H"/>
+</div>
+<span class="font-tactical-data text-xs">Det. Jax Orion</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 border border-outline-variant text-on-surface-variant/50 text-[8px] font-bold tracking-widest uppercase">Medium</span>
+</td>
+<td class="px-6 py-4">
+<button class="p-2 border border-outline-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="px-6 py-4 bg-surface-container-low flex justify-between items-center border-t border-outline-variant">
+<span class="font-tactical-data text-[10px] text-on-surface-variant uppercase">Showing 6 of 142 Active Cases</span>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant hover:border-primary group transition-all">
+<span class="material-symbols-outlined text-xs group-hover:text-primary">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-primary bg-primary text-on-primary">
+<span class="font-tactical-data text-[10px]">1</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant hover:border-primary group transition-all">
+<span class="font-tactical-data text-[10px] group-hover:text-primary">2</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant hover:border-primary group transition-all">
+<span class="material-symbols-outlined text-xs group-hover:text-primary">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Asymmetric Data Modules -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 glass-panel p-6 space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-lg text-lg uppercase tracking-tight">Investigation Velocity</h3>
+<span class="material-symbols-outlined text-on-surface-variant">trending_up</span>
+</div>
+<div class="h-48 w-full bg-surface-container-highest/30 relative">
+<!-- Simulated Chart/Visual -->
+<div class="absolute bottom-0 left-0 w-full flex items-end justify-between px-4 pb-2 h-full">
+<div class="w-12 bg-primary/20 h-[40%] border-t border-primary"></div>
+<div class="w-12 bg-primary/20 h-[60%] border-t border-primary"></div>
+<div class="w-12 bg-primary/20 h-[55%] border-t border-primary"></div>
+<div class="w-12 bg-primary/20 h-[80%] border-t border-primary status-pulse"></div>
+<div class="w-12 bg-primary/20 h-[70%] border-t border-primary"></div>
+<div class="w-12 bg-primary/20 h-[90%] border-t border-primary"></div>
+</div>
+<div class="absolute inset-0 flex flex-col justify-between p-4 pointer-events-none">
+<div class="border-t border-outline-variant/30 w-full"></div>
+<div class="border-t border-outline-variant/30 w-full"></div>
+<div class="border-t border-outline-variant/30 w-full"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 space-y-4 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 opacity-5">
+<span class="font-display-lg text-6xl">DATA</span>
+</div>
+<h3 class="font-headline-lg text-lg uppercase tracking-tight">Active Alerts</h3>
+<div class="space-y-3">
+<div class="flex items-start gap-3 p-3 bg-error-container/20 border-l-2 border-primary">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5">warning</span>
+<div>
+<div class="font-tactical-data text-[10px] text-primary font-bold uppercase">Evidence Tampering Detected</div>
+<div class="text-[10px] text-on-surface-variant mt-1">Case #SRA-2024-001 checksum mismatch in block 7A.</div>
+</div>
+</div>
+<div class="flex items-start gap-3 p-3 bg-surface-container-highest/50 border-l-2 border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mt-0.5">info</span>
+<div>
+<div class="font-tactical-data text-[10px] text-on-surface uppercase">Lab Report Ready</div>
+<div class="text-[10px] text-on-surface-variant mt-1">Ballistics analysis complete for Case #SRA-2024-003.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="pl-64 w-full mt-auto bg-surface-container-lowest border-t border-outline-variant py-12 flex flex-col items-center gap-4 px-8">
+<div class="flex items-center gap-8 mb-4">
+<a class="font-label-sm text-[10px] text-on-tertiary-fixed-variant hover:text-primary transition-colors uppercase tracking-widest" href="#">Privacy Protocol</a>
+<a class="font-label-sm text-[10px] text-on-tertiary-fixed-variant hover:text-primary transition-colors uppercase tracking-widest" href="#">Terms of Service</a>
+<a class="font-label-sm text-[10px] text-on-tertiary-fixed-variant hover:text-primary transition-colors uppercase tracking-widest" href="#">Security Whitepaper</a>
+</div>
+<div class="font-display-lg text-lg text-primary/50 tracking-widest font-bold">SURAAG AI</div>
+<p class="font-label-sm text-[10px] text-on-tertiary-fixed-variant uppercase tracking-widest text-center">
+            © 2024 SURAAG AI FORENSICS. ALL RIGHTS RESERVED. CLASSIFIED.
+        </p>
+</footer>
+<script>
+        // Micro-interactions and subtle effects
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.classList.add('scale-95');
+            });
+            el.addEventListener('mouseup', () => {
+                el.classList.remove('scale-95');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.classList.remove('scale-95');
+            });
+        });
+
+        // Simulating tactical data stream
+        setInterval(() => {
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const statusEl = document.querySelector('.tracking-\[0\.2em\]');
+            if (statusEl && statusEl.innerText.includes('V2.04')) {
+                // Subtle text flickering or update simulation could go here
+            }
+        }, 1000);
+    </script>
+</body></html>

@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SURAAG_AI | ENTITY_MATRIX</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes forensic-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(229, 57, 53, 0.3); border-color: rgba(229, 57, 53, 0.5); filter: drop-shadow(0 0 2px rgba(229, 57, 53, 0.5)); }
+            50% { box-shadow: 0 0 20px rgba(229, 57, 53, 0.8); border-color: rgba(229, 57, 53, 1); filter: drop-shadow(0 0 8px rgba(229, 57, 53, 1)); }
+        }
+        .forensic-glow { animation: forensic-glow 2s infinite ease-in-out; }
+        
+        @keyframes fade-in-up {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .boot-sequence { animation: fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        .tactical-btn-hover {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tactical-btn-hover:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px rgba(255, 180, 172, 0.3);
+            border-color: #ffb4ac;
+        }
+
+        .scanlines {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.03;
+        }
+
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, rgba(229, 57, 53, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(229, 57, 53, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(18, 18, 18, 0.7);
+        }
+
+        .node-line {
+            stroke-dasharray: 10;
+            animation: dash 20s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -1000; }
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .telemetry-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .telemetry-overlay::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: {{DATA:ANIMATION:ANIMATION_28}};
+            pointer-events: none;
+            opacity: 0.15;
+            mix-blend-mode: screen;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container": "#201f1f",
+                "primary-container": "#ff544c",
+                "tertiary": "#c9c6c5",
+                "background": "#131313",
+                "tertiary-fixed": "#e5e2e1",
+                "error-container": "#93000a",
+                "outline": "#ab8985",
+                "inverse-on-surface": "#313030",
+                "secondary-fixed-dim": "#ffb4ab",
+                "primary-fixed-dim": "#ffb4ac",
+                "on-secondary": "#690005",
+                "error": "#ffb4ab",
+                "surface-dim": "#131313",
+                "surface-container-low": "#1c1b1b",
+                "on-surface-variant": "#e4beb9",
+                "surface-container-lowest": "#0e0e0e",
+                "on-tertiary": "#313030",
+                "primary": "#ffb4ac",
+                "tertiary-fixed-dim": "#c9c6c5",
+                "on-secondary-fixed": "#410002",
+                "on-primary-fixed": "#410002",
+                "outline-variant": "#5b403d",
+                "on-background": "#e5e2e1",
+                "secondary": "#ffb4ab",
+                "inverse-primary": "#bb171c",
+                "on-secondary-fixed-variant": "#93000b",
+                "surface-variant": "#353534",
+                "on-secondary-container": "#ffa99f",
+                "on-primary-fixed-variant": "#93000d",
+                "surface-tint": "#ffb4ac",
+                "surface-container-highest": "#353534",
+                "secondary-container": "#a0030e",
+                "primary-fixed": "#ffdad6",
+                "inverse-surface": "#e5e2e1",
+                "secondary-fixed": "#ffdad6",
+                "on-tertiary-fixed": "#1c1b1b",
+                "on-surface": "#e5e2e1",
+                "on-primary": "#690006",
+                "tertiary-container": "#929090",
+                "surface-container-high": "#2a2a2a",
+                "on-tertiary-fixed-variant": "#474646",
+                "on-tertiary-container": "#2a2a29",
+                "on-error": "#690005",
+                "on-error-container": "#ffdad6",
+                "surface": "#131313",
+                "on-primary-container": "#5c0005",
+                "surface-bright": "#393939"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "grid-unit": "4px",
+                "panel-gap": "8px",
+                "gutter": "16px",
+                "margin-mobile": "16px",
+                "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                "display-lg": ["Space Grotesk"],
+                "tactical-data": ["Space Grotesk"],
+                "headline-lg": ["Space Grotesk"],
+                "label-sm": ["Space Grotesk"],
+                "body-md": ["Inter"]
+            },
+            "fontSize": {
+                "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                "tactical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen relative">
+<!-- Tactical Grid Shader Background -->
+<div class="fixed inset-0 z-0 opacity-20 pointer-events-none" style="background: {{DATA:ANIMATION:ANIMATION_27}};"></div>
+<div class="scanlines"></div>
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant shadow-[0_0_10px_rgba(229,57,53,0.15)] flex justify-between items-center px-margin-desktop h-16 boot-sequence">
+<div class="flex items-center gap-8">
+<h1 class="font-display-lg text-headline-lg tracking-tighter text-primary">SURAAG_AI</h1>
+<nav class="hidden md:flex gap-6 font-tactical-data text-tactical-data">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">MISSION_STATUS</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">SYSTEM_HEALTH</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-surface-container-high px-4 py-1.5 rounded border border-outline-variant transition-all hover:border-primary">
+<span class="material-symbols-outlined text-on-surface-variant mr-2 text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-tactical-data w-48 p-0 placeholder:text-on-tertiary-fixed-variant" placeholder="GLOBAL_SEARCH" type="text"/>
+</div>
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+<button class="material-symbols-outlined text-primary transition-colors forensic-glow rounded-full p-1">terminal</button>
+</div>
+<div class="w-8 h-8 rounded-full border border-primary overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Cybernetic intelligence officer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfCcWufBj3wLigvdG7yIdgld-2KLHfQvabBBFGGXZCcUq-00c1yUtznJ2g0Jcc6uto_GzRIV9JZQ7Ot13Q4y0feEV17cnRHV7VFxqcJBNTtQejihCJ7oAmpfqfMuqI1d46BkaVcQjpkX-1EeaP-Ilg_yBWyOCsqhWPfsnDiyJSk2tilMRXhOlSq787NZRcaseCmtXVVrxlwpCteeK80S6tO4iI07w34T0BU6v93gJZAmfj9jDljxLr"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-outline-variant flex flex-col py-gutter boot-sequence delay-1">
+<div class="mt-16 px-6 py-4">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 bg-secondary-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-primary">security</span>
+</div>
+<div>
+<p class="font-display-lg text-primary text-sm leading-tight">SURAAG.v2</p>
+<p class="font-tactical-data text-xs text-on-tertiary-fixed-variant">OPERATOR_01</p>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-tactical-data py-3 rounded flex items-center justify-center gap-2 hover:shadow-[0_0_15px_rgba(229,57,53,0.4)] transition-all active:scale-95 mb-8 tactical-btn-hover">
+<span class="material-symbols-outlined text-sm">add</span>
+                NEW_INVESTIGATION
+            </button>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-tertiary-fixed-variant hover:bg-surface-variant hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:scale-110">dashboard_customize</span>
+<span class="font-tactical-data">Control</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded bg-secondary-container/20 text-primary border-r-4 border-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">manage_search</span>
+<span class="font-tactical-data">Case Intel</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-tertiary-fixed-variant hover:bg-surface-variant hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:scale-110">inventory_2</span>
+<span class="font-tactical-data">Vault</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-tertiary-fixed-variant hover:bg-surface-variant hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:scale-110">view_in_ar</span>
+<span class="font-tactical-data">3D Recon</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-tertiary-fixed-variant hover:bg-surface-variant hover:text-primary transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:scale-110">hub</span>
+<span class="font-tactical-data">Net Trace</span>
+</a>
+</nav>
+<div class="px-4 py-6 border-t border-outline-variant/30">
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-tertiary-fixed-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">query_stats</span>
+<span class="font-tactical-data text-xs">Diagnostics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded text-on-tertiary-fixed-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span class="font-tactical-data text-xs">Logs</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 h-[calc(100vh-64px)] grid grid-cols-12 relative z-10">
+<!-- Central Node Map Area -->
+<section class="col-span-12 lg:col-span-8 relative overflow-hidden grid-bg boot-sequence delay-2">
+<!-- HUD Overlays -->
+<div class="absolute top-4 left-4 z-10 flex gap-4">
+<div class="bg-surface-container-highest/80 backdrop-blur p-3 border border-outline-variant flex flex-col gap-1 telemetry-overlay">
+<span class="text-[8px] font-tactical-data text-primary-container">MODULE_ID: MX-77</span>
+<h2 class="font-headline-lg text-lg text-primary">ENTITY_MATRIX</h2>
+</div>
+<div class="bg-surface-container-highest/80 backdrop-blur p-3 border border-outline-variant flex flex-col gap-1 telemetry-overlay">
+<span class="text-[8px] font-tactical-data text-on-surface-variant">ACTIVE_NODES</span>
+<span class="font-tactical-data text-lg">1,248</span>
+</div>
+</div>
+<!-- Canvas View Controls -->
+<div class="absolute bottom-28 left-4 z-10 flex flex-col gap-2">
+<button class="w-10 h-10 bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all tactical-btn-hover">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all tactical-btn-hover">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="w-10 h-10 bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-all tactical-btn-hover">
+<span class="material-symbols-outlined">filter_center_focus</span>
+</button>
+</div>
+<!-- Node Mapping Canvas (SVG) -->
+<div class="w-full h-full flex items-center justify-center">
+<svg class="w-full h-full max-w-4xl opacity-90" viewbox="0 0 1000 800">
+<defs>
+<marker id="arrow" markerheight="4" markerwidth="4" orient="auto-start-reverse" refx="5" refy="5" viewbox="0 0 10 10">
+<path d="M 0 0 L 10 5 L 0 10 z" fill="#E53935"></path>
+</marker>
+</defs>
+<g class="node-connections">
+<line class="node-line" marker-end="url(#arrow)" stroke="#E53935" stroke-width="2" x1="250" x2="500" y1="200" y2="350"></line>
+<text fill="#ffb4ac" font-family="Space Grotesk" font-size="10" transform="rotate(30 350,260)" x="350" y="260">Financial Flow (88%)</text>
+<line class="node-line" marker-end="url(#arrow)" stroke="#E53935" stroke-dasharray="5,5" stroke-width="1.5" x1="500" x2="750" y1="350" y2="200"></line>
+<text fill="#ffb4ac" font-family="Space Grotesk" font-size="10" transform="rotate(-30 610,270)" x="610" y="270">Encryption Tunnel</text>
+<line class="node-line" marker-end="url(#arrow)" stroke="#E53935" stroke-width="3" x1="500" x2="250" y1="600" y2="200"></line>
+<text fill="#ffb4ac" font-family="Space Grotesk" font-size="10" transform="rotate(-58 340,420)" x="340" y="420">DATA_UPLINK</text>
+</g>
+<g class="nodes">
+<g class="cursor-pointer" transform="translate(250,200)">
+<circle class="forensic-glow" fill="rgba(18,18,18,0.9)" r="60" stroke="#E53935" stroke-width="2"></circle>
+<foreignobject height="100" width="100" x="-50" y="-50">
+<div class="w-full h-full flex flex-col items-center justify-center text-center">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-primary mb-1">
+<img class="w-full h-full object-cover" data-alt="Marcus Vance portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqw8mJjwLLvXgFayj0PkbdUaS1-PLVSqbR8SRhIjf03qPSjZ_SNofhH1SStvE5CG7PJK_Jn958IWdwcmfonVwC7qwd3KB8gC_15umXAvpQ9Xbkdm7v1P8vLGDETi15r91Dd_1GhgmesxF8bNxKGzM8c-qEx8gINE60YQapGzUU7njmgA6ogeH_BnHpgxV_Vphn3IY9Cq85mImumPHV8IZP8G0N267o8gtQ1D0EvFIY25YQt2-J907n"/>
+</div>
+<span class="text-[10px] font-tactical-data text-primary leading-none">MARCUS VANCE</span>
+<span class="text-[7px] text-on-surface-variant">LVL_04_TARGET</span>
+</div>
+</foreignobject>
+</g>
+<g class="cursor-pointer" transform="translate(500,350)">
+<circle fill="rgba(18,18,18,0.9)" r="45" stroke="#5b403d" stroke-width="1"></circle>
+<foreignobject height="80" width="80" x="-40" y="-40">
+<div class="w-full h-full flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-1">person</span>
+<span class="text-[9px] font-tactical-data text-on-surface">ELIAS THORNE</span>
+</div>
+</foreignobject>
+</g>
+<g class="cursor-pointer" transform="translate(750,200)">
+<circle fill="rgba(18,18,18,0.9)" r="45" stroke="#5b403d" stroke-width="1"></circle>
+<foreignobject height="80" width="80" x="-40" y="-40">
+<div class="w-full h-full flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-1">account_circle</span>
+<span class="text-[9px] font-tactical-data text-on-surface">SARAH MILLER</span>
+</div>
+</foreignobject>
+</g>
+<g class="cursor-pointer" transform="translate(500,600)">
+<rect class="forensic-glow" fill="rgba(229,57,53,0.1)" height="80" stroke="#E53935" stroke-width="2" width="80" x="-40" y="-40"></rect>
+<foreignobject height="80" width="80" x="-40" y="-40">
+<div class="w-full h-full flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-1">terminal</span>
+<span class="text-[9px] font-tactical-data text-primary font-bold">TERMINAL X</span>
+<span class="text-[7px] text-on-surface-variant">HOST: 192.168.0.1</span>
+</div>
+</foreignobject>
+</g>
+</g>
+</svg>
+</div>
+</section>
+<!-- Right Sidebar: Entity Detail -->
+<aside class="hidden lg:flex col-span-4 bg-surface-container-low border-l border-outline-variant flex-col overflow-y-auto boot-sequence delay-3">
+<div class="p-6">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-tactical-data text-primary text-sm tracking-widest">ENTITY_DETAIL</h3>
+<button class="material-symbols-outlined text-on-tertiary-fixed-variant hover:text-primary transition-colors">close</button>
+</div>
+<div class="glass-panel border border-outline-variant p-4 mb-6 relative">
+<div class="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary"></div>
+<div class="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary"></div>
+<div class="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-primary"></div>
+<div class="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary"></div>
+<div class="flex gap-4 items-center mb-4">
+<div class="w-20 h-20 border border-primary p-1 forensic-glow">
+<img class="w-full h-full object-cover" data-alt="Marcus Vance biometric scan" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy0fOBqDBnlKtDWVpKmNtOeys4S6cDQzvTEWR10_saIIXfEGT4eQ_jK0w61c4MrtymdBZmeKMYE0-uLakXwIQwNyrExTK9eVXcMiaPerYxgnQxeIKltN3710lBFllHgoNAZxSu5HraP8NtVU4uI6atDtv3NtmlwsAVmjCkchooTX1FgkSs8ebfMCsmVf7Wf-BupofMTmzyNJhwQePSqyngpxc5vHizxYWgKw7UNNJZiT28lTL5dEsj"/>
+</div>
+<div>
+<h4 class="font-headline-lg text-xl text-on-surface">Marcus Vance</h4>
+<p class="font-tactical-data text-xs text-primary forensic-glow inline-block px-1">ID_STATUS: RED_CRITICAL</p>
+<p class="text-[10px] text-on-surface-variant mt-1">LAST_LOC: Zurich Central Terminal</p>
+</div>
+</div>
+<!-- Biometrics -->
+<div class="grid grid-cols-2 gap-2 mb-4">
+<div class="bg-surface-container p-2 border border-outline-variant/30 telemetry-overlay">
+<p class="text-[8px] text-on-tertiary-fixed-variant">HEART_RATE</p>
+<p class="font-tactical-data text-primary">72 BPM</p>
+</div>
+<div class="bg-surface-container p-2 border border-outline-variant/30 telemetry-overlay">
+<p class="text-[8px] text-on-tertiary-fixed-variant">STRESS_LVL</p>
+<div class="h-1 bg-surface-variant w-full mt-1">
+<div class="h-full bg-primary forensic-glow" style="width: 85%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Relationship Heatmap -->
+<div class="mb-6">
+<h4 class="font-tactical-data text-xs text-on-surface-variant mb-3 border-b border-outline-variant pb-1">RELATIONSHIP_HEATMAP</h4>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between group cursor-pointer">
+<span class="text-xs group-hover:text-primary transition-colors">Elias Thorne</span>
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary forensic-glow" style="width: 88%;"></div>
+</div>
+<span class="text-[10px] text-primary">88%</span>
+</div>
+</div>
+<div class="flex items-center justify-between group cursor-pointer">
+<span class="text-xs group-hover:text-primary transition-colors">Sarah Miller</span>
+<div class="flex items-center gap-2">
+<div class="w-24 h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container" style="width: 34%;"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant">34%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Primary Nexus Points -->
+<div>
+<h4 class="font-tactical-data text-xs text-on-surface-variant mb-3 border-b border-outline-variant pb-1">PRIMARY_NEXUS_POINTS</h4>
+<ul class="space-y-2">
+<li class="bg-surface-container-high/50 p-3 border-l-2 border-primary flex items-start gap-3 tactical-btn-hover cursor-pointer group">
+<span class="material-symbols-outlined text-primary text-sm mt-0.5 group-hover:scale-110 transition-transform">location_on</span>
+<div>
+<p class="text-xs font-medium">Bermuda Shell Account X-49</p>
+<p class="text-[10px] text-on-surface-variant">Financial Gateway / Offshore</p>
+</div>
+</li>
+<li class="bg-surface-container-high/50 p-3 border-l-2 border-outline-variant flex items-start gap-3 tactical-btn-hover cursor-pointer group">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mt-0.5 group-hover:text-primary group-hover:scale-110 transition-all">router</span>
+<div>
+<p class="text-xs font-medium">Tor Exit Node #8822</p>
+<p class="text-[10px] text-on-surface-variant">Primary Comms Relay</p>
+</div>
+</li>
+<li class="bg-surface-container-high/50 p-3 border-l-2 border-outline-variant flex items-start gap-3 tactical-btn-hover cursor-pointer group">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mt-0.5 group-hover:text-primary group-hover:scale-110 transition-all">apartment</span>
+<div>
+<p class="text-xs font-medium">Vault-Tec Logistics</p>
+<p class="text-[10px] text-on-surface-variant">Operational Base / Front</p>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</aside>
+<!-- Bottom Panel: Intelligence Feed -->
+<footer class="absolute bottom-0 left-0 w-full h-24 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-outline-variant flex items-center px-6 overflow-hidden z-20 boot-sequence delay-4">
+<div class="flex flex-col gap-1 shrink-0 w-48 mr-8 border-r border-outline-variant/30 pr-8">
+<span class="text-[8px] font-tactical-data text-primary">LIVE_FEED</span>
+<p class="font-tactical-data text-sm">INTEL_STREAM</p>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-primary forensic-glow"></span>
+<span class="text-[8px] text-on-surface-variant">BUFFERING_PACKETS...</span>
+</div>
+</div>
+<div class="flex-1 flex gap-6 overflow-x-auto items-center no-scrollbar">
+<div class="shrink-0 flex items-center gap-3 bg-surface-container px-4 py-2 border border-outline-variant/30 tactical-btn-hover cursor-pointer">
+<span class="text-[10px] text-primary font-tactical-data">14:22:10</span>
+<p class="text-xs text-on-surface-variant">SECURE_COMMS detected between <span class="text-primary">M.VANCE</span> and <span class="text-primary">UNKNOWN_09</span></p>
+</div>
+<div class="shrink-0 flex items-center gap-3 bg-surface-container px-4 py-2 border border-outline-variant/30 tactical-btn-hover cursor-pointer">
+<span class="text-[10px] text-primary font-tactical-data">14:21:45</span>
+<p class="text-xs text-on-surface-variant">GEO_LOCKED: Sarah Miller entered <span class="text-on-surface">RESTRICTED_ZONE_B</span></p>
+</div>
+<div class="shrink-0 flex items-center gap-3 bg-surface-container-high px-4 py-2 border border-primary/50 forensic-glow cursor-pointer">
+<span class="text-[10px] text-primary font-tactical-data">14:20:01</span>
+<p class="text-xs text-primary font-bold">ALERT_CRITICAL: Brute force attempt on Terminal X</p>
+</div>
+</div>
+<div class="shrink-0 ml-8 flex gap-4">
+<button class="bg-surface-variant hover:bg-primary/20 p-2 border border-outline-variant transition-colors tactical-btn-hover">
+<span class="material-symbols-outlined text-sm">history</span>
+</button>
+<button class="bg-primary text-on-primary px-4 py-1.5 font-tactical-data text-xs rounded shadow-[0_0_10px_rgba(229,57,53,0.2)] tactical-btn-hover">
+                    EXPORT_REPORT
+                </button>
+</div>
+</footer>
+</main>
+<script>
+        // Simple micro-interaction for node clicking
+        document.querySelectorAll('g.cursor-pointer').forEach(node => {
+            node.addEventListener('click', function() {
+                const name = this.querySelector('span')?.textContent || 'Unknown Entity';
+                console.log('Viewing Entity:', name);
+                this.classList.add('scale-105');
+                setTimeout(() => this.classList.remove('scale-105'), 200);
+            });
+        });
+
+        // Intelligence feed marquee effect simulation
+        const feed = document.querySelector('footer div:nth-child(2)');
+        let scrollPos = 0;
+        function animateFeed() {
+            scrollPos += 0.5;
+            if (scrollPos > feed.scrollWidth - feed.clientWidth) {
+                scrollPos = 0;
+            }
+            feed.scrollLeft = scrollPos;
+            requestAnimationFrame(animateFeed);
+        }
+        // animateFeed();
+    </script>
+</body></html>

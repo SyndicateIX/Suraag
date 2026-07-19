@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SURAAG AI | Forensic Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Grotesk:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#313030",
+                    "on-primary-fixed-variant": "#93000d",
+                    "outline": "#ab8985",
+                    "background": "#050505",
+                    "surface-variant": "#353534",
+                    "surface": "#131313",
+                    "surface-container-highest": "#353534",
+                    "on-secondary-container": "#ffa99f",
+                    "on-error-container": "#ffdad6",
+                    "primary-fixed-dim": "#ffb4ac",
+                    "inverse-primary": "#bb171c",
+                    "outline-variant": "#5b403d",
+                    "secondary-container": "#a0030e",
+                    "on-primary-container": "#5c0005",
+                    "on-surface-variant": "#e4beb9",
+                    "tertiary-container": "#929090",
+                    "surface-bright": "#393939",
+                    "secondary": "#ffb4ac",
+                    "primary": "#ffb4ac",
+                    "on-primary-fixed": "#410002",
+                    "inverse-on-surface": "#313030",
+                    "on-primary": "#690006",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "surface-tint": "#ffb4ac",
+                    "secondary-fixed-dim": "#ffb4ab",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-dim": "#131313",
+                    "primary-fixed": "#ffdad6",
+                    "secondary-fixed": "#ffdad6",
+                    "on-secondary-fixed": "#410002",
+                    "surface-container-high": "#2a2a2a",
+                    "tertiary": "#c9c6c5",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-container": "#201f1f",
+                    "tertiary-fixed": "#e5e2e1",
+                    "primary-container": "#ff544c",
+                    "on-secondary": "#690005",
+                    "on-background": "#e5e2e1",
+                    "surface-container-low": "#1c1b1b",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#93000b",
+                    "on-error": "#690005",
+                    "error": "#ffb4ac",
+                    "on-tertiary-container": "#2a2a29",
+                    "tactical-accent": "#E53935"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "grid-unit": "4px",
+                    "panel-gap": "8px",
+                    "margin-desktop": "32px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "display-lg": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "tactical-data": ["Space Grotesk"],
+                    "headline-lg-mobile": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "tactical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scanline-overlay {
+            background: linear-gradient(to bottom, transparent 50%, rgba(229, 57, 53, 0.05) 50%);
+            background-size: 100% 4px;
+            animation: scanline 10s linear infinite;
+            pointer-events: none;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(19, 19, 19, 0.7);
+            border: 1px solid #2a2a2a;
+        }
+        .glass-panel-active {
+            border: 1px solid #E53935;
+            box-shadow: 0 0 15px rgba(229, 57, 53, 0.15);
+        }
+        .grid-pattern {
+            background-image: linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+                              linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .radar-pulse {
+            animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+        }
+        .glitch-text:hover {
+            text-shadow: 2px 0 #E53935, -2px 0 #00E5FF;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md grid-pattern">
+<!-- TOP NAVIGATION SHELL -->
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 fixed top-0 z-50 border-b border-outline-variant backdrop-blur-xl bg-surface/70 shadow-[0_0_10px_rgba(255,180,172,0.1)]">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-display-lg font-bold tracking-tighter text-primary">SURAAG AI</span>
+<div class="h-4 w-px bg-outline-variant"></div>
+<span class="font-tactical-data text-tactical-data text-on-surface-variant tracking-widest uppercase">Investigation Terminal</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-tactical-accent radar-pulse"></span>
+<span class="font-tactical-data text-xs">SYSTEM STATUS: OPTIMAL</span>
+</div>
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer" title="Notifications">notifications_active</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer" title="Settings">settings_input_component</button>
+<button class="material-symbols-outlined text-primary" title="Profile">account_circle</button>
+</div>
+</div>
+</header>
+<!-- SIDE NAVIGATION SHELL -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col py-grid-unit z-40 border-r border-outline-variant bg-surface-container-low/80 backdrop-blur-md">
+<div class="px-6 py-8">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">radar</span>
+</div>
+<div>
+<h3 class="font-tactical-data text-sm font-bold text-primary">OPERATOR_01</h3>
+<p class="font-label-sm text-[10px] text-on-surface-variant opacity-60">CLEARANCE: LEVEL 5</p>
+</div>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 bg-primary/10 text-primary border-r-4 border-primary font-tactical-data transition-all duration-200" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span class="text-tactical-data">Mission Control</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-tactical-data transition-all duration-200" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="text-tactical-data">Case Intelligence</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-tactical-data transition-all duration-200" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-tactical-data">Evidence Vault</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-tactical-data transition-all duration-200" href="#">
+<span class="material-symbols-outlined">view_in_ar</span>
+<span class="text-tactical-data">Reconstruction</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest font-tactical-data transition-all duration-200" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="text-tactical-data">Network Analysis</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto px-6 py-4 border-t border-outline-variant">
+<a class="flex items-center gap-4 px-4 py-2 text-on-surface-variant hover:text-primary font-label-sm transition-colors mb-2" href="#">
+<span class="material-symbols-outlined text-sm">memory</span>
+<span>System Health</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-2 text-on-tertiary-fixed-variant hover:text-primary font-label-sm transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- MAIN WORKSPACE -->
+<main class="ml-64 mt-16 h-[calc(100vh-96px)] flex gap-panel-gap p-gutter">
+<!-- LEFT: CASE CONTEXT -->
+<section class="w-72 flex flex-col gap-panel-gap">
+<div class="glass-panel p-4 flex flex-col gap-4 flex-grow overflow-y-auto">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-sm text-tactical-accent mb-1">ACTIVE INVESTIGATION</p>
+<h2 class="font-headline-lg text-lg leading-tight">#SRA-2024-001<br/>Apartment Homicide</h2>
+</div>
+<span class="font-tactical-data text-xs px-2 py-1 bg-tactical-accent/20 text-tactical-accent border border-tactical-accent/40">URGENT</span>
+</div>
+<div class="relative group cursor-crosshair">
+<div class="aspect-video w-full glass-panel overflow-hidden border-outline-variant">
+<img class="w-full h-full object-cover grayscale brightness-50 group-hover:brightness-75 transition-all" data-alt="A cinematic 3D digital forensic reconstruction of a crime scene in a modern apartment. The image uses a dark, low-key lighting scheme with high-contrast red laser scanning lines and wireframe geometry overlays. The scene is detailed with furniture, shattered glass, and forensic markers, presented in a high-tech tactical HUD style consistent with military intelligence interfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0Z2Kj_BJhcFrjkHKpAx4t8Lp7s7kBj089xnDHolRSm9Fr7Fp6bjzu9m5t_DK_qnqrGBfjE-Nj-T5OJhkCrpai33kJfPI5ltY1qUuAu8prNcfF3GMFDhSA8LctDHLTEycw55SXrezCsYZNaUaETZL7MtR1TBldvN-J0NVWIXIzO0t6AJMmuHqqcCnm4T9YPJ0o4GMhMT1e_qY7jzSh91uNPHxd8KC85gOWnvXISfSP2KTyGqGwV1tn"/>
+<div class="absolute inset-0 scanline-overlay"></div>
+<div class="absolute bottom-2 left-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-tactical-accent">videocam</span>
+<span class="font-label-sm text-[10px] uppercase">3D Scene Live</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<p class="font-tactical-data text-xs text-on-surface-variant border-b border-outline-variant pb-1">QUICK ACTIONS</p>
+<button class="w-full flex items-center justify-between p-3 glass-panel hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary group-hover:text-tactical-accent">hub</span>
+<span class="font-tactical-data text-xs">Evidence Graph</span>
+</div>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-3 glass-panel hover:bg-surface-container-high transition-colors group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary group-hover:text-tactical-accent">person_search</span>
+<span class="font-tactical-data text-xs">Suspect Ranking</span>
+</div>
+<span class="material-symbols-outlined text-xs opacity-40">chevron_right</span>
+</button>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant">
+<p class="font-label-sm text-[10px] text-on-surface-variant opacity-60 mb-2">LAST UPDATE: 2 MINUTES AGO</p>
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border border-background bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-6 h-6 rounded-full border border-background bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">MK</div>
+<div class="w-6 h-6 rounded-full border border-background bg-surface-container-highest flex items-center justify-center text-[10px] font-bold text-primary">+2</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CENTER: CHAT AREA -->
+<section class="flex-grow flex flex-col gap-panel-gap relative">
+<div class="flex-grow glass-panel-active flex flex-col relative overflow-hidden">
+<!-- Background HUD elements -->
+<div class="absolute inset-0 opacity-5 pointer-events-none grid-pattern"></div>
+<div class="absolute inset-0 scanline-overlay"></div>
+<div class="flex-grow overflow-y-auto p-gutter space-y-gutter relative z-10">
+<!-- USER MESSAGE -->
+<div class="flex flex-col items-end gap-2 max-w-[80%] ml-auto">
+<div class="flex items-center gap-2 mb-1">
+<span class="font-tactical-data text-[10px] text-on-surface-variant">OPERATOR_01</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary/40"></span>
+</div>
+<div class="px-6 py-4 glass-panel border-outline rounded-tl-xl rounded-bl-xl rounded-tr-sm">
+<p class="font-body-md text-on-surface">Why is Marcus Vance the primary suspect?</p>
+</div>
+</div>
+<!-- AI MESSAGE -->
+<div class="flex flex-col items-start gap-2 max-w-[90%]">
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2 h-2 rounded-full bg-tactical-accent radar-pulse"></span>
+<span class="font-tactical-data text-[10px] text-tactical-accent font-bold">SURAAG AI_CORE</span>
+</div>
+<div class="px-6 py-4 glass-panel border-tactical-accent/40 bg-tactical-accent/5 rounded-tr-xl rounded-br-xl rounded-tl-sm relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-tactical-accent"></div>
+<p class="font-tactical-data leading-relaxed mb-4">
+                                Analysis of <span class="text-tactical-accent font-bold cursor-help underline decoration-dotted">Evidence_Item_001 (Ballistics)</span> shows a <span class="text-tactical-accent font-bold">98.4% match</span> with the suspect's registered firearm. Furthermore, cell tower triangulation places the subject within 50m of the scene at 20:20 PM, contradicting his stated alibi.
+                            </p>
+<div class="mt-6 border-t border-outline-variant pt-4">
+<p class="font-label-sm text-[10px] text-on-surface-variant mb-2">REASONING_BRANCH_LOG</p>
+<div class="flex gap-4">
+<div class="flex-grow h-32 glass-panel p-2 flex items-center justify-center relative overflow-hidden">
+<!-- Miniature node graph SVG placeholder -->
+<svg class="w-full h-full stroke-tactical-accent opacity-60" viewbox="0 0 200 100">
+<circle cx="20" cy="50" fill="currentColor" r="3"></circle>
+<line stroke-width="0.5" x1="20" x2="60" y1="50" y2="30"></line>
+<line stroke-width="0.5" x1="20" x2="60" y1="50" y2="70"></line>
+<circle cx="60" cy="30" fill="currentColor" r="2"></circle>
+<circle cx="60" cy="70" fill="currentColor" r="2"></circle>
+<line stroke-width="0.5" x1="60" x2="110" y1="30" y2="30"></line>
+<circle cx="110" cy="30" fill="currentColor" r="2"></circle>
+</svg>
+<div class="absolute inset-0 bg-gradient-to-r from-transparent to-surface/20"></div>
+</div>
+<div class="w-32 flex flex-col gap-2">
+<div class="glass-panel p-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-tactical-accent">link</span>
+<span class="text-[8px] font-tactical-data">F_CIT_001</span>
+</div>
+<div class="glass-panel p-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-tactical-accent">link</span>
+<span class="text-[8px] font-tactical-data">F_CIT_002</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- INPUT AREA -->
+<div class="p-gutter pt-0 relative z-20">
+<div class="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
+<button class="whitespace-nowrap px-4 py-1.5 glass-panel text-[10px] font-tactical-data text-on-surface-variant hover:text-primary hover:border-primary transition-all rounded-full uppercase tracking-widest">Explain Trajectory</button>
+<button class="whitespace-nowrap px-4 py-1.5 glass-panel text-[10px] font-tactical-data text-on-surface-variant hover:text-primary hover:border-primary transition-all rounded-full uppercase tracking-widest">Verify Alibi</button>
+<button class="whitespace-nowrap px-4 py-1.5 glass-panel text-[10px] font-tactical-data text-on-surface-variant hover:text-primary hover:border-primary transition-all rounded-full uppercase tracking-widest">Identify Gaps</button>
+<button class="whitespace-nowrap px-4 py-1.5 glass-panel text-[10px] font-tactical-data text-on-surface-variant hover:border-tactical-accent hover:text-tactical-accent transition-all rounded-full uppercase tracking-widest border-tactical-accent/40">Generate Report</button>
+</div>
+<div class="relative group">
+<div class="absolute -inset-0.5 bg-tactical-accent opacity-0 group-focus-within:opacity-20 transition-opacity rounded blur"></div>
+<div class="relative glass-panel-active flex items-center bg-surface-container-low px-4 h-14 border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-3">terminal</span>
+<input class="flex-grow bg-transparent border-none focus:ring-0 text-sm font-tactical-data tracking-wider placeholder:text-on-surface-variant/30 text-primary" placeholder="ENTER TACTICAL QUERY OR COMMAND..." type="text"/>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">mic</button>
+<button class="w-8 h-8 bg-tactical-accent flex items-center justify-center hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-black font-bold">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- RIGHT: LIVE REASONING -->
+<section class="w-80 flex flex-col gap-panel-gap">
+<div class="glass-panel p-4 flex flex-col gap-6 overflow-y-auto h-full">
+<div>
+<h3 class="font-tactical-data text-xs text-primary border-b border-outline-variant pb-2 mb-4 tracking-[0.2em] flex justify-between items-center">
+                        LIVE REASONING OUTPUT
+                        <span class="material-symbols-outlined text-xs animate-spin" style="animation-duration: 3s;">settings</span>
+</h3>
+<div class="space-y-6">
+<!-- Confidence Score -->
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-tactical-data">
+<span class="text-on-surface-variant">CONFIDENCE SCORE</span>
+<span class="text-tactical-accent">94.2%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tactical-accent shadow-[0_0_8px_#E53935]" style="width: 94.2%"></div>
+</div>
+</div>
+<!-- Data Modules -->
+<div class="glass-panel p-3 border-l-2 border-l-tactical-accent bg-tactical-accent/5">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-xs text-tactical-accent">account_tree</span>
+<span class="font-label-sm text-[10px]">LOGIC BRANCH: ALIBI_COLLISION</span>
+</div>
+<p class="text-[10px] font-body-md leading-relaxed text-on-surface-variant">
+                                Suspect claims presence at 'The Rusty Anchor' (20:00-21:00). Digital footprint (Tower 7A) places hardware ID within homicide perimeter at 20:20. Conflict resolution: 99% probability of false alibi.
+                            </p>
+</div>
+<!-- Supporting Evidence -->
+<div class="space-y-3">
+<p class="font-label-sm text-[10px] text-on-surface-variant opacity-60 uppercase">Supporting Evidence</p>
+<div class="grid grid-cols-2 gap-2">
+<div class="glass-panel aspect-square overflow-hidden border-outline-variant relative group">
+<img class="w-full h-full object-cover grayscale brightness-50 group-hover:brightness-90 transition-all" data-alt="A high-resolution forensic photograph of a semi-automatic handgun on a dark reflective surface, illuminated by a focused cold white light. Digital measurement callouts and serial number identifiers are overlaid in a red tactical font. The image has a grainy, high-contrast security camera aesthetic with digital artifacts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXW-ywVdVlgWcjGX1sKjd-PCNpj0lcGcG0jqRF9yJrmRB5En_RDhDAv1buID6WRdiaxOVlqi1yvPup5yq7KPD-RKpCiARNgA3dqVGPOFxkCbk_2744_DM6695zNBGTeU7JVUJX6Q7taJctWCr3mMDPvcmCxPKCysycSR73kTWol4g3xun_qs_Iz8Z38gFHmXWbW7L-9Q-7F6a1tem_pZ6pZkIda5V2sa_ZOHt9yH1QmFFFUiH1I41I"/>
+<div class="absolute inset-0 scanline-overlay"></div>
+<div class="absolute bottom-1 left-1 bg-black/80 px-1">
+<span class="text-[8px] font-tactical-data">BALLISTICS_01</span>
+</div>
+</div>
+<div class="glass-panel aspect-square overflow-hidden border-outline-variant relative group">
+<div class="w-full h-full bg-[#111] p-1">
+<div class="w-full h-full border border-tactical-accent/20 flex flex-col items-center justify-center gap-1">
+<span class="material-symbols-outlined text-tactical-accent text-lg">location_on</span>
+<span class="text-[8px] font-tactical-data text-center">GPS MAP<br/>RADIAL_300M</span>
+</div>
+</div>
+<div class="absolute inset-0 scanline-overlay"></div>
+</div>
+</div>
+</div>
+<!-- Terminal Log -->
+<div class="mt-auto glass-panel p-3 bg-black font-tactical-data text-[9px] text-primary/40 h-32 overflow-hidden leading-tight">
+<p>> INITIALIZING CROSS-REFERENCE...</p>
+<p>> ACCESSING METRO-POLICE DATABASE...</p>
+<p>> ID: MAR_VANCE_009 FOUND.</p>
+<p>> FETCHING GEOLOCATION DATA [TOWER 7A]</p>
+<p class="text-tactical-accent">> WARNING: ALIBI MISMATCH DETECTED.</p>
+<p>> UPDATING CONFIDENCE SCORE...</p>
+<p>> CALCULATION COMPLETE.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER SHELL -->
+<footer class="fixed bottom-0 left-0 w-full px-margin-desktop py-2 flex justify-between items-center z-50 bg-surface-container-lowest/90 border-t border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant">© 2024 SURAAG AI FORENSICS. ALL RIGHTS RESERVED.</span>
+<div class="h-3 w-px bg-outline-variant"></div>
+<div class="flex gap-4">
+<a class="font-label-sm text-label-sm text-on-tertiary-fixed-variant hover:text-primary transition-colors" href="#">Privacy Protocol</a>
+<a class="font-label-sm text-label-sm text-on-tertiary-fixed-variant hover:text-primary transition-colors" href="#">Service Terms</a>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_5px_#ffb4ac]"></span>
+<span class="font-label-sm text-label-sm text-primary uppercase">Encrypted Connection Stable</span>
+</div>
+</footer>
+<!-- INTERACTIVE SCRIPT -->
+<script>
+        // Simple micro-interaction for command input
+        const input = document.querySelector('input');
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && input.value.trim() !== '') {
+                const command = input.value.toUpperCase();
+                console.log(`Executing command: ${command}`);
+                input.value = '';
+                // Logic for adding a message could go here
+            }
+        });
+
+        // Add periodic "glitch" effect to tactical accents
+        setInterval(() => {
+            const accents = document.querySelectorAll('.text-tactical-accent');
+            const randomAccent = accents[Math.floor(Math.random() * accents.length)];
+            if (randomAccent) {
+                randomAccent.style.opacity = '0.5';
+                setTimeout(() => { randomAccent.style.opacity = '1'; }, 50);
+            }
+        }, 3000);
+    </script>
+</body></html>

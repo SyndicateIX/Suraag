@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Suraag AI | Evidence Vault</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+
+        /* Scanline Overlay */
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 100;
+            background-size: 100% 3px, 3px 100%;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        .tactical-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+                linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+        }
+
+        .glow-primary {
+            box-shadow: 0 0 15px rgba(255, 84, 76, 0.2);
+        }
+
+        /* Laser Sweep Animation */
+        @keyframes laserSweep {
+            0% { transform: translateY(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+
+        .laser-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff544c, transparent);
+            box-shadow: 0 0 15px #ff544c;
+            animation: laserSweep 3s infinite linear;
+        }
+
+        /* Scanning Progress Animation */
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        .pulse-critical {
+            animation: pulse-red 1.5s ease-in-out infinite;
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid #2a2a2a;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e0e0e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff544c;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "tertiary": "#c9c6c5",
+                    "on-primary": "#690006",
+                    "surface-bright": "#393939",
+                    "on-tertiary-container": "#2a2a29",
+                    "inverse-on-surface": "#313030",
+                    "primary-container": "#ff544c",
+                    "on-secondary": "#690005",
+                    "surface-container-high": "#2a2a2a",
+                    "on-primary-fixed": "#410002",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-secondary-fixed-variant": "#93000b",
+                    "secondary": "#ffb4ab",
+                    "secondary-container": "#a0030e",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-container-low": "#1c1b1b",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "surface-tint": "#ffb4ac",
+                    "tertiary-container": "#929090",
+                    "on-background": "#e5e2e1",
+                    "background": "#131313",
+                    "surface": "#131313",
+                    "on-primary-fixed-variant": "#93000d",
+                    "on-surface": "#e5e2e1",
+                    "primary": "#ffb4ac",
+                    "on-error-container": "#ffdad6",
+                    "surface-variant": "#353534",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-secondary-fixed": "#410002",
+                    "on-surface-variant": "#e4beb9",
+                    "inverse-primary": "#bb171c",
+                    "secondary-fixed-dim": "#ffb4ab",
+                    "error-container": "#93000a",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-secondary-container": "#ffa99f",
+                    "surface-dim": "#131313",
+                    "surface-container-highest": "#353534",
+                    "on-primary-container": "#5c0005",
+                    "outline": "#ab8985",
+                    "secondary-fixed": "#ffdad6",
+                    "primary-fixed": "#ffdad6",
+                    "on-tertiary": "#313030",
+                    "primary-fixed-dim": "#ffb4ac",
+                    "outline-variant": "#5b403d",
+                    "surface-container": "#201f1f",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "16px",
+                    "panel-gap": "8px",
+                    "grid-unit": "4px",
+                    "margin-desktop": "32px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "tactical-data": ["Space Grotesk"],
+                    "label-sm": ["Space Grotesk"],
+                    "headline-lg-mobile": ["Space Grotesk"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "tactical-data": ["12px", {"lineHeight": "1.5", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "label-sm": ["10px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="scanlines bg-background font-body-md text-on-surface">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-16 bg-background/70 backdrop-blur-xl border-b border-outline-variant shadow-[0_0_15px_rgba(255,84,76,0.1)]">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tighter uppercase">Suraag AI</span>
+<div class="hidden md:flex items-center bg-surface-container-high border border-outline-variant px-4 py-1.5 gap-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-tactical-data text-on-surface w-64 placeholder:text-on-surface-variant/50" placeholder="GLOBAL_EVIDENCE_QUERY" type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="hover:text-primary transition-all active:scale-95"><span class="material-symbols-outlined">notifications</span></button>
+<button class="hover:text-primary transition-all active:scale-95"><span class="material-symbols-outlined">terminal</span></button>
+<button class="hover:text-primary transition-all active:scale-95"><span class="material-symbols-outlined">settings</span></button>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-outline-variant">
+<div class="text-right">
+<div class="font-tactical-data text-primary">S.K. KAPOOR</div>
+<div class="font-label-sm text-on-surface-variant">SENIOR INVESTIGATOR</div>
+</div>
+<div class="w-10 h-10 bg-primary-container/20 border border-primary overflow-hidden rounded-sm">
+<img class="w-full h-full object-cover grayscale brightness-125" data-alt="A futuristic headshot of a seasoned forensic investigator in a dark high-tech environment. The lighting is dominated by sharp red and cool grey tones, highlighting a focused expression and cybernetic eye enhancements. The background shows digital data streams and architectural wireframes in a sleek cyber-brutalist style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-2JEAJMlLRp7Wj6VHOD_ieB8bZX_N8eRE3XZQ6D7PCnop7brBRLCDgQktnUo5GaYigFfu8fS7h_Vi6fYNwDCOLOOBWMfU5KeCJU7AknAM0jYIHCrMRqHiZDDW9HAdCv6gu55F0zFJWBqMHxsUj0rWPUjj1mbopLPOvmEOU6wFTuUpdibsn3n0ximxaaOO2aHaHKAQTu2w_AorEcj4SII4gKNUALGfe8AbwmHctlnUflgij11mgSB_"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col pt-20 pb-8 w-64 bg-surface-container-low/80 backdrop-blur-2xl border-r border-outline-variant font-tactical-data uppercase tracking-widest">
+<div class="px-6 mb-8">
+<div class="text-primary font-bold text-lg">SURAAG.OS</div>
+<div class="text-on-surface-variant text-[10px] tracking-[0.2em]">V2.04-ACTIVE</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-4 transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Mission Control</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-4 transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Case Intelligence</span>
+</a>
+<a class="bg-primary-container/20 text-primary border-r-4 border-primary px-6 py-3 flex items-center gap-4 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span>Evidence Vault</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-4 transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">view_in_ar</span>
+<span>Reconstruction</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-4 transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">science</span>
+<span>Physics</span>
+</a>
+<a class="text-on-surface-variant hover:bg-surface-variant/30 px-6 py-3 flex items-center gap-4 transition-all hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span>Trajectory</span>
+</a>
+</nav>
+<div class="px-6 mt-auto flex flex-col gap-4">
+<button class="w-full py-3 bg-primary text-on-primary font-bold text-xs tracking-tighter hover:glow-primary transition-all">
+                NEW INVESTIGATION
+            </button>
+<div class="flex flex-col gap-2 border-t border-outline-variant pt-4">
+<a class="text-on-surface-variant flex items-center gap-4 text-[10px] hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">memory</span> DIAGNOSTICS
+                </a>
+<a class="text-on-surface-variant flex items-center gap-4 text-[10px] hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">logout</span> SECURE LOGOUT
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-16 min-h-screen tactical-grid">
+<div class="p-8 max-w-[1600px] mx-auto">
+<div class="flex justify-between items-end mb-8">
+<div>
+<div class="text-primary font-tactical-data text-sm mb-2">MODULE ID: EV-9942</div>
+<h1 class="font-display-lg text-display-lg text-on-surface uppercase">Evidence Vault</h1>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-4 glass-panel px-6 py-3">
+<div class="text-right">
+<div class="text-label-sm text-on-surface-variant uppercase">Storage Capacity</div>
+<div class="text-primary font-tactical-data">4.2 TB / 10 TB</div>
+</div>
+<div class="w-24 h-1.5 bg-surface-container-highest relative overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-primary w-[42%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-6">
+<!-- Left Column: Upload & Ingestion -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- Dropzone -->
+<div class="glass-panel p-1 relative overflow-hidden group cursor-pointer border-dashed border-primary/40 hover:border-primary transition-colors">
+<div class="absolute inset-0 laser-line pointer-events-none"></div>
+<div class="p-12 flex flex-col items-center justify-center text-center bg-background/40">
+<span class="material-symbols-outlined text-6xl text-primary mb-4 pulse-critical">cloud_upload</span>
+<div class="font-headline-lg text-xl mb-2">INGEST EVIDENCE</div>
+<p class="text-on-surface-variant text-sm mb-6 max-w-xs">Drag and drop tactical assets or select source directory for deep scan.</p>
+<div class="grid grid-cols-4 gap-4">
+<span class="material-symbols-outlined p-2 bg-surface-container-high rounded text-on-surface-variant" title="Images">image</span>
+<span class="material-symbols-outlined p-2 bg-surface-container-high rounded text-on-surface-variant" title="Videos">videocam</span>
+<span class="material-symbols-outlined p-2 bg-surface-container-high rounded text-on-surface-variant" title="Audio">mic</span>
+<span class="material-symbols-outlined p-2 bg-surface-container-high rounded text-on-surface-variant" title="PDF">description</span>
+<span class="material-symbols-outlined p-2 bg-surface-container-high rounded text-on-surface-variant" title="GPS">location_on</span>
+<span class="material-symbols-outlined p-2 bg-surface-container-high rounded text-on-surface-variant" title="Drone">flight</span>
+<span class="material-symbols-outlined p-2 bg-surface-container-high rounded text-on-surface-variant" title="CCTV">videocam_auto</span>
+<span class="material-symbols-outlined p-2 bg-surface-container-high rounded text-on-surface-variant" title="Hash Integrity">fingerprint</span>
+</div>
+</div>
+</div>
+<!-- AI Processing Status -->
+<div class="glass-panel p-6">
+<div class="flex justify-between items-center mb-6">
+<div class="font-tactical-data text-primary">SURAAG.AI SCANNING...</div>
+<span class="material-symbols-outlined text-primary text-sm animate-spin">refresh</span>
+</div>
+<div class="space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] text-on-surface-variant uppercase">
+<span>Ballistics: Shell Casings</span>
+<span class="text-primary">82%</span>
+</div>
+<div class="h-1 bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary w-[82%] animate-[pulse_2s_infinite]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] text-on-surface-variant uppercase">
+<span>Forensics: Blood Pattern</span>
+<span class="text-primary">45%</span>
+</div>
+<div class="h-1 bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary w-[45%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] text-on-surface-variant uppercase">
+<span>Biometrics: Face Recognition</span>
+<span class="text-primary">99%</span>
+</div>
+<div class="h-1 bg-surface-container-high overflow-hidden">
+<div class="h-full bg-primary w-[99%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] text-on-surface-variant uppercase">
+<span>Object: Weapon Detection</span>
+<span class="text-primary">COMPLETE</span>
+</div>
+<div class="h-1 bg-primary w-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Evidence Grid -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- Filters -->
+<div class="flex flex-wrap gap-4 items-center glass-panel p-4">
+<button class="px-4 py-1 border border-primary bg-primary/10 text-primary font-tactical-data text-[10px]">ALL_FILES</button>
+<button class="px-4 py-1 border border-outline-variant hover:border-primary text-on-surface-variant font-tactical-data text-[10px] transition-colors">CRITICAL_ONLY</button>
+<button class="px-4 py-1 border border-outline-variant hover:border-primary text-on-surface-variant font-tactical-data text-[10px] transition-colors">VISUAL_ASSETS</button>
+<button class="px-4 py-1 border border-outline-variant hover:border-primary text-on-surface-variant font-tactical-data text-[10px] transition-colors">METADATA_EXTRACT</button>
+<div class="ml-auto flex items-center gap-2">
+<span class="text-[10px] text-on-surface-variant uppercase font-tactical-data">Min Confidence:</span>
+<select class="bg-surface-container-high border-none text-[10px] text-primary focus:ring-0 rounded py-1">
+<option>80%</option>
+<option>90%</option>
+<option>95%</option>
+</select>
+</div>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Evidence Card 1 -->
+<div class="glass-panel group overflow-hidden hover:border-primary transition-all duration-300">
+<div class="relative h-48 bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A grainy, high-contrast CCTV frame from a high-angle security camera in a dark alleyway. The image has a green digital tint and a tactical HUD overlay showing bounding boxes around a handgun on the ground. Visual noise and scanlines are prominent, creating a gritty forensic atmosphere with bright red highlights on detected objects." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkk2eGn1USdsyMd2W6pk2YRcfuLPY2sMZa6iAsuk2adX-NxZdimTaVuPEzcdQ9rk2ER98haIRU8glqTipRJZmwzdBLf8Xnh1V-fBYeHsmNwOHUayAUbRG1KicLGGwTzIyh8zv3kSISAuWsRlO4EyWXPqSJ39EVwqAt94jY6W2vUI6mRm9umn-3nzMlZKnsFOjfvAYpXiyYY7UehbHqKfVst8UZFPDeoXp0O1RN9zEhUyzcZW0u5zF0"/>
+<div class="absolute inset-0 border-[10px] border-transparent group-hover:border-primary/10 transition-all pointer-events-none"></div>
+<div class="absolute top-2 left-2 bg-primary/80 text-on-primary text-[8px] font-bold px-1.5 py-0.5 uppercase">Weapon Detected - 98% Confidence</div>
+<div class="absolute bottom-2 right-2 text-[8px] font-tactical-data bg-black/60 px-2 py-1 backdrop-blur-md">SEC_CAM_04 // 12:04:12</div>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex justify-between items-start">
+<div class="text-xs font-bold truncate pr-2 uppercase">EVIDENCE_ITEM_001.JPG</div>
+<span class="material-symbols-outlined text-primary text-sm">verified_user</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>GPS:</span>
+<span class="text-on-surface">28.6139° N, 77.2090° E</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>TIMESTAMP:</span>
+<span class="text-on-surface">2024-05-12 14:22:01</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>HASH MD5:</span>
+<span class="text-on-surface font-mono">B12F...98A1</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Evidence Card 2 -->
+<div class="glass-panel group overflow-hidden hover:border-primary transition-all duration-300">
+<div class="relative h-48 bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A macroscopic forensic photograph of a blood spatter on a concrete floor, captured under blue UV light to reveal hidden details. The scene is cold and clinical, featuring a high-tech UI overlay with geometric crosshairs and chemical composition markers. The deep red of the blood contrasts sharply with the cyan glow of the UV light and the dark brutalist environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOj7a5fINF0cwgWb10hIS5RsLYAP7JufEvboTej4VvkeEZDKyfSp4w8stq_4HOp-PnnGZ2eUG-zMgrqiGhawUetcpd6MXVx6LgSkQvovCwAMHjmEgzjdPe_Z9a2Tc2eWKTusA_4Pt_qXugfOa6v5MB-miW7dsDWNvrG4_r9TVwAEt34VJ1xM_YiLwt-G1kvDozfonaDS7dBfyjeOGNg2inGd0e6Tw8J9Z0uOeGcrU1MccHhkKMwf23"/>
+<div class="absolute top-2 left-2 bg-surface-container-highest/90 text-on-surface text-[8px] font-bold px-1.5 py-0.5 uppercase border border-outline-variant">Blood Sample B-1</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="w-12 h-12 border-2 border-primary rounded-full animate-ping"></div>
+</div>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex justify-between items-start">
+<div class="text-xs font-bold truncate pr-2 uppercase">SERUM_PLATE_42.PNG</div>
+<span class="material-symbols-outlined text-primary text-sm">verified_user</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>LAB ID:</span>
+<span class="text-on-surface">FORENSIC-S3-B1</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>SOURCE:</span>
+<span class="text-on-surface">DIRECT_SWAB</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>HASH MD5:</span>
+<span class="text-on-surface font-mono">E552...77C0</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Evidence Card 3 -->
+<div class="glass-panel group overflow-hidden hover:border-primary transition-all duration-300">
+<div class="relative h-48 bg-surface-container-highest overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-highest to-background flex flex-col items-center justify-center p-6 text-center">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant/40 mb-2">videocam_auto</span>
+<div class="text-[10px] text-on-surface-variant font-tactical-data uppercase">Drone Flight Log // DR-77</div>
+<div class="mt-4 flex gap-1">
+<div class="w-1 h-8 bg-primary/20"></div>
+<div class="w-1 h-12 bg-primary/50"></div>
+<div class="w-1 h-6 bg-primary"></div>
+<div class="w-1 h-10 bg-primary/60"></div>
+<div class="w-1 h-4 bg-primary/30"></div>
+</div>
+</div>
+<div class="absolute top-2 left-2 bg-primary/80 text-on-primary text-[8px] font-bold px-1.5 py-0.5 uppercase">GPS Stream Active</div>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex justify-between items-start">
+<div class="text-xs font-bold truncate pr-2 uppercase">DRONE_FLIGHT_LOG_A.CSV</div>
+<span class="material-symbols-outlined text-primary text-sm">shield</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>ALTITUDE:</span>
+<span class="text-on-surface">142M AMSL</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>DURATION:</span>
+<span class="text-on-surface">14:02 MIN</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>HASH MD5:</span>
+<span class="text-on-surface font-mono">CC19...9001</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Evidence Card 4 -->
+<div class="glass-panel group overflow-hidden hover:border-primary transition-all duration-300">
+<div class="relative h-48 bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A forensic photograph of a muddy footprint on a hardwood floor, illuminated with high-contrast side-lighting to emphasize tread patterns. A digital measurement grid is superimposed over the image, with precise calculations shown in a futuristic HUD style. The lighting is dramatic and dark, emphasizing textures and critical details in a high-tech forensic lab aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBa3LL6nr668LpqmI65mKqlamyXGqBdOweWiWLgfkzvp07UZEdeaIuxcHnGqrh5KMyEFCjrv-wODzFBtuP925MHE7buJmiS0RudFy7jMg13wiHLvFw3VpZ87CYYfn7e0xkUNkASki1hInf1u5uDbGCguPwo-nQ4k1bksyZP4zeZ3HN7QdhPWmxwMtwYiCa5gtaCzHQMu8PCTdt_eyEB-pl7pTNTJQVmxHVLIPgNAcXtt0IqtdLSiJ3Y"/>
+<div class="absolute top-2 left-2 bg-primary/80 text-on-primary text-[8px] font-bold px-1.5 py-0.5 uppercase">Tread Match: 87%</div>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex justify-between items-start">
+<div class="text-xs font-bold truncate pr-2 uppercase">FOOTPRINT_ENTRY_MAIN.JPG</div>
+<span class="material-symbols-outlined text-primary text-sm">verified_user</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>SHOE SIZE:</span>
+<span class="text-on-surface">EST. UK 10.5</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>BRAND:</span>
+<span class="text-on-surface">UNKNOWN_UTILITY</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>HASH MD5:</span>
+<span class="text-on-surface font-mono">D881...44A2</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Evidence Card 5 (Scanning state) -->
+<div class="glass-panel border-primary group overflow-hidden">
+<div class="relative h-48 bg-surface-container-low flex items-center justify-center">
+<div class="absolute inset-0 laser-line"></div>
+<div class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined text-4xl animate-pulse">biotech</span>
+<div class="text-[10px] font-tactical-data mt-2 animate-pulse">ANALYZING FACES...</div>
+</div>
+</div>
+<div class="p-4 space-y-3">
+<div class="flex justify-between items-start">
+<div class="text-xs font-bold truncate pr-2 uppercase">THREAT_IDENT_04.MP4</div>
+<span class="material-symbols-outlined text-primary text-sm animate-spin">sync</span>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>STATUS:</span>
+<span class="text-primary italic">PROCESSING</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>NODES:</span>
+<span class="text-on-surface">GPU_CLUSTER_08</span>
+</div>
+<div class="flex justify-between text-[9px] text-on-surface-variant">
+<span>HASH MD5:</span>
+<span class="text-on-surface font-mono">PENDING...</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-auto flex flex-col items-center gap-4 px-8 py-12 bg-surface-container-lowest border-t border-outline-variant font-label-sm text-label-sm uppercase tracking-widest z-50 relative ml-64">
+<div class="flex gap-8">
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors cursor-pointer" href="#">Privacy Protocol</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors cursor-pointer" href="#">Terms of Service</a>
+<a class="text-on-tertiary-fixed-variant hover:text-primary transition-colors cursor-pointer" href="#">Security Whitepaper</a>
+</div>
+<div class="text-on-tertiary-fixed-variant opacity-50">
+            © 2024 SURAAG AI FORENSICS. ALL RIGHTS RESERVED. CLASSIFIED.
+        </div>
+</footer>
+<script>
+        // Simple micro-interaction for evidence cards
+        document.querySelectorAll('.glass-panel').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Potential for dynamic glitch effects or metadata expansion
+            });
+        });
+
+        // Initialize scanning percentages randomly for realism
+        const progressBars = document.querySelectorAll('.h-1 .bg-primary');
+        progressBars.forEach(bar => {
+            if (!bar.classList.contains('w-full')) {
+                setInterval(() => {
+                    let currentWidth = parseInt(bar.style.width) || 0;
+                    if (currentWidth < 95) {
+                        let newWidth = currentWidth + Math.floor(Math.random() * 2);
+                        bar.style.width = newWidth + '%';
+                        const text = bar.closest('.space-y-2').querySelector('.text-primary');
+                        if (text) text.innerText = newWidth + '%';
+                    }
+                }, 3000 + Math.random() * 2000);
+            }
+        });
+    </script>
+</body></html>

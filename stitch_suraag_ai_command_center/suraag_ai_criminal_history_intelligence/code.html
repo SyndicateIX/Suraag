@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SURAAG AI | Criminal History - Marcus Vance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#ff544c",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "error-container": "#93000a",
+                        "surface-bright": "#393939",
+                        "surface-container-high": "#2a2a2a",
+                        "outline-variant": "#5b403d",
+                        "on-background": "#e5e2e1",
+                        "surface": "#131313",
+                        "primary-fixed": "#ffdad6",
+                        "on-surface-variant": "#e4beb9",
+                        "secondary-fixed": "#ffdad6",
+                        "on-error": "#690005",
+                        "on-tertiary": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-container": "#ffa99f",
+                        "primary-fixed-dim": "#ffb4ac",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#c9c6c5",
+                        "surface-container-highest": "#353534",
+                        "secondary-fixed-dim": "#ffb4ab",
+                        "on-primary-container": "#5c0005",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "secondary": "#ffb4ab",
+                        "primary": "#ffb4ac",
+                        "on-secondary-fixed-variant": "#93000b",
+                        "on-secondary": "#690005",
+                        "surface-tint": "#ffb4ac",
+                        "secondary-container": "#a0030e",
+                        "inverse-primary": "#bb171c",
+                        "tertiary-container": "#929090",
+                        "surface-dim": "#131313",
+                        "on-tertiary-container": "#2a2a29",
+                        "on-secondary-fixed": "#410002",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-variant": "#353534",
+                        "outline": "#ab8985",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-lowest": "#0e0e0e",
+                        "background": "#131313",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-primary-fixed-variant": "#93000d",
+                        "surface-container": "#201f1f",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed": "#410002",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary": "#690006"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "margin-mobile": "16px",
+                        "grid-unit": "4px",
+                        "panel-gap": "8px"
+                    },
+                    "fontFamily": {
+                        "tactical-data": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "label-sm": ["Space Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "tactical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+        .tactical-grid {
+            background-image: linear-gradient(rgba(229, 57, 53, 0.03) 1px, transparent 1px), 
+                              linear-gradient(90deg, rgba(229, 57, 53, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .scanlines {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        .glass-card {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid #2a2a2a;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: #ff544c;
+            box-shadow: 0 0 15px rgba(229, 57, 53, 0.15);
+        }
+        .pulse-red {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(229, 57, 53, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- HUD BACKGROUND OVERLAYS -->
+<div class="fixed inset-0 tactical-grid opacity-20 pointer-events-none z-0"></div>
+<div class="fixed inset-0 scanlines opacity-5 pointer-events-none z-50"></div>
+<!-- TOP NAV BAR (Shared Component Execution) -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface/70 backdrop-blur-xl border-b border-outline-variant shadow-[0_0_15px_rgba(229,57,53,0.15)]">
+<div class="flex items-center gap-6">
+<span class="font-display-lg text-headline-lg tracking-tighter text-primary-container">SURAAG AI</span>
+<div class="hidden md:flex items-center bg-surface-container-low px-4 py-1.5 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-tactical-data text-on-surface w-64 uppercase" placeholder="QUERY DATABASE..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-primary-container/10 hover:text-primary transition-all active:scale-95 duration-75">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-primary-container/10 hover:text-primary transition-all active:scale-95 duration-75">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-primary-container/10 hover:text-primary transition-all active:scale-95 duration-75">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+<div class="w-8 h-8 rounded-full border border-primary overflow-hidden ml-2">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a high-ranking intelligence officer with sharp features, wearing a sleek tactical uniform. The lighting is dramatic, high-contrast, with subtle red rim lighting reflecting off the dark fabric. The aesthetic is ultra-modern, professional, and authoritative, set against a dark, tech-oriented command center background with faint holographic interfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0Mskt7fWHbn3YOj8O4Fye29N4PZFYAJuRBjOyrxwddFdX0T_HCmwIQ96vrJJzqLWuizWUVOGhK3fP3PglhrfrsQIZiX1cMCozgj5LPuhlmahcJqXldCeNZ33tVN-Wum1jzOCbdhdY7dVEqyW-Rmka2bTUorVoXMw7A4tyvPxygI8Dt2xzWU53dpqm2bm1kMxvWcmSY6ncdRdauBNk3LAIiaM2CesULvYs7ieONiT5g4uYCDPI0VxA"/>
+</div>
+</div>
+</nav>
+<!-- SIDE NAV BAR (Shared Component Execution) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] z-40 flex flex-col border-r border-outline-variant bg-surface-container-lowest/80 backdrop-blur-2xl w-64">
+<div class="p-6 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container/20 border border-primary-container flex items-center justify-center pulse-red">
+<span class="material-symbols-outlined text-primary">security</span>
+</div>
+<div>
+<h3 class="font-headline-lg text-primary text-sm tracking-widest uppercase">STRATCOM</h3>
+<p class="font-tactical-data text-[10px] text-on-surface-variant">Active Ops: 04</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined">target</span>
+<span class="font-tactical-data text-label-sm uppercase">Mission Control</span>
+</a>
+<a class="bg-primary-container/20 text-primary border-r-2 border-primary-container px-4 py-3 flex items-center gap-3 transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-tactical-data text-label-sm uppercase">Case Intelligence</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-tactical-data text-label-sm uppercase">Evidence Vault</span>
+</a>
+</nav>
+<div class="p-4">
+<button class="w-full py-3 bg-secondary-container text-on-background font-tactical-data text-label-sm uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all border border-primary-container">
+                Deploy Probe
+            </button>
+</div>
+<div class="p-4 border-t border-outline-variant">
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 text-xs mb-2" href="#">
+<span class="material-symbols-outlined scale-75">settings_input_component</span>
+<span class="font-tactical-data uppercase">System Health</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface px-4 py-2 flex items-center gap-3 text-xs" href="#">
+<span class="material-symbols-outlined scale-75">database</span>
+<span class="font-tactical-data uppercase">Database</span>
+</a>
+</div>
+</aside>
+<!-- MAIN CONTENT CANVAS -->
+<main class="ml-64 mt-16 p-8 min-h-screen relative z-10">
+<!-- HEADER MODULE: SUSPECT PROFILE -->
+<header class="glass-card p-6 rounded-none mb-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 font-tactical-data text-[10px] text-primary/40">SEC_FILE_8829-009</div>
+<div class="flex flex-col md:flex-row gap-8 items-start relative z-10">
+<div class="relative group">
+<div class="absolute -inset-1 bg-primary-container opacity-20 blur group-hover:opacity-40 transition-opacity"></div>
+<div class="w-48 h-48 bg-surface-container-lowest border border-outline-variant overflow-hidden relative">
+<img class="w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700" data-alt="A gritty, high-fidelity mugshot of Marcus Vance, a man in his late 30s with intense, calculating eyes and a slight facial scar near his temple. He has short-cropped dark hair and a rugged, tactical appearance. The lighting is harsh, reminiscent of a forensic interrogation room, with cool blue tones and sharp red shadows. The image style is hyper-realistic with sharp textures, emphasizing his dangerous and high-stakes profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCapYqFpPCHFYHiIMQ98YtIBx6_ep27pi8ouNEE2Vmh-papwZytuKz2yrytRt3xWoulDNgggDlpL0oFfQTlsZtUDhNo9HzCXyUpHR0zW_s7JtInnhi4koRwEpPOuc69SaDgN2-srlaaafZPv0vp2kJ5spq6arvfNQKlX-kp1FNvd3XxTLbHi0Mdcnmmg2IhJPZQlGVGCSnAlxf7if-aY17mmCRde1gjQqmM9fJARJaN0IiAvsabh6l3"/>
+<div class="absolute bottom-0 left-0 w-full bg-primary-container/80 text-on-primary-container font-tactical-data text-[10px] py-1 text-center font-bold tracking-tighter">SUSPECT ID: MV-8829</div>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h1 class="font-display-lg text-headline-lg text-on-surface uppercase tracking-tight">Marcus Vance</h1>
+<div class="flex gap-4 mt-2">
+<span class="bg-primary-container/10 border border-primary text-primary px-3 py-1 font-tactical-data text-xs uppercase tracking-widest">Classification: OMEGA</span>
+<span class="bg-surface-container-high border border-outline-variant text-on-surface-variant px-3 py-1 font-tactical-data text-xs uppercase tracking-widest">UUID: 8829-009-TACTICAL</span>
+</div>
+</div>
+<div class="text-right">
+<div class="text-[10px] font-tactical-data text-on-surface-variant uppercase mb-1">Status</div>
+<div class="flex items-center gap-2 text-primary">
+<span class="w-2 h-2 bg-primary rounded-full pulse-red"></span>
+<span class="font-tactical-data font-bold text-sm uppercase">High Risk / Active Threat</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 border-t border-outline-variant pt-6">
+<div>
+<p class="text-[10px] font-tactical-data text-on-surface-variant uppercase">Last Known Location</p>
+<p class="font-tactical-data text-sm text-on-surface">DISTRICT 7 / SECTOR G</p>
+</div>
+<div>
+<p class="text-[10px] font-tactical-data text-on-surface-variant uppercase">Citizenship</p>
+<p class="font-tactical-data text-sm text-on-surface">U.S.A. (REVOKED)</p>
+</div>
+<div>
+<p class="text-[10px] font-tactical-data text-on-surface-variant uppercase">Primary MO</p>
+<p class="font-tactical-data text-sm text-on-surface">CYBER-WARFARE / ASYMMETRIC</p>
+</div>
+<div>
+<p class="text-[10px] font-tactical-data text-on-surface-variant uppercase">Total Offenses</p>
+<p class="font-tactical-data text-sm text-on-surface">14 (3 FEDERAL)</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- LEFT COLUMN: TIMELINE & BEHAVIORAL -->
+<div class="lg:col-span-2 flex flex-col gap-6">
+<!-- OFFENSE TIMELINE -->
+<section class="glass-card p-6">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline-lg text-lg uppercase tracking-widest text-on-surface border-l-2 border-primary pl-4">Criminal History Timeline</h2>
+<span class="material-symbols-outlined text-primary-container">history_edu</span>
+</div>
+<div class="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-0 before:w-px before:bg-outline-variant">
+<!-- Event 1 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 bg-surface border border-primary rounded-none flex items-center justify-center z-10">
+<div class="w-1.5 h-1.5 bg-primary"></div>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+<h3 class="font-tactical-data text-primary text-base font-bold uppercase tracking-wide">Aggravated Assault (Tactical Unit)</h3>
+<span class="font-tactical-data text-[10px] text-on-surface-variant bg-surface-container px-2 py-1 border border-outline-variant uppercase">14 OCT 2023 - JURISDICTION: NY-FED</span>
+</div>
+<p class="text-sm text-on-surface-variant font-body-md leading-relaxed border-l border-primary-container/30 pl-4 py-1">
+                                Suspect neutralized a three-man security detail during a data heist at Global Core. Utilized non-lethal but severe pressure point techniques, indicating military-grade tactical training.
+                            </p>
+</div>
+<!-- Event 2 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 bg-surface border border-outline-variant rounded-none flex items-center justify-center z-10">
+<div class="w-1.5 h-1.5 bg-on-surface-variant"></div>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+<h3 class="font-tactical-data text-on-surface text-base font-bold uppercase tracking-wide">Tactical Data Theft</h3>
+<span class="font-tactical-data text-[10px] text-on-surface-variant bg-surface-container px-2 py-1 border border-outline-variant uppercase">22 JAN 2022 - JURISDICTION: SG-INTL</span>
+</div>
+<p class="text-sm text-on-surface-variant font-body-md leading-relaxed border-l border-outline-variant pl-4 py-1">
+                                Exfiltration of classified naval logistics protocols. Incident occurred via high-speed physical bridge at the Singapore hub. Zero digital traces left behind; captured only on thermographic sensor 4.
+                            </p>
+</div>
+<!-- Event 3 -->
+<div class="relative pl-10">
+<div class="absolute left-0 top-1 w-6 h-6 bg-surface border border-outline-variant rounded-none flex items-center justify-center z-10">
+<div class="w-1.5 h-1.5 bg-on-surface-variant"></div>
+</div>
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-2">
+<h3 class="font-tactical-data text-on-surface text-base font-bold uppercase tracking-wide">Unauthorized Network Access</h3>
+<span class="font-tactical-data text-[10px] text-on-surface-variant bg-surface-container px-2 py-1 border border-outline-variant uppercase">09 MAY 2019 - JURISDICTION: LDN-CTY</span>
+</div>
+<p class="text-sm text-on-surface-variant font-body-md leading-relaxed border-l border-outline-variant pl-4 py-1">
+                                Early-career infraction. Gained entry to the central banking grid. No assets taken; objective appeared to be a stress-test of firewall vulnerabilities. High-sophistication detected in routing layers.
+                            </p>
+</div>
+</div>
+</section>
+<!-- INCARCERATION RECORD TABLE -->
+<section class="glass-card p-6">
+<h2 class="font-headline-lg text-lg uppercase tracking-widest text-on-surface border-l-2 border-primary pl-4 mb-6">Correctional Facilities Record</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container-high/50">
+<th class="p-3 font-tactical-data text-[10px] uppercase text-on-surface-variant">Facility Name</th>
+<th class="p-3 font-tactical-data text-[10px] uppercase text-on-surface-variant">Security Level</th>
+<th class="p-3 font-tactical-data text-[10px] uppercase text-on-surface-variant">Duration</th>
+<th class="p-3 font-tactical-data text-[10px] uppercase text-on-surface-variant">Conduct Rating</th>
+<th class="p-3 font-tactical-data text-[10px] uppercase text-on-surface-variant">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant hover:bg-primary-container/5 transition-colors">
+<td class="p-3 font-tactical-data text-sm text-on-surface">Blackgate Supermax</td>
+<td class="p-3">
+<span class="text-[10px] px-2 py-0.5 border border-primary text-primary font-tactical-data">LEVEL 5</span>
+</td>
+<td class="p-3 font-tactical-data text-xs text-on-surface-variant">24 Months</td>
+<td class="p-3">
+<div class="flex gap-0.5">
+<div class="w-3 h-1 bg-primary"></div>
+<div class="w-3 h-1 bg-primary"></div>
+<div class="w-3 h-1 bg-outline-variant"></div>
+<div class="w-3 h-1 bg-outline-variant"></div>
+</div>
+</td>
+<td class="p-3 font-tactical-data text-[10px] text-on-surface-variant uppercase italic">Extremely Volatile</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-primary-container/5 transition-colors">
+<td class="p-3 font-tactical-data text-sm text-on-surface">Iron Heights Correctional</td>
+<td class="p-3">
+<span class="text-[10px] px-2 py-0.5 border border-outline-variant text-on-surface-variant font-tactical-data">LEVEL 3</span>
+</td>
+<td class="p-3 font-tactical-data text-xs text-on-surface-variant">12 Months</td>
+<td class="p-3">
+<div class="flex gap-0.5">
+<div class="w-3 h-1 bg-primary"></div>
+<div class="w-3 h-1 bg-primary"></div>
+<div class="w-3 h-1 bg-primary"></div>
+<div class="w-3 h-1 bg-outline-variant"></div>
+</div>
+</td>
+<td class="p-3 font-tactical-data text-[10px] text-on-surface-variant uppercase italic">Compliant / Manipulative</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- RIGHT COLUMN: BEHAVIORAL & ASSOCIATES -->
+<div class="flex flex-col gap-6">
+<!-- BEHAVIORAL HUD WIDGET -->
+<section class="glass-card p-6 relative overflow-hidden">
+<div class="absolute -right-10 -top-10 opacity-5">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+</div>
+<h2 class="font-headline-lg text-lg uppercase tracking-widest text-on-surface border-l-2 border-primary pl-4 mb-8">Behavioral Risk Matrix</h2>
+<div class="space-y-8 relative z-10">
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<span class="font-tactical-data text-xs uppercase text-on-surface-variant">Aggression Index</span>
+<span class="font-tactical-data text-sm text-primary font-bold">88%</span>
+</div>
+<div class="h-2 bg-surface-container-high w-full border border-outline-variant p-0.5">
+<div class="h-full bg-primary shadow-[0_0_8px_#ff544c]" style="width: 88%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<span class="font-tactical-data text-xs uppercase text-on-surface-variant">Technical Sophistication</span>
+<span class="font-tactical-data text-sm text-primary font-bold">95%</span>
+</div>
+<div class="h-2 bg-surface-container-high w-full border border-outline-variant p-0.5">
+<div class="h-full bg-primary shadow-[0_0_8px_#ff544c]" style="width: 95%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<span class="font-tactical-data text-xs uppercase text-on-surface-variant">Likelihood of Re-offense</span>
+<span class="font-tactical-data text-sm text-primary font-bold">CRITICAL</span>
+</div>
+<div class="h-2 bg-surface-container-high w-full border border-outline-variant p-0.5">
+<div class="h-full bg-primary shadow-[0_0_8px_#ff544c]" style="width: 98%;"></div>
+</div>
+</div>
+<div class="p-4 bg-primary-container/10 border border-primary-container/30 mt-6">
+<p class="font-tactical-data text-[10px] text-primary uppercase leading-tight">
+                                Analysis: Vance exhibits zero remorse for prior systemic infiltrations. Cognitive profiling suggests he views law enforcement as "antiquated obstacles." Extreme caution advised during physical apprehension.
+                            </p>
+</div>
+</div>
+</section>
+<!-- DIGITAL FOOTPRINT AUDIT -->
+<section class="glass-card p-6">
+<h2 class="font-headline-lg text-lg uppercase tracking-widest text-on-surface border-l-2 border-primary pl-4 mb-4">Digital Infractions</h2>
+<div class="space-y-4">
+<div class="flex items-start gap-4 p-3 bg-surface-container hover:bg-surface-container-high transition-colors border border-transparent hover:border-outline-variant">
+<span class="material-symbols-outlined text-primary mt-1">dns</span>
+<div>
+<h4 class="font-tactical-data text-xs text-on-surface font-bold uppercase">Rootkit Distribution</h4>
+<p class="font-tactical-data text-[10px] text-on-surface-variant uppercase">Darknet ID: "Null-V"</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-3 bg-surface-container hover:bg-surface-container-high transition-colors border border-transparent hover:border-outline-variant">
+<span class="material-symbols-outlined text-primary mt-1">lan</span>
+<div>
+<h4 class="font-tactical-data text-xs text-on-surface font-bold uppercase">SQL Injection Attack</h4>
+<p class="font-tactical-data text-[10px] text-on-surface-variant uppercase">Target: Municipal Grid</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-3 bg-surface-container hover:bg-surface-container-high transition-colors border border-transparent hover:border-outline-variant">
+<span class="material-symbols-outlined text-primary mt-1">encrypted</span>
+<div>
+<h4 class="font-tactical-data text-xs text-on-surface font-bold uppercase">Crypto-Currency Laundering</h4>
+<p class="font-tactical-data text-[10px] text-on-surface-variant uppercase">Volume: 1.2M USD Equiv.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- ASSOCIATED ENTITIES -->
+<section class="glass-card p-6">
+<h2 class="font-headline-lg text-lg uppercase tracking-widest text-on-surface border-l-2 border-primary pl-4 mb-4">Known Associates</h2>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3 p-2 bg-surface-container border border-outline-variant">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Profile photo of Elias Thorne, an older man with cold, calculating eyes and graying hair. He wears a high-collar black trench coat. The lighting is low-key, professional, and mysterious, suggesting a powerful underground figure. High-fidelity cinematic photography, dark mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCegjvR49t7vu1g88f9r2hKCXOWdu9uSA87rOjtYRdAKFvsSQCvl8MlKLxUwOTS30y2YA8ILXs4CONpZskKKcTVHSMucb5ETWi6N_ejPfSh45SUPzO-8Jdr2Z2StqaIFOsMmmBRQ5XY3YCPNhpF5dvHIMfmhSdzrlgD7JJaPJ9MErkD0KhNYd3d1_1WbP1vk0NSOT4RUbhGviKi6bQI6LlQS97opTG80x-ZBCqzgTTD0ALp96wiec2l"/>
+</div>
+<div class="flex-1">
+<h4 class="font-tactical-data text-xs text-on-surface font-bold uppercase">Elias Thorne</h4>
+<p class="font-tactical-data text-[10px] text-primary uppercase">Handler / Financier</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">arrow_forward</span>
+</div>
+<div class="flex items-center gap-3 p-2 bg-surface-container border border-outline-variant">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Close-up profile image of Sarah 'Ghost' Miller, a young woman with neon-blue streaked hair and tactical goggles pushed up on her forehead. She is surrounded by digital screens and hardware. The lighting is vibrant and neon-infused, reflecting off her gear. Extreme detail, cyberpunk-noir style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA21v7BrFMSki496arc225X9Lz6TRvB0A0kxgBEBKBw7vfJjAxioqwEMMcyMG5sDPQwGLbnUHtOLhzbJdHa5jBJ03iJ9baAIKkix38cjlW-6IyPr5sec7DLko-dUbqnvuPYxdDi1Jc60AXU45Q2OLtqcOZMO8plLu9VBdEvFFbxSjPEHSRQp0odwtiwmBhL1wrSIozd-alJD0TDKG2K213jsgnrsr-J3YTGM_LRcWi8gHmGoyqPvkf7"/>
+</div>
+<div class="flex-1">
+<h4 class="font-tactical-data text-xs text-on-surface font-bold uppercase">Sarah Miller</h4>
+<p class="font-tactical-data text-[10px] text-on-surface-variant uppercase">Tech Specialist</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">arrow_forward</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- FOOTER LOGS -->
+<footer class="mt-8 pt-4 border-t border-outline-variant flex justify-between items-center">
+<div class="font-tactical-data text-[10px] text-on-surface-variant flex items-center gap-4">
+<span>SYSTEM STATUS: NOMINAL</span>
+<span>DATA INTEGRITY: 99.98%</span>
+<span class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                    LIVE ENCRYPTION ACTIVE
+                </span>
+</div>
+<div class="font-tactical-data text-[10px] text-on-surface-variant">
+                TIMESTAMP: 2024.11.24_14:42:01_UTC
+            </div>
+</footer>
+</main>
+<!-- FAB (Suppressed on Details per Mandate, but included for logic check if ever on dashboard) -->
+<!-- Not rendered as this is a focused Details/History screen -->
+<script>
+        // Micro-interactions for tactical feel
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // Subtle audio cue could be played here if audio were allowed
+            });
+        });
+
+        // Initialize HUD elements
+        console.log("SURAAG AI Criminal History Module Initialized.");
+    </script>
+</body></html>
