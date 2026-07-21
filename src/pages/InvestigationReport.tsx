@@ -265,7 +265,7 @@ export const InvestigationReport: React.FC = () => {
             <div className="col-span-1 p-4 rounded bg-surface-container-high print:bg-gray-100 border border-outline-variant/40 print:border-gray-300 text-xs space-y-2">
               <span className="text-on-surface font-bold border-b border-outline-variant/40 pb-1 block">NLP Risk Vectors</span>
               <div className="flex justify-between items-center"><span className="text-on-surface-variant">Stress Level:</span> <Badge variant="critical">SEVERE</Badge></div>
-              <div className="flex justify-between items-center"><span className="text-on-surface-variant">Deception Index:</span> <Badge variant="warning">HIGH (82%)</Badge></div>
+              <div className="flex justify-between items-center"><span className="text-on-surface-variant">Deception Index:</span> <Badge variant="high">HIGH (82%)</Badge></div>
               <div className="flex justify-between items-center"><span className="text-on-surface-variant">Flight Risk:</span> <span className="text-primary font-bold">98.5%</span></div>
               <div className="flex justify-between items-center"><span className="text-on-surface-variant">Ideology:</span> <span className="text-on-surface">Mercenary</span></div>
             </div>

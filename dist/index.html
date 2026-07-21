@@ -1,17 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Suraag AI | Forensic Intelligence Platform</title>
+    <script>
+      (function() {
+        try {
+          var storedTheme = localStorage.getItem('theme');
+          if (storedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+          } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
     <!-- Google Fonts: Space Grotesk & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <!-- Material Symbols Outlined -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-J3KaXkkH.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-gpyvJG9_.css">
+    <script type="module" crossorigin src="/assets/index-BwyvXb_j.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-cL4rb6yM.css">
   </head>
   <body class="bg-background text-on-surface font-body-md selection:bg-primary selection:text-on-primary overflow-x-hidden">
     <div id="root"></div>
