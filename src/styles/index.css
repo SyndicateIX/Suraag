@@ -4,20 +4,113 @@
 
 @layer base {
   :root {
+    /* Pure White Light Theme */
+    --color-background: #FFFFFF;
+    --color-on-background: #111827;
+    --color-surface: #FFFFFF;
+    --color-surface-variant: #F9FAFB;
+    --color-on-surface: #111827;
+    --color-on-surface-variant: #4B5563;
+    
+    --color-outline: #E5E7EB;
+    --color-outline-variant: #F3F4F6;
+    
+    /* Authoritative Crimson */
+    --color-primary: #DC2626;
+    --color-on-primary: #FFFFFF;
+    --color-primary-container: #FEE2E2;
+    --color-on-primary-container: #991B1B;
+    
+    --color-secondary: #4B5563;
+    --color-on-secondary: #FFFFFF;
+    --color-secondary-container: #F3F4F6;
+    --color-on-secondary-container: #111827;
+    
+    --color-tertiary: #6B7280;
+    --color-on-tertiary: #FFFFFF;
+    --color-tertiary-container: #FFFFFF;
+    --color-on-tertiary-container: #111827;
+    
+    /* Layout Surfaces - Adjusted for pure white background */
+    --color-surface-container-lowest: #FFFFFF;
+    --color-surface-container-low: #F9FAFB;
+    --color-surface-container: #F3F4F6;
+    --color-surface-container-high: #E5E7EB;
+    --color-surface-container-highest: #D1D5DB;
+    
+    --color-surface-bright: #FFFFFF;
+    --color-surface-dim: #E5E7EB;
+    --color-surface-tint: #DC2626;
+    
+    /* Status */
+    --color-error: #DC2626;
+    --color-on-error: #FFFFFF;
+    --color-error-container: #FEE2E2;
+    --color-on-error-container: #991B1B;
+    
+    --color-success: #16A34A;
+    --color-warning: #EA580C;
+    
+    --primary-glow: rgba(220, 38, 38, 0.12);
+    --grid-line: rgba(17, 24, 39, 0.04);
+  }
+
+  [data-theme="dark"] {
+    --color-background: #0C0C0C;
+    --color-on-background: #F5F5F5;
+    --color-surface: #1A1A1A;
+    --color-surface-variant: #2D2D2D;
+    --color-on-surface: #F5F5F5;
+    --color-on-surface-variant: #A0A0A0;
+    --color-outline: #424242;
+    --color-outline-variant: #2D2D2D;
+    --color-primary: #E53935;
+    --color-on-primary: #F5F5F5;
+    --color-primary-container: #B71C1C;
+    --color-on-primary-container: #F5F5F5;
+    --color-secondary: #B71C1C;
+    --color-on-secondary: #F5F5F5;
+    --color-secondary-container: #7F0000;
+    --color-on-secondary-container: #F5F5F5;
+    --color-tertiary: #A0A0A0;
+    --color-on-tertiary: #0C0C0C;
+    --color-tertiary-container: #2D2D2D;
+    --color-on-tertiary-container: #F5F5F5;
+    --color-surface-container-lowest: #0C0C0C;
+    --color-surface-container-low: #121212;
+    --color-surface-container: #1A1A1A;
+    --color-surface-container-high: #2D2D2D;
+    --color-surface-container-highest: #424242;
+    --color-surface-bright: #424242;
+    --color-surface-dim: #0C0C0C;
+    --color-surface-tint: #E53935;
+    --color-error: #E53935;
+    --color-on-error: #FFFFFF;
+    --color-error-container: #7F0000;
+    --color-on-error-container: #FFDAD6;
+    --color-success: #4CAF50;
+    --color-warning: #FF9800;
+    
     --primary-glow: rgba(229, 57, 53, 0.3);
     --grid-line: rgba(255, 255, 255, 0.02);
-    color-scheme: dark;
   }
 
   body {
-    background-color: #0C0C0C;
+    background-color: var(--color-background);
     background-image: 
       linear-gradient(var(--grid-line) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 32px 32px;
-    color: #F5F5F5;
+    color: var(--color-on-background);
     overflow-x: hidden;
     cursor: crosshair;
+  }
+
+  /* Global theme transition for colors to prevent jarring flashes */
+  body, main, header, nav, aside, div, span, p, h1, h2, h3, h4, h5, h6, input, select, button, svg, path, table, tr, td, th {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
   }
 
   /* Add smooth transitions globally to buttons and links for that premium feel */
@@ -53,25 +146,24 @@
   }
 
   .border-tactical {
-    border: 1px solid #2D2D2D;
+    border: 1px solid var(--color-surface-container-highest);
   }
 
   .glass-panel {
-    background: rgba(26, 26, 26, 0.75);
+    background: color-mix(in srgb, var(--color-surface) 75%, transparent);
     backdrop-filter: blur(20px);
-    border: 1px solid #424242;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    transition: all 0.25s ease-in-out;
+    border: 1px solid var(--color-outline);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   }
 
   .glass-panel:hover {
-    border-color: #E53935;
-    box-shadow: 0 4px 20px rgba(229, 57, 53, 0.15);
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 20px var(--primary-glow);
     transform: translateY(-1px);
   }
 
   .tactical-grid {
-    background-image: radial-gradient(circle, #2D2D2D 1px, transparent 1px);
+    background-image: radial-gradient(circle, var(--color-outline-variant) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
@@ -106,7 +198,7 @@
   }
 
   .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-  .custom-scrollbar::-webkit-scrollbar-track { background: #0C0C0C; }
-  .custom-scrollbar::-webkit-scrollbar-thumb { background: #424242; border-radius: 3px; }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #E53935; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: var(--color-background); }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: var(--color-outline); border-radius: 3px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
 }

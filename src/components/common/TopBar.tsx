@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShieldAlert, Activity, Radio, Search, Bell, Database, ExternalLink } from 'lucide-react';
+import { ShieldAlert, Activity, Radio, Search, Bell, Database, ExternalLink, Moon, Sun } from 'lucide-react';
 import { useSuraagStore } from '../../store/useSuraagStore';
+import { useTheme } from '../../hooks/useTheme';
 import { Badge } from './Badge';
 
 export const TopBar: React.FC = () => {
   const navigate = useNavigate();
   const { selectedCaseId, setSelectedCaseId } = useSuraagStore();
+  const { theme, toggleTheme } = useTheme();
   const [currentTime, setCurrentTime] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -120,6 +122,14 @@ export const TopBar: React.FC = () => {
         >
           <ExternalLink className="w-4 h-4" />
         </Link>
+
+        <button 
+          onClick={toggleTheme}
+          title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Theme`}
+          className="p-2 rounded-full bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 shrink-0 hover:scale-105 active:scale-95"
+        >
+          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </button>
 
         <button className="p-2 rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 relative shrink-0">
           <Bell className="w-4 h-4" />
