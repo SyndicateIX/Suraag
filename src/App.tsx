@@ -23,6 +23,7 @@ import { AIReasoning } from './pages/AIReasoning';
 import { AIAssistant } from './pages/AIAssistant';
 import { InvestigationReport } from './pages/InvestigationReport';
 import { Settings } from './pages/Settings';
+import TargetCursor from './components/TargetCursor/TargetCursor';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -37,6 +38,12 @@ const queryClient = new QueryClient({
 export const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      <TargetCursor 
+        spinDuration={2}
+        hideDefaultCursor={true}
+        parallaxOn={true}
+        targetSelector="a, button, .cursor-target"
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
