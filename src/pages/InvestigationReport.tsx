@@ -44,7 +44,7 @@ export const InvestigationReport: React.FC = () => {
               <ShieldAlert className="w-8 h-8 text-primary" />
             </div>
             <div>
-              <span className="text-2xl font-bold uppercase tracking-tighter text-primary print:text-black">
+              <span className="text-2xl font-bold uppercase tracking-tighter text-on-surface print:text-black">
                 SURAAG AI FORENSIC INTELLIGENCE DOSSIER
               </span>
               <span className="block text-xs text-on-surface-variant uppercase print:text-gray-600">
@@ -54,7 +54,7 @@ export const InvestigationReport: React.FC = () => {
           </div>
 
           <div className="text-right text-xs space-y-1">
-            <div>CASE REF: <strong className="text-primary print:text-black">{selectedCaseId}</strong></div>
+            <div>CASE REF: <strong className="text-on-surface print:text-black">{selectedCaseId}</strong></div>
             <div>DATE: <strong>{new Date().toISOString().split('T')[0]}</strong></div>
             <div>STATUS: <Badge variant="critical" className="print:border-black print:text-black">CRITICAL BREACH</Badge></div>
           </div>
@@ -62,7 +62,7 @@ export const InvestigationReport: React.FC = () => {
 
         {/* Section 1: Executive Summary */}
         <div className="space-y-3">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-primary print:text-black border-l-4 border-primary pl-3 print:border-black">
+          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
             1. Executive Tactical Summary
           </h2>
           <p className="text-sm text-on-surface-variant print:text-black leading-relaxed bg-surface-container print:bg-transparent p-4 print:p-0 rounded border border-outline-variant/40 print:border-none">
@@ -72,13 +72,13 @@ export const InvestigationReport: React.FC = () => {
 
         {/* Section 2: Key Triangulation & Ballistic Findings */}
         <div className="space-y-3">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-primary print:text-black border-l-4 border-primary pl-3 print:border-black">
+          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
             2. 3D Ballistic & Attacker Triangulation Findings
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
             <div className="p-4 print:p-0 rounded bg-surface-container print:bg-transparent border border-outline-variant print:border-none space-y-1">
               <span className="text-on-surface-variant print:text-gray-600 block">ATTACKER POSITION ORIGIN:</span>
-              <span className="text-base font-bold text-primary print:text-black block">Walkway Sector [X: -2.4, Y: 1.7, Z: 3.1]</span>
+              <span className="text-base font-bold text-on-surface print:text-black block">Walkway Sector [X: -2.4, Y: 1.7, Z: 3.1]</span>
               <span className="text-on-surface-variant/80 print:text-gray-600 text-[11px] block mt-1">Stature: 1.82m standing stance. Fired suppressed 9mm.</span>
             </div>
             <div className="p-4 print:p-0 rounded bg-surface-container print:bg-transparent border border-outline-variant print:border-none space-y-1">
@@ -96,11 +96,11 @@ export const InvestigationReport: React.FC = () => {
 
         {/* Section 3: Witness Contradictions Audit */}
         <div className="space-y-3">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-primary print:text-black border-l-4 border-primary pl-3 print:border-black">
+          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
             3. Witness Statement vs. 3D Line-of-Sight Refutation
           </h2>
           <div className="p-4 print:p-0 rounded bg-secondary-container/60 print:bg-transparent border border-primary print:border-none space-y-2 text-xs">
-            <div className="flex items-center justify-between text-sm text-primary print:text-black font-bold">
+            <div className="flex items-center justify-between text-sm text-on-surface print:text-black font-bold">
               <span>WITNESS: DR. JULIAN VANCE // CREDIBILITY DOWNGRADED TO 42.5%</span>
               <span>GEOMETRIC REFUTATION: 100% BLOCKED</span>
             </div>
@@ -112,12 +112,12 @@ export const InvestigationReport: React.FC = () => {
 
         {/* Section 4: Primary Suspect Identification */}
         <div className="space-y-3">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-primary print:text-black border-l-4 border-primary pl-3 print:border-black">
+          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
             4. Suspect Risk Dossier & Evidence Linkages
           </h2>
           <div className="p-4 print:p-0 rounded bg-surface-container print:bg-transparent border border-outline-variant print:border-none flex flex-col sm:flex-row justify-between gap-4 text-xs">
             <div>
-              <span className="text-primary print:text-black font-bold text-lg block">VIKTOR "SHADOW" KRELL (RISK: 96 / CRITICAL)</span>
+              <span className="text-on-surface print:text-black font-bold text-lg block">VIKTOR "SHADOW" KRELL (RISK: 96 / CRITICAL)</span>
               <span className="text-on-surface-variant print:text-gray-600 block mt-1">Probability of Involvement: <strong className="text-primary print:text-black">89.4%</strong></span>
               <span className="text-on-surface-variant/80 print:text-gray-600 block mt-1">Evidence Connection: Satellite phone pinged tower #442 within 180m exactly 12s before EMP blackout. Ballistics match prior Geneva 2024 operation.</span>
             </div>
@@ -135,7 +135,7 @@ export const InvestigationReport: React.FC = () => {
           </div>
           <div className="border-t sm:border-t-0 sm:border-l border-outline-variant/40 print:border-gray-300 pt-4 sm:pt-0 sm:pl-6">
             <span>AUDIT LEAD: <strong className="print:text-black">Agent Sarah Jenkins</strong></span>
-            <span className="block mt-0.5 text-primary print:text-black font-bold">COURT & DOSSIER READY ✔</span>
+            <span className="block mt-0.5 text-success print:text-black font-bold">COURT & DOSSIER READY ✔</span>
           </div>
         </div>
       </div>

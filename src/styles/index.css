@@ -4,18 +4,24 @@
 
 @layer base {
   :root {
-    --primary-glow: rgba(255, 84, 76, 0.3);
-    --grid-line: rgba(255, 255, 255, 0.03);
+    --primary-glow: rgba(229, 57, 53, 0.3);
+    --grid-line: rgba(255, 255, 255, 0.02);
+    color-scheme: dark;
   }
 
   body {
-    background-color: #050505;
+    background-color: #0C0C0C;
     background-image: 
       linear-gradient(var(--grid-line) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 32px 32px;
-    color: #e5e2e1;
+    color: #F5F5F5;
     overflow-x: hidden;
+  }
+
+  /* Add smooth transitions globally to buttons and links for that premium feel */
+  button, a, input, select {
+    transition: all 0.25s ease-in-out;
   }
 }
 
@@ -38,30 +44,33 @@
   }
 
   .glow-red {
-    box-shadow: 0 0 15px rgba(255, 84, 76, 0.3);
+    box-shadow: 0 0 15px rgba(229, 57, 53, 0.3);
   }
 
   .glow-primary {
-    box-shadow: 0 0 15px rgba(255, 84, 76, 0.2);
+    box-shadow: 0 0 15px rgba(229, 57, 53, 0.2);
   }
 
   .border-tactical {
-    border: 1px solid #2A2A2A;
+    border: 1px solid #2D2D2D;
   }
 
   .glass-panel {
-    background: rgba(18, 18, 18, 0.75);
+    background: rgba(26, 26, 26, 0.75);
     backdrop-filter: blur(20px);
-    border: 1px solid #2A2A2A;
-    transition: all 0.2s ease-in-out;
+    border: 1px solid #424242;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s ease-in-out;
   }
 
   .glass-panel:hover {
-    border-color: #5b403d;
+    border-color: #E53935;
+    box-shadow: 0 4px 20px rgba(229, 57, 53, 0.15);
+    transform: translateY(-1px);
   }
 
   .tactical-grid {
-    background-image: radial-gradient(circle, #2A2A2A 1px, transparent 1px);
+    background-image: radial-gradient(circle, #2D2D2D 1px, transparent 1px);
     background-size: 24px 24px;
   }
 
@@ -84,8 +93,8 @@
 
   .laser-line {
     height: 2px;
-    background: linear-gradient(90deg, transparent, #ff544c, transparent);
-    box-shadow: 0 0 15px #ff544c;
+    background: linear-gradient(90deg, transparent, #E53935, transparent);
+    box-shadow: 0 0 15px #E53935;
     animation: laserSweep 3s infinite linear;
   }
 
@@ -95,8 +104,8 @@
     vertical-align: middle;
   }
 
-  .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
-  .custom-scrollbar::-webkit-scrollbar-track { background: #0e0e0e; }
-  .custom-scrollbar::-webkit-scrollbar-thumb { background: #2A2A2A; border-radius: 2px; }
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #ff544c; }
+  .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+  .custom-scrollbar::-webkit-scrollbar-track { background: #0C0C0C; }
+  .custom-scrollbar::-webkit-scrollbar-thumb { background: #424242; border-radius: 3px; }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #E53935; }
 }
