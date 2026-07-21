@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { ScanlineOverlay } from '../components/common/ScanlineOverlay';
 import { Badge } from '../components/common/Badge';
+import ShapeGrid from '../components/ShapeGrid/ShapeGrid';
 
 export const LandingPage: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -87,19 +88,19 @@ export const LandingPage: React.FC = () => {
     <div className="min-h-screen bg-background text-on-surface font-body-md relative overflow-hidden selection:bg-primary selection:text-on-primary">
       <ScanlineOverlay laser={true} />
 
-      {/* Animated Radar & Particle Background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full border border-primary/20 opacity-30 animate-ping" style={{ animationDuration: '8s' }} />
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-primary/30 opacity-40" />
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full border border-primary/40 opacity-50" />
-        
-        {/* Radar Sweep Line */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full overflow-hidden">
-          <div className="w-1/2 h-1/2 origin-bottom-right bg-gradient-to-tl from-primary/30 to-transparent animate-spin" style={{ animationDuration: '6s' }} />
-        </div>
-
+      {/* Animated Shape Grid Background */}
+      <div className="absolute inset-0 overflow-hidden z-0 opacity-40">
+        <ShapeGrid 
+          speed={0.5} 
+          squareSize={40}
+          direction="diagonal"
+          borderColor="#333333"
+          hoverFillColor="rgba(255, 84, 76, 0.2)"
+          shape="hexagon"
+          hoverTrailAmount={5} 
+        />
         {/* Digital Grid Dots */}
-        <div className="absolute inset-0 tactical-grid opacity-60" />
+        <div className="absolute inset-0 tactical-grid opacity-30 pointer-events-none" />
       </div>
 
       {/* Landing Navigation Header */}
@@ -336,11 +337,10 @@ export const LandingPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-6 py-3 rounded font-tactical-data text-xs uppercase tracking-wider transition-all border ${
-                activeTab === tab.id
+              className={`px-6 py-3 rounded font-tactical-data text-xs uppercase tracking-wider transition-all border ${activeTab === tab.id
                   ? 'bg-secondary-container text-primary border-primary shadow-[0_0_15px_rgba(255,84,76,0.3)] font-bold'
                   : 'bg-surface-container text-on-surface-variant border-outline-variant hover:text-on-surface'
-              }`}
+                }`}
             >
               {tab.label}
             </button>

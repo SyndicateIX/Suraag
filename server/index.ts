@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -39,6 +41,73 @@ let mockCasesFallback: any[] = [
     confidenceScore: 91.8,
   },
 ];
+
+// ==========================================
+// AUTHENTICATION API
+// ==========================================
+const JWT_SECRET = process.env.JWT_SECRET || 'suraag_super_secret_key_2026';
+
+const mockUsers = [
+  { id: 'u1', employeeId: 'DIR-001', password: 'password123', role: 'Director', name: 'Director Vance' },
+  { id: 'u2', employeeId: 'SFO-042', password: 'password123', role: 'Senior Officer', name: 'Officer Jenkins' },
+  { id: 'u3', employeeId: 'INV-103', password: 'password123', role: 'Investigation Officer', name: 'Investigator Krell' },
+  { id: 'u4', employeeId: 'EVA-099', password: 'password123', role: 'Evidence Analyst', name: 'Analyst Sarah' },
+  { id: 'u5', employeeId: 'DFO-505', password: 'password123', role: 'Digital Forensics Officer', name: 'Forensics Lead Mike' }
+];
+
+app.post('/api/auth/login', (req: Request, res: Response) => {
+  const { employeeId, password, role } = req.body;
+  // Simulate delay for brute-force protection visual
+  setTimeout(() => {
+    const user = mockUsers.find(u => u.employeeId === employeeId && u.password === password && u.role === role);
+    
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials or role mismatch.' });
+    }
+
+    const token = jwt.sign({ id: user.id, role: user.role, name: user.name, employeeId: user.employeeId }, JWT_SECRET, { expiresIn: '8h' });
+    return res.json({ token, user: { id: user.id, employeeId: user.employeeId, role: user.role, name: user.name } });
+  }, 800);
+});
+
+app.post('/api/auth/register', (req: Request, res: Response) => {
+  const { employeeId, password, role, name, email, phone, department } = req.body;
+  setTimeout(() => {
+    const existing = mockUsers.find(u => u.employeeId === employeeId);
+    if (existing) {
+      return res.status(400).json({ error: 'Employee ID already registered.' });
+    }
+    
+    const newUser = {
+      id: `u${mockUsers.length + 1}`,
+      employeeId,
+      password,
+      role,
+      name: name || 'New Agent',
+      email,
+      phone,
+      department
+    };
+    
+    mockUsers.push(newUser);
+    
+    const token = jwt.sign({ id: newUser.id, role: newUser.role, name: newUser.name, employeeId: newUser.employeeId, email: newUser.email, phone: newUser.phone, department: newUser.department }, JWT_SECRET, { expiresIn: '8h' });
+    return res.json({ token, user: { id: newUser.id, employeeId: newUser.employeeId, role: newUser.role, name: newUser.name, email: newUser.email, phone: newUser.phone, department: newUser.department } });
+  }, 800);
+});
+
+app.get('/api/auth/me', (req: Request, res: Response) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: 'No token provided' });
+  
+  const token = authHeader.split(' ')[1];
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return res.json({ user: decoded });
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
+});
 
 // ==========================================
 // CASES API
@@ -316,45 +385,89 @@ app.get('/api/reconstruction/:caseId', async (req: Request, res: Response) => {
 // ==========================================
 // AI REASONING & ASSISTANT CHAT API
 // ==========================================
-app.post('/api/ai/assistant/chat', (req: Request, res: Response) => {
+app.post('/api/ai/assistant/chat', async (req: Request, res: Response) => {
   const { message, caseId, history } = req.body;
-  const promptLower = String(message || '').toLowerCase();
 
-  let responseText = `Based on multi-sensor fusion analysis of case **${caseId || 'CASE-2026-884A'}**, our AI Reasoning Engine indicates ` +
-    `that the breach occurred via a coordinated cyber-physical assault at 23:14:02. ` +
-    `Would you like to examine the ballistic trajectory simulation or review the contradiction matrix for Dr. Julian Vance?`;
+  try {
+    if (!process.env.GEMINI_API_KEY) {
+      throw new Error('GEMINI_API_KEY is not configured in .env');
+    }
 
-  if (promptLower.includes('contradiction') || promptLower.includes('witness') || promptLower.includes('vance')) {
-    responseText = `### Contradiction Analysis: Dr. Julian Vance\n\n` +
-      `1. **Statement Claim**: Stated he was standing at the North Doorway (\`Wall B\`) and witnessed two masked operatives open the vault.\n` +
-      `2. **Geometric Refutation**: Our Three.js 3D line-of-sight cone reveals that \`Wall B\` and structural server racks block 100% of visual access to the vault lock from that position.\n` +
-      `3. **Timeline Refutation**: Corridor thermal sensors registered no human presence near Wall B between 23:10 and 23:18.\n` +
-      `4. **AI Conclusion**: High probability of statement fabrication to mask inside credential leakage. Credibility downgraded to **42.5%**.`;
-  } else if (promptLower.includes('trajectory') || promptLower.includes('bullet') || promptLower.includes('physics')) {
-    responseText = `### Ballistic Trajectory & Physics Simulation\n\n` +
-      `- **Origin Vector**: Attacker positioned at coordinates \`[X: -2.4m, Y: 1.7m, Z: 3.1m]\` (Elevated walkway right of Server Rack #4).\n` +
-      `- **Impact Vector**: Subsonic 9mm bullet struck Wall B at \`[X: 1.8m, Y: 1.2m, Z: 0.5m]\` with an entry angle of 34.2° downward.\n` +
-      `- **Blood Spatter Correlation**: High-velocity forward spatter droplets (Type O+) emanate precisely from the computed victim position, confirming primary impact occurred at 23:15:10.`;
-  } else if (promptLower.includes('missing') || promptLower.includes('recommend') || promptLower.includes('search')) {
-    responseText = `### AI Missing Evidence Prediction\n\n` +
-      `Our graph correlation engine identified three missing critical nodes:\n` +
-      `1. **CCTV Camera #4 Raw Buffer**: Re-scan localized sector cache at Grid C-4 (+14.2% confidence boost).\n` +
-      `2. **Secondary Weapon Fingerprints**: Check keycard reader inside cleanroom airlock (+8.5% confidence boost).\n` +
-      `3. **Vehicle GPS Telemetry**: Request satellite toll transponder logs for Matte Black SUV departing North Route at 23:18:30.`;
-  } else if (promptLower.includes('suspect') || promptLower.includes('krell')) {
-    responseText = `### Suspect Intelligence: Viktor "Shadow" Krell\n\n` +
-      `- **Risk Score**: **96 / 100 (CRITICAL)**\n` +
-      `- **Probability of Involvement**: **89.4%**\n` +
-      `- **Evidence Links**: Encrypted satellite phone pinged mobile tower #442 within 180 meters of the breach point exactly 12 seconds prior to sensor blackout.\n` +
-      `- **Modus Operandi**: Matches exact EMP surge profile and acoustic suppression tactics observed in the 2024 Geneva facility infiltration.`;
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+    // Fetch case context for grounding the AI
+    let caseContext = 'No specific case data provided.';
+    if (caseId) {
+      try {
+        const c = await prisma.case.findFirst({
+          where: { OR: [{ id: caseId }, { caseNumber: caseId }] },
+          include: { suspects: true, evidence: true, witnesses: true, timelineEvents: true, reconstruction: true }
+        });
+        if (c) {
+          caseContext = JSON.stringify(c, null, 2);
+        } else {
+          const fallback = mockCasesFallback.find(x => x.id === caseId || x.caseNumber === caseId);
+          if (fallback) caseContext = JSON.stringify(fallback, null, 2);
+        }
+      } catch (e) {
+        const fallback = mockCasesFallback.find(x => x.id === caseId || x.caseNumber === caseId);
+        if (fallback) caseContext = JSON.stringify(fallback, null, 2);
+      }
+    }
+
+    const systemInstruction = `You are a highly advanced AI investigative co-pilot (Gemini 3.1 Pro Tactical Co-Pilot) working for Suraag AI, a forensic intelligence platform. You analyze crime scene data, 3D reconstructions, ballistic trajectories, witness statements, and sensor telemetry. Adopt a tactical, analytical, and highly precise tone. Provide structured, concise intelligence briefings when asked questions. Always format with markdown for readability. Use the following case context to answer questions about the active investigation:\n\n${caseContext}`;
+
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash',
+      systemInstruction,
+    });
+
+    // Format chat history to match Gemini's expected Content[] type
+    let formattedHistory: any[] = [];
+    let lastRole = null;
+    const rawHistory = Array.isArray(history) ? history : [];
+    
+    for (const msg of rawHistory) {
+      const role = msg.role === 'model' ? 'model' : 'user';
+      if (role !== lastRole) {
+        formattedHistory.push({
+          role,
+          parts: [{ text: msg.text || '' }]
+        });
+        lastRole = role;
+      } else if (formattedHistory.length > 0) {
+        formattedHistory[formattedHistory.length - 1].parts[0].text += '\n\n' + (msg.text || '');
+      }
+    }
+
+    // Gemini strictly requires the first message to be from 'user'
+    if (formattedHistory.length > 0 && formattedHistory[0].role === 'model') {
+      formattedHistory.shift();
+    }
+
+    const chat = model.startChat({
+      history: formattedHistory,
+    });
+
+    const result = await chat.sendMessage(message);
+    const responseText = result.response.text();
+
+    return res.json({
+      role: 'model',
+      text: responseText,
+      timestamp: new Date().toISOString(),
+      confidence: parseFloat((92.0 + Math.random() * 7.5).toFixed(1)),
+    });
+  } catch (error: any) {
+    console.error('[Suraag AI] Gemini API Error:', error);
+    // Return a fallback response so the frontend still functions gracefully
+    return res.status(500).json({
+      role: 'model',
+      text: `**ERROR**: AI Reasoning Core offline or unreachable. Please check API key configuration.\n\nDetails: ${error.message}`,
+      confidence: 0,
+      timestamp: new Date().toISOString()
+    });
   }
-
-  return res.json({
-    role: 'model',
-    text: responseText,
-    timestamp: new Date().toISOString(),
-    confidence: 96.8,
-  });
 });
 
 app.listen(PORT, () => {

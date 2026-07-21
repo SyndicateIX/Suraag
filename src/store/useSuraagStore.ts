@@ -2,7 +2,23 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Case, ChatMessage, SimulationState } from '../types';
 
+interface User {
+  id: string;
+  employeeId: string;
+  role: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  department?: string;
+}
+
 interface SuraagStoreState {
+  user: User | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  login: (user: User, token: string) => void;
+  logout: () => void;
+
   theme: 'dark' | 'light';
   setTheme: (theme: 'dark' | 'light') => void;
   toggleTheme: () => void;
@@ -35,6 +51,12 @@ interface SuraagStoreState {
 export const useSuraagStore = create<SuraagStoreState>()(
   persist(
     (set, get) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+      login: (user, token) => set({ user, token, isAuthenticated: true }),
+      logout: () => set({ user: null, token: null, isAuthenticated: false }),
+
       theme: 'dark',
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set({ theme: get().theme === 'dark' ? 'light' : 'dark' }),
@@ -116,6 +138,9 @@ export const useSuraagStore = create<SuraagStoreState>()(
     {
       name: 'suraag-ai-storage',
       partialize: (state) => ({
+        user: state.user,
+        token: state.token,
+        isAuthenticated: state.isAuthenticated,
         theme: state.theme,
         selectedCaseId: state.selectedCaseId,
         activeTab: state.activeTab,

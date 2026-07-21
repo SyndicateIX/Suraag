@@ -21,7 +21,8 @@ import {
   Bot,
   FileText,
   Settings,
-  ChevronDown
+  ChevronDown,
+  User
 } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
@@ -157,6 +158,23 @@ export const Sidebar: React.FC = () => {
           <span>GEMINI 3.1 PRO (HIGH)</span>
           <span className="text-primary font-bold">94.2%</span>
         </div>
+      </div>
+
+      {/* User Profile Quick Link */}
+      <div className="px-3 py-2 border-t border-outline-variant/30 bg-surface-container/30 shrink-0">
+        <NavLink
+          to="/profile"
+          className={({ isActive }) =>
+            `flex items-center gap-3 px-3 py-2.5 rounded-md transition-all font-tactical-data text-sm ${
+              isActive
+                ? 'bg-secondary-container/90 text-primary border-l-4 border-primary font-bold shadow-[0_0_12px_rgba(255,84,76,0.3)]'
+                : 'text-on-surface-variant hover:bg-surface-container hover:text-on-surface'
+            }`
+          }
+        >
+          <User className="w-[18px] h-[18px] shrink-0" />
+          <span className="truncate uppercase tracking-wider">Agent Profile</span>
+        </NavLink>
       </div>
     </aside>
   );

@@ -23,7 +23,17 @@ import { AIReasoning } from './pages/AIReasoning';
 import { AIAssistant } from './pages/AIAssistant';
 import { InvestigationReport } from './pages/InvestigationReport';
 import { Settings } from './pages/Settings';
+import { Login } from './pages/Login';
+import { Profile } from './pages/Profile';
+import { AdminDashboard, OfficerDashboard, InvestigatorDashboard, EvidenceDashboard, DigitalDashboard } from './pages/RoleDashboards';
 import TargetCursor from './components/TargetCursor/TargetCursor';
+import { useSuraagStore } from './store/useSuraagStore';
+
+const AuthGuard = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = useSuraagStore((s) => s.isAuthenticated);
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  return <>{children}</>;
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,8 +57,14 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route element={<MainLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route element={<AuthGuard><MainLayout /></AuthGuard>}>
             <Route path="/dashboard" element={<MissionControl />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/officer-dashboard" element={<OfficerDashboard />} />
+            <Route path="/investigator-dashboard" element={<InvestigatorDashboard />} />
+            <Route path="/evidence-dashboard" element={<EvidenceDashboard />} />
+            <Route path="/digital-dashboard" element={<DigitalDashboard />} />
             <Route path="/cases" element={<CaseManagement />} />
             <Route path="/evidence" element={<EvidenceVault />} />
             <Route path="/reconstruction" element={<CrimeScene3D />} />
@@ -67,6 +83,7 @@ export const App: React.FC = () => {
             <Route path="/ai-reasoning" element={<AIReasoning />} />
             <Route path="/ai-assistant" element={<AIAssistant />} />
             <Route path="/report" element={<InvestigationReport />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Route>
