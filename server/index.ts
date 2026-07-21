@@ -470,6 +470,10 @@ app.post('/api/ai/assistant/chat', async (req: Request, res: Response) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`[Suraag AI Server] Tactical REST API listening on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`[Suraag AI Server] Tactical REST API listening on port ${PORT}`);
+  });
+}
+
+export default app;
