@@ -13,7 +13,14 @@ export const TopBar: React.FC = () => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      setCurrentTime(now.toISOString().replace('T', ' ').substring(0, 19) + ' UTC');
+      const options: Intl.DateTimeFormatOptions = {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false
+      };
+      const formatted = new Intl.DateTimeFormat('en-IN', options).format(now);
+      setCurrentTime(formatted.replace(',', '') + ' IST');
     };
     updateTime();
     const interval = setInterval(updateTime, 1000);
@@ -54,7 +61,7 @@ export const TopBar: React.FC = () => {
           </div>
         </Link>
 
-        <div className="hidden xl:flex items-center gap-3 pl-6 border-l border-outline-variant/40 shrink-0">
+        <div className="hidden lg:flex items-center gap-3 pl-6 border-l border-outline-variant/40 shrink-0">
           <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-surface-container border border-outline-variant/40">
             <Activity className="w-4 h-4 text-emerald-400 animate-pulse" />
             <span className="text-xs font-tactical-data text-on-surface">MULTI-SENSOR FUSION:</span>
@@ -100,7 +107,7 @@ export const TopBar: React.FC = () => {
         </div>
 
         {/* Live Timestamp */}
-        <div className="hidden xl:flex flex-col items-end border-l border-outline-variant/40 pl-4 font-tactical-data shrink-0">
+        <div className="hidden md:flex flex-col items-end border-l border-outline-variant/40 pl-4 font-tactical-data shrink-0">
           <span className="text-[10px] text-on-surface-variant whitespace-nowrap">SYSTEM TIME</span>
           <span className="text-xs text-on-surface font-semibold tracking-wider whitespace-nowrap">{currentTime || 'SYNCING...'}</span>
         </div>
