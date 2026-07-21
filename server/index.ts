@@ -17,7 +17,7 @@ let mockCasesFallback: any[] = [
   {
     id: 'case-1',
     caseNumber: 'CASE-2026-884A',
-    title: 'Project Genesis Breach & Bio-Asset Theft',
+    title: 'Project Genesis Breach',
     status: 'CRITICAL',
     priority: 'CRITICAL',
     assignedTo: 'Agent Sarah Jenkins (Cyber-Physical Div)',

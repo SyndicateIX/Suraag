@@ -126,22 +126,22 @@ export const MissionControl: React.FC = () => {
   return (
     <div className="space-y-6 pb-12">
       {/* Dashboard Title & Diagnostic Strip */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
-            <span className="text-xs font-tactical-data uppercase text-primary font-bold tracking-widest">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <span className="w-2 h-2 rounded-full bg-primary animate-ping shrink-0" />
+            <span className="text-xs font-tactical-data uppercase text-primary font-bold tracking-widest break-words">
               MISSION COMMAND & CONTROL TERMINAL
             </span>
           </div>
-          <h1 className="font-display-lg text-3xl font-bold uppercase tracking-tight text-on-surface flex items-center gap-3">
+          <h1 className="font-display-lg text-2xl sm:text-3xl font-bold uppercase tracking-tight text-on-surface flex flex-wrap items-center gap-2 sm:gap-3">
             <span>Tactical Overview:</span>
-            <span className="text-primary glow-red">{selectedCaseId}</span>
+            <span className="text-primary glow-red break-all">{selectedCaseId}</span>
           </h1>
         </div>
 
         {/* Quick Action Navigation Buttons */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Link
             to="/reconstruction"
             className="px-4 py-2 rounded bg-primary/20 hover:bg-primary text-primary hover:text-on-primary border border-primary/50 transition-all font-tactical-data text-xs font-bold uppercase flex items-center gap-2 shadow-[0_0_12px_rgba(255,84,76,0.2)]"
@@ -170,19 +170,19 @@ export const MissionControl: React.FC = () => {
       {caseLoading || evidenceLoading ? (
         <LoadingSkeleton rows={1} height="h-32" />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
           {/* Card 1: Active Case Intelligence */}
           <GlassCard glow className="p-4 flex flex-col justify-between">
-            <div className="flex items-start justify-between">
-              <div>
-                <span className="text-[10px] font-tactical-data text-on-surface-variant uppercase tracking-widest">
+            <div className="flex flex-col">
+              <div className="flex items-start justify-between gap-2">
+                <span className="text-[10px] font-tactical-data text-on-surface-variant uppercase tracking-widest mt-1">
                   ACTIVE CASE STATUS
                 </span>
-                <h3 className="font-display-lg text-lg font-bold text-on-surface mt-1 truncate">
-                  {activeCase?.title || 'Project Genesis Breach'}
-                </h3>
+                <Badge variant="critical" className="shrink-0">{activeCase?.status || 'CRITICAL'}</Badge>
               </div>
-              <Badge variant="critical">{activeCase?.status || 'CRITICAL'}</Badge>
+              <h3 className="font-display-lg text-base font-bold text-on-surface mt-1.5 leading-snug break-words">
+                {activeCase?.title || 'Project Genesis Breach'}
+              </h3>
             </div>
             <div className="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-xs font-tactical-data">
               <span className="text-on-surface-variant/80">ASSIGNED:</span>
@@ -262,10 +262,10 @@ export const MissionControl: React.FC = () => {
       )}
 
       {/* Charts Section: Timeline Confidence Area Chart & AI Radar Chart */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex flex-wrap lg:flex-nowrap gap-6">
         {/* Main Chart: Timeline Confidence & Anomaly Frequency (2/3 width) */}
         <GlassCard
-          className="lg:col-span-2 p-5"
+          className="w-full lg:w-2/3 p-5"
           header={
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-2">
@@ -309,7 +309,7 @@ export const MissionControl: React.FC = () => {
 
         {/* Right Chart: AI Radar Breakdown (1/3 width) */}
         <GlassCard
-          className="p-5"
+          className="w-full lg:w-1/3 p-5"
           header={
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-primary" />
@@ -338,10 +338,10 @@ export const MissionControl: React.FC = () => {
       </div>
 
       {/* Bottom Row: Evidence Categories Pie Chart & Live Activity & Notifications Feed */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex flex-wrap lg:flex-nowrap gap-6">
         {/* Evidence Category Distribution (1/3) */}
         <GlassCard
-          className="p-5"
+          className="w-full lg:w-1/3 p-5"
           header={
             <div className="flex items-center justify-between w-full">
               <span className="font-display-lg text-sm font-bold uppercase tracking-wider text-on-surface">
@@ -386,7 +386,7 @@ export const MissionControl: React.FC = () => {
 
         {/* Live Activity & Notifications (2/3) */}
         <GlassCard
-          className="lg:col-span-2 p-5"
+          className="w-full lg:w-2/3 p-5"
           header={
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
               <span className="font-display-lg text-sm font-bold uppercase tracking-wider text-on-surface">
