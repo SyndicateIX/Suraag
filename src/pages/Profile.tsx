@@ -5,13 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 export const Profile: React.FC = () => {
   const user = useSuraagStore(s => s.user);
-  const logout = useSuraagStore(s => s.logout);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
 
   if (!user) return null;
 
@@ -26,12 +19,7 @@ export const Profile: React.FC = () => {
             Secure Personnel Record
           </p>
         </div>
-        <button 
-          onClick={handleLogout}
-          className="flex items-center gap-2 px-4 py-2 border border-primary/30 text-primary rounded hover:bg-primary/10 transition-colors font-tactical-data text-xs uppercase tracking-widest"
-        >
-          <LogOut className="w-4 h-4" /> Sign Out
-        </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

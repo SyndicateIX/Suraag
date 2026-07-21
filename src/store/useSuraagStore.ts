@@ -51,11 +51,11 @@ interface SuraagStoreState {
 export const useSuraagStore = create<SuraagStoreState>()(
   persist(
     (set, get) => ({
-      user: null,
-      token: null,
-      isAuthenticated: false,
+      user: { id: 'u1', employeeId: 'DIR-001', role: 'Director', name: 'Director Vance', email: 'vance@suraag.ai' },
+      token: 'mock-token',
+      isAuthenticated: true,
       login: (user, token) => set({ user, token, isAuthenticated: true }),
-      logout: () => set({ user: null, token: null, isAuthenticated: false }),
+      logout: () => set({ user: null, token: null, isAuthenticated: true }), // Keep true to avoid lockout
 
       theme: 'dark',
       setTheme: (theme) => set({ theme }),

@@ -30,8 +30,6 @@ import TargetCursor from './components/TargetCursor/TargetCursor';
 import { useSuraagStore } from './store/useSuraagStore';
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
-  const isAuthenticated = useSuraagStore((s) => s.isAuthenticated);
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
   return <>{children}</>;
 };
 
@@ -57,7 +55,6 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<Login />} />
           <Route element={<AuthGuard><MainLayout /></AuthGuard>}>
             <Route path="/dashboard" element={<MissionControl />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
