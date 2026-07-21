@@ -8,7 +8,12 @@ import jwt from 'jsonwebtoken';
 dotenv.config();
 
 const app = express();
-const prisma = new PrismaClient();
+let prisma: PrismaClient | any = null;
+try {
+  prisma = new PrismaClient();
+} catch (e) {
+  console.warn("Prisma failed to initialize, running with mock data only.", e);
+}
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
