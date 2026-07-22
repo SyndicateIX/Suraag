@@ -62,49 +62,95 @@ const mockUsers = [
   { id: 'u5', employeeId: 'DFO-505', password: 'password123', role: 'Digital Forensics Officer', name: 'Forensics Lead Mike' }
 ];
 
-app.post('/api/auth/login', (req: Request, res: Response) => {
-  const { employeeId, password, role } = req.body;
-  // Simulate delay for brute-force protection visual
-  setTimeout(() => {
-    const user = mockUsers.find(u => u.employeeId === employeeId && u.password === password && u.role === role);
-    
-    if (!user) {
-      return res.status(401).json({ error: 'Invalid credentials or role mismatch.' });
+app.post('/api/auth/login', async (req: Request, res: Response) => {
+  const { employeeId, password, email } = req.body;
+  // Use email or employeeId for login if needed, let's stick to email based on AuthPage
+  
+  try {
+    if (prisma) {
+      const user = await prisma.user.findFirst({
+        where: { email, password }
+      });
+      
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid credentials.' });
+      }
+      
+      const token = jwt.sign({ id: user.id, role: user.role, name: user.name, employeeId: user.employeeId }, JWT_SECRET, { expiresIn: '8h' });
+      return res.json({ token, user });
     }
+  } catch (err) {
+    console.warn("DB login failed, falling back to mock");
+  }
 
-    const token = jwt.sign({ id: user.id, role: user.role, name: user.name, employeeId: user.employeeId }, JWT_SECRET, { expiresIn: '8h' });
-    return res.json({ token, user: { id: user.id, employeeId: user.employeeId, role: user.role, name: user.name } });
-  }, 800);
+  // Fallback to mock
+  const user = mockUsers.find(u => u.email === email && u.password === password) || mockUsers.find(u => u.employeeId === employeeId && u.password === password);
+  if (!user) {
+    return res.status(401).json({ error: 'Invalid credentials.' });
+  }
+
+  const token = jwt.sign({ id: user.id, role: user.role, name: user.name, employeeId: user.employeeId }, JWT_SECRET, { expiresIn: '8h' });
+  return res.json({ token, user: { id: user.id, employeeId: user.employeeId, role: user.role, name: user.name } });
 });
 
-app.post('/api/auth/register', (req: Request, res: Response) => {
+app.post('/api/auth/register', async (req: Request, res: Response) => {
   const { employeeId, password, role, name, email, phone, department } = req.body;
-  setTimeout(() => {
-    const existing = mockUsers.find(u => u.employeeId === employeeId);
-    if (existing) {
-      return res.status(400).json({ error: 'Employee ID already registered.' });
+  
+  try {
+    if (prisma) {
+      const existing = await prisma.user.findFirst({
+        where: {
+          OR: [{ email }, { employeeId }]
+        }
+      });
+      if (existing) {
+        return res.status(400).json({ error: 'Email or Employee ID already registered.' });
+      }
+      
+      const newUser = await prisma.user.create({
+        data: {
+          employeeId: employeeId || `AGT-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+          email,
+          password,
+          name: name || 'New Agent',
+          role: role || 'Investigator',
+          department,
+          phone
+        }
+      });
+      
+      const token = jwt.sign({ id: newUser.id, role: newUser.role, name: newUser.name, employeeId: newUser.employeeId, email: newUser.email }, JWT_SECRET, { expiresIn: '8h' });
+      return res.json({ token, user: newUser });
     }
-    
-    const newUser = {
-      id: `u${mockUsers.length + 1}`,
-      employeeId,
-      password,
-      role,
-      name: name || 'New Agent',
-      email,
-      phone,
-      department
-    };
-    
-    mockUsers.push(newUser);
-    
-    // Log to text file
-    const logEntry = `[${new Date().toISOString()}] Name: ${newUser.name}, Email: ${newUser.email}, Dept: ${newUser.department}, EmpID: ${newUser.employeeId}\n`;
-    fs.appendFileSync(path.join(process.cwd(), 'registered_users.txt'), logEntry);
-    
-    const token = jwt.sign({ id: newUser.id, role: newUser.role, name: newUser.name, employeeId: newUser.employeeId, email: newUser.email, phone: newUser.phone, department: newUser.department }, JWT_SECRET, { expiresIn: '8h' });
-    return res.json({ token, user: { id: newUser.id, employeeId: newUser.employeeId, role: newUser.role, name: newUser.name, email: newUser.email, phone: newUser.phone, department: newUser.department } });
-  }, 800);
+  } catch (err) {
+    console.warn("DB register failed, falling back to mock", err);
+  }
+
+  // Fallback
+  const existing = mockUsers.find(u => u.employeeId === employeeId || u.email === email);
+  if (existing) {
+    return res.status(400).json({ error: 'Employee ID or Email already registered.' });
+  }
+  
+  const newUser = {
+    id: `u${mockUsers.length + 1}`,
+    employeeId: employeeId || `AGT-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+    password,
+    role: role || 'Investigator',
+    name: name || 'New Agent',
+    email,
+    phone,
+    department
+  };
+  
+  mockUsers.push(newUser as any);
+  
+  // Log to text file as fallback
+  const logEntry = `[${new Date().toISOString()}] Name: ${newUser.name}, Email: ${newUser.email}, Dept: ${newUser.department}, EmpID: ${newUser.employeeId}\n`;
+  try { fs.appendFileSync(path.join(process.cwd(), 'registered_users.txt'), logEntry); } catch(e) {}
+  
+  const token = jwt.sign({ id: newUser.id, role: newUser.role, name: newUser.name, employeeId: newUser.employeeId, email: newUser.email }, JWT_SECRET, { expiresIn: '8h' });
+  return res.json({ token, user: newUser });
 });
 
 app.get('/api/auth/me', (req: Request, res: Response) => {

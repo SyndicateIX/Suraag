@@ -100,3 +100,16 @@ model ReconstructionData {
   scenarios        Json     // [{ id: string, name: string, probability: number, description: string, evidenceCount: number }]
   createdAt        DateTime @default(now())
 }
+
+model User {
+  id             String   @id @default(uuid())
+  employeeId     String   @unique
+  email          String   @unique
+  password       String
+  name           String
+  role           String   @default("Investigator")
+  department     String?
+  phone          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

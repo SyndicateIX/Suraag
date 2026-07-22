@@ -12,78 +12,74 @@ export const AuthPage: React.FC = () => {
   const [name, setName] = useState('');
   const [department, setDepartment] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
   const login = useSuraagStore(state => state.login);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
-    // Mock localStorage database
-    const usersStr = localStorage.getItem('suraagMockUsers');
-    const users = usersStr ? JSON.parse(usersStr) : [];
-
-    if (isLogin) {
-      // Find user
-      const user = users.find((u: any) => u.email === email && u.password === password);
-      if (!user) {
-        const emailExists = users.some((u: any) => u.email === email);
-        if (!emailExists) {
-          setError('Agent not found. Please register before logging in.');
-          setTimeout(() => setIsLogin(false), 1500); // Switch to register automatically after reading error
-        } else {
-          setError('Invalid passcode.');
+    try {
+      if (isLogin) {
+        const response = await fetch('http://localhost:3001/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          setError(data.error || 'Invalid credentials.');
+          // Auto-switch to register if email not found
+          if (data.error && data.error.includes('credentials')) {
+            // It could be not found or wrong password, we don't switch automatically anymore
+            // to avoid exposing user enumeration, but keeping error clear.
+            setError(data.error);
+          }
+          setLoading(false);
+          return;
         }
-        return;
+
+        login(data.user, data.token);
+        navigate('/dashboard');
+      } else {
+        const employeeId = 'AGT-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+        const response = await fetch('http://localhost:3001/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            employeeId,
+            password,
+            role: 'Investigator',
+            name: name || 'Agent',
+            email,
+            department
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          setError(data.error || 'Registration failed.');
+          if (data.error && data.error.includes('already registered')) {
+            setTimeout(() => setIsLogin(true), 1500);
+          }
+          setLoading(false);
+          return;
+        }
+
+        login(data.user, data.token);
+        navigate('/dashboard');
       }
-      
-      login(
-        { id: user.id, employeeId: user.employeeId, role: 'Investigator', name: user.name, email: user.email, department: user.department },
-        'mock-token-' + user.id
-      );
-      navigate('/dashboard');
-    } else {
-      // Register
-      const emailExists = users.some((u: any) => u.email === email);
-      if (emailExists) {
-        setError('Agent already registered with this email. Please login.');
-        setTimeout(() => setIsLogin(true), 1500);
-        return;
-      }
-
-      const employeeId = 'AGT-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-      const newUser = {
-        id: 'u' + Date.now(),
-        employeeId,
-        name: name || 'Agent',
-        email,
-        department,
-        password, // In a real app, this would be hashed securely on the backend
-      };
-      
-      users.push(newUser);
-      localStorage.setItem('suraagMockUsers', JSON.stringify(users));
-
-      // Trigger backend to log to the text file
-      fetch('http://localhost:3001/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          employeeId,
-          password,
-          role: 'Investigator',
-          name: name || 'Agent',
-          email,
-          department
-        })
-      }).catch(err => console.error('Failed to log to backend file', err));
-
-      login(
-        { id: newUser.id, employeeId: newUser.employeeId, role: 'Investigator', name: newUser.name, email: newUser.email, department: newUser.department },
-        'mock-token-' + newUser.id
-      );
-      navigate('/dashboard');
+    } catch (err) {
+      console.error('Auth error:', err);
+      setError('Network error connecting to Suraag AI core.');
+    } finally {
+      setLoading(false);
     }
   };
 
