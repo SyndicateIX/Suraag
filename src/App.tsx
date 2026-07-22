@@ -26,7 +26,6 @@ import { InvestigationReport } from './pages/InvestigationReport';
 import { Settings } from './pages/Settings';
 import { Profile } from './pages/Profile';
 import { AdminDashboard, OfficerDashboard, InvestigatorDashboard, EvidenceDashboard, DigitalDashboard } from './pages/RoleDashboards';
-import TargetCursor from './components/TargetCursor/TargetCursor';
 import { useSuraagStore } from './store/useSuraagStore';
 
 const AuthGuard = ({ children }: { children: React.ReactNode }) => {
@@ -46,12 +45,6 @@ const queryClient = new QueryClient({
 export const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <TargetCursor 
-        spinDuration={2}
-        hideDefaultCursor={true}
-        parallaxOn={true}
-        targetSelector="a, button, .cursor-target"
-      />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
