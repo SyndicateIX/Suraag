@@ -24,7 +24,7 @@ export const AuthPage: React.FC = () => {
 
     try {
       if (isLogin) {
-        const response = await fetch('http://localhost:3001/api/auth/login', {
+        const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -48,7 +48,7 @@ export const AuthPage: React.FC = () => {
         navigate('/dashboard');
       } else {
         const employeeId = 'AGT-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-        const response = await fetch('http://localhost:3001/api/auth/register', {
+        const response = await fetch('/api/auth/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
