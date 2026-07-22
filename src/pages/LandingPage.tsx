@@ -226,7 +226,7 @@ export const LandingPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             {
               step: '01',
@@ -253,7 +253,7 @@ export const LandingPage: React.FC = () => {
               key={idx}
               className="glass-panel p-6 rounded-lg border border-outline-variant/50 relative overflow-hidden group hover:border-primary transition-all flex flex-col justify-between"
             >
-              <div className="absolute -top-3 -right-3 text-6xl font-display-lg font-bold text-outline-variant/15 select-none group-hover:text-primary/20 transition-colors">
+              <div className="absolute top-3 right-6 text-6xl leading-none font-display-lg font-bold text-outline-variant/15 select-none group-hover:text-primary/20 transition-colors">
                 {item.step}
               </div>
               <div>
