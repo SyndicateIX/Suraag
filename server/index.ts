@@ -111,6 +111,84 @@ app.post('/api/cases', async (req: Request, res: Response) => {
   }
 });
 
+app.post('/api/cases/ingest', async (req: Request, res: Response) => {
+  const { storyline } = req.body;
+  if (!storyline) return res.status(400).json({ error: 'Storyline text is required' });
+
+  try {
+    if (!process.env.GEMINI_API_KEY) throw new Error('GEMINI_API_KEY missing');
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    
+    const prompt = `Analyze this crime storyline and extract the details into a strict JSON object. 
+The JSON must follow this exact structure:
+{
+  "caseNumber": "CASE-YYYY-XXXX",
+  "title": "Short title",
+  "status": "ACTIVE",
+  "priority": "CRITICAL",
+  "assignedTo": "Lead Investigator",
+  "location": "Main location",
+  "incidentDate": "2026-06-21T11:30:00Z",
+  "summary": "1-2 sentence summary",
+  "confidenceScore": 95.5,
+  "evidence": [
+    { "title": "Item name", "category": "WEAPON or CCTV or DOCUMENT or PHONE or VEHICLE or BALLISTICS", "fileUrl": "https://images.unsplash.com/photo-1580000000000?auto=format&fit=crop&w=800&q=80", "fileType": "image/jpeg", "confidence": 99.0, "processedStatus": "COMPLETED", "boundingBoxes": [] }
+  ],
+  "witnesses": [
+    { "witnessName": "Name", "role": "Role", "statementDate": "2026-06-21T12:00:00Z", "statementText": "Quote", "aiExtraction": { "entities": [], "locationClaims": [], "timelineClaims": [] }, "credibilityScore": 90.0 }
+  ],
+  "suspects": [
+    { "name": "Name", "alias": "Alias", "riskScore": 95, "probability": 0.9, "criminalHistory": [], "phone": "12345", "aiReasoning": "Why" }
+  ],
+  "timelineEvents": [
+    { "timestamp": "2026-06-21T10:00:00Z", "title": "Event name", "description": "What happened", "category": "NETWORK or CCTV or WEAPON or VEHICLE", "confidence": 98.0, "aiReasoning": "Why" }
+  ]
+}
+
+Here is the storyline:
+${storyline}`;
+
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash',
+      generationConfig: { responseMimeType: "application/json" }
+    });
+
+    const result = await model.generateContent(prompt);
+    const parsedData = JSON.parse(result.response.text());
+
+    if (prisma) {
+      const newCase = await prisma.case.create({
+        data: {
+          caseNumber: parsedData.caseNumber,
+          title: parsedData.title,
+          status: parsedData.status,
+          priority: parsedData.priority,
+          assignedTo: parsedData.assignedTo,
+          location: parsedData.location,
+          incidentDate: new Date(parsedData.incidentDate || new Date()),
+          summary: parsedData.summary,
+          confidenceScore: parsedData.confidenceScore,
+          evidence: { create: parsedData.evidence || [] },
+          witnesses: {
+            create: (parsedData.witnesses || []).map((w: any) => ({
+              ...w,
+              statementDate: new Date(w.statementDate || new Date())
+            }))
+          },
+          suspects: { create: parsedData.suspects || [] },
+          timelineEvents: { create: parsedData.timelineEvents || [] }
+        }
+      });
+      return res.json({ id: newCase.id });
+    } else {
+      throw new Error("Database not connected");
+    }
+  } catch (error: any) {
+    console.error('[Suraag AI] Case Ingestion Error:', error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 // ==========================================
 // EVIDENCE & COMPUTER VISION API
 // ==========================================

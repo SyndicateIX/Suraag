@@ -181,7 +181,7 @@ export const MissionControl: React.FC = () => {
                 <Badge variant="critical" className="shrink-0">{activeCase?.status || 'CRITICAL'}</Badge>
               </div>
               <h3 className="font-display-lg text-base font-bold text-on-surface mt-1.5 leading-snug break-words">
-                {activeCase?.title || 'Project Genesis Breach'}
+                {activeCase?.title || 'The Doomed Triangle'}
               </h3>
             </div>
             <div className="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-xs font-tactical-data">
