@@ -126,7 +126,7 @@ export const LandingPage: React.FC = () => {
 
         <div className="flex items-center gap-4">
           <Link
-            to="/dashboard"
+            to="/auth"
             className="px-6 py-2.5 rounded-md bg-primary text-on-primary font-tactical-data text-xs font-bold tracking-wider uppercase hover:bg-surface-tint transition-all shadow-[0_0_20px_rgba(255,84,76,0.4)] flex items-center gap-2 group"
           >
             <span>Launch Command Center</span>
@@ -172,7 +172,7 @@ export const LandingPage: React.FC = () => {
           className="mt-10 flex flex-wrap items-center justify-center gap-6"
         >
           <Link
-            to="/dashboard"
+            to="/auth"
             className="px-8 py-4 rounded-md bg-primary text-on-primary font-tactical-data text-sm font-bold tracking-wider uppercase hover:bg-surface-tint transition-all shadow-[0_0_30px_rgba(255,84,76,0.5)] flex items-center gap-3 group"
           >
             <Play className="w-5 h-5 fill-current" />
@@ -604,7 +604,7 @@ export const LandingPage: React.FC = () => {
           <div className="flex items-center gap-6">
             <span>ALL RIGHTS RESERVED © 2026</span>
             <span>SYSTEM ENCRYPTION: SOVEREIGN 4096-BIT</span>
-            <Link to="/dashboard" className="text-primary font-bold hover:underline">
+            <Link to="/auth" className="text-primary font-bold hover:underline">
               COMMAND CENTER →
             </Link>
           </div>

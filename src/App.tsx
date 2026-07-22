@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MainLayout } from './layouts/MainLayout';
 import { LandingPage } from './pages/LandingPage';
+import { AuthPage } from './pages/AuthPage';
 import { MissionControl } from './pages/MissionControl';
 import { CaseManagement } from './pages/CaseManagement';
 import { EvidenceVault } from './pages/EvidenceVault';
@@ -54,6 +55,7 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<AuthPage />} />
           <Route element={<AuthGuard><MainLayout /></AuthGuard>}>
             <Route path="/dashboard" element={<MissionControl />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />

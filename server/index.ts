@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import { PrismaClient } from '@prisma/client';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import jwt from 'jsonwebtoken';
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
 
@@ -95,6 +97,10 @@ app.post('/api/auth/register', (req: Request, res: Response) => {
     };
     
     mockUsers.push(newUser);
+    
+    // Log to text file
+    const logEntry = `[${new Date().toISOString()}] Name: ${newUser.name}, Email: ${newUser.email}, Dept: ${newUser.department}, EmpID: ${newUser.employeeId}\n`;
+    fs.appendFileSync(path.join(process.cwd(), 'registered_users.txt'), logEntry);
     
     const token = jwt.sign({ id: newUser.id, role: newUser.role, name: newUser.name, employeeId: newUser.employeeId, email: newUser.email, phone: newUser.phone, department: newUser.department }, JWT_SECRET, { expiresIn: '8h' });
     return res.json({ token, user: { id: newUser.id, employeeId: newUser.employeeId, role: newUser.role, name: newUser.name, email: newUser.email, phone: newUser.phone, department: newUser.department } });
