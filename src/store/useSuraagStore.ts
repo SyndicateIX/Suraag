@@ -61,7 +61,7 @@ export const useSuraagStore = create<SuraagStoreState>()(
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set({ theme: get().theme === 'dark' ? 'light' : 'dark' }),
 
-      selectedCaseId: 'CASE-2026-884A',
+      selectedCaseId: 'CASE-2026-901M',
       setSelectedCaseId: (id) => set({ selectedCaseId: id }),
       selectedCase: null,
       setSelectedCase: (c) => set({ selectedCase: c }),
@@ -106,7 +106,7 @@ export const useSuraagStore = create<SuraagStoreState>()(
         {
           id: 'msg-init',
           role: 'model',
-          text: 'Suraag AI Tactical Intelligence online. Case **CASE-2026-884A** loaded. Multi-sensor fusion active with 94.2% confidence. How may I assist in your investigation?',
+          text: 'Suraag AI Tactical Intelligence online. Case **CASE-2026-901M** loaded. Multi-sensor fusion active with 98.4% confidence. How may I assist in your investigation?',
           timestamp: new Date().toISOString(),
           confidence: 99.8,
         },

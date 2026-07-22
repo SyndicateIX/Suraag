@@ -155,7 +155,7 @@ async function main() {
       const cat = evidenceCategories[(evIndex - 1) % evidenceCategories.length];
       const titles = evidenceLabels[cat];
       const title = titles[i % titles.length] + (i > 0 ? ` (Item #${evIndex})` : '');
-      
+
       const boundingBoxes = [
         {
           x: Math.floor(Math.random() * 400) + 50,
@@ -226,8 +226,8 @@ async function main() {
         statementDate: new Date(assignedCase.incidentDate.getTime() + (i + 1) * 3600000),
         statementText: isContradictory
           ? `I was standing directly by the North Doorway (` +
-            `Wall B` +
-            `) at exactly 23:14:00 when I saw two masked individuals enter the vault room and extract the core without triggering alarms.`
+          `Wall B` +
+          `) at exactly 23:14:00 when I saw two masked individuals enter the vault room and extract the core without triggering alarms.`
           : `I heard a sharp acoustic pop from Sub-Level 3 at approximately 23:15. When I checked the hallway monitor, the camera feed experienced severe interference and static for roughly 40 seconds.`,
         aiExtraction: {
           entities: ['North Doorway', 'Wall B', 'Sub-Level 3 Vault', 'Two Masked Individuals', 'Acoustic Pop'],
@@ -237,17 +237,17 @@ async function main() {
         credibilityScore: isContradictory ? 42.5 : parseFloat((82.0 + Math.random() * 15).toFixed(1)),
         contradictions: isContradictory
           ? [
-              {
-                target: 'Physical Geometry & Line-of-Sight Analysis',
-                reason: 'CONTRADICTION DETECTED: Based on 3D room reconstruction (`Wall B` occlusion) and line-of-sight cone analysis, a person standing at the North Doorway has 0% visibility of the interior vault lock.',
-                severity: 'CRITICAL',
-              },
-              {
-                target: 'CCTV & Thermal Timeline at 23:14:02',
-                reason: 'Corridor thermal sensors record zero thermal signatures at Wall B until 23:18:45.',
-                severity: 'HIGH',
-              },
-            ]
+            {
+              target: 'Physical Geometry & Line-of-Sight Analysis',
+              reason: 'CONTRADICTION DETECTED: Based on 3D room reconstruction (`Wall B` occlusion) and line-of-sight cone analysis, a person standing at the North Doorway has 0% visibility of the interior vault lock.',
+              severity: 'CRITICAL',
+            },
+            {
+              target: 'CCTV & Thermal Timeline at 23:14:02',
+              reason: 'Corridor thermal sensors record zero thermal signatures at Wall B until 23:18:45.',
+              severity: 'HIGH',
+            },
+          ]
           : null,
       },
     });

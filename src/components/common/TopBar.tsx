@@ -4,6 +4,7 @@ import { ShieldAlert, Activity, Radio, Search, Bell, Database, ExternalLink, Moo
 import { useSuraagStore } from '../../store/useSuraagStore';
 import { useTheme } from '../../hooks/useTheme';
 import { Badge } from './Badge';
+import { IngestCaseModal } from './IngestCaseModal';
 
 export const TopBar: React.FC = () => {
   const navigate = useNavigate();
@@ -11,6 +12,20 @@ export const TopBar: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const [currentTime, setCurrentTime] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [cases, setCases] = useState<any[]>([]);
+  const [isIngestModalOpen, setIsIngestModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetch('http://localhost:3001/api/cases')
+      .then(res => res.json())
+      .then(data => {
+        setCases(data);
+        if (data.length > 0 && !selectedCaseId) {
+          setSelectedCaseId(data[0].id);
+        }
+      })
+      .catch(err => console.error("Failed to fetch cases", err));
+  }, []);
 
   useEffect(() => {
     const updateTime = () => {
@@ -93,19 +108,30 @@ export const TopBar: React.FC = () => {
         </form>
 
         {/* Active Case Selector */}
-        <div className="flex items-center gap-1.5 bg-surface-container-high px-2 py-1 rounded border border-primary/40 shadow-[0_0_10px_rgba(255,84,76,0.15)] shrink-0">
-          <Database className="w-3.5 h-3.5 text-primary" />
-          <span className="hidden sm:inline-block text-[10px] font-tactical-data text-on-surface-variant uppercase">Case:</span>
-          <select
-            value={selectedCaseId}
-            onChange={handleCaseChange}
-            className="bg-transparent font-tactical-data text-[10px] text-primary font-bold focus:outline-none cursor-pointer max-w-[100px] sm:max-w-[140px] truncate"
+        <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-1.5 bg-surface-container-high px-2 py-1 rounded border border-primary/40 shadow-[0_0_10px_rgba(255,84,76,0.15)]">
+            <Database className="w-3.5 h-3.5 text-primary" />
+            <span className="hidden sm:inline-block text-[10px] font-tactical-data text-on-surface-variant uppercase">Case:</span>
+            <select
+              value={selectedCaseId}
+              onChange={handleCaseChange}
+              className="bg-transparent font-tactical-data text-[10px] text-primary font-bold focus:outline-none cursor-pointer max-w-[100px] sm:max-w-[140px] truncate"
+            >
+              {cases.length === 0 && <option value="CASE-2026-901M" className="bg-surface-container-high text-primary">CASE-2026-901M: The Doomed Triangle</option>}
+              {cases.map(c => (
+                <option key={c.id} value={c.id} className="bg-surface-container-high text-primary">
+                  {c.caseNumber}: {c.title}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button 
+            onClick={() => setIsIngestModalOpen(true)}
+            className="flex items-center gap-1 bg-primary/20 text-primary hover:bg-primary/40 border border-primary/40 px-2 py-1 rounded text-[10px] font-tactical-data uppercase transition-all"
+            title="Ingest New Case via AI"
           >
-            <option value="CASE-2026-884A" className="bg-surface-container-high text-primary">CASE-2026-884A: Project Genesis Breach</option>
-            <option value="CASE-2026-712B" className="bg-surface-container-high text-primary">CASE-2026-712B: Orbital Uplink Sabotage</option>
-            <option value="CASE-2026-650C" className="bg-surface-container-high text-primary">CASE-2026-650C: Autonomous Transit Collision</option>
-            <option value="CASE-2026-599D" className="bg-surface-container-high text-primary">CASE-2026-599D: Deep-Water Data Conduit Tap</option>
-          </select>
+            + NEW CASE
+          </button>
         </div>
 
         {/* Live Timestamp */}
@@ -136,6 +162,16 @@ export const TopBar: React.FC = () => {
           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-primary animate-ping" />
         </button>
       </div>
+      <IngestCaseModal 
+        isOpen={isIngestModalOpen} 
+        onClose={() => setIsIngestModalOpen(false)} 
+        onSuccess={(id) => {
+          setIsIngestModalOpen(false);
+          fetch('http://localhost:3001/api/cases')
+            .then(res => res.json())
+            .then(data => setCases(data));
+        }} 
+      />
     </header>
   );
 };
