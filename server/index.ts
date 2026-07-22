@@ -199,6 +199,7 @@ app.get('/api/evidence', async (req: Request, res: Response) => {
     if (caseId) where.caseId = String(caseId);
     if (category && category !== 'ALL') where.category = String(category);
     const evidence = await prisma.evidence.findMany({ where, orderBy: { createdAt: 'desc' } });
+    if (!evidence || evidence.length === 0) throw new Error('No evidence found, using fallback');
     return res.json(evidence);
   } catch (err) {
     return res.json([
@@ -289,6 +290,7 @@ app.get('/api/witnesses', async (req: Request, res: Response) => {
     let where: any = {};
     if (caseId) where.caseId = String(caseId);
     const witnesses = await prisma.witnessStatement.findMany({ where, orderBy: { statementDate: 'asc' } });
+    if (!witnesses || witnesses.length === 0) throw new Error('No witnesses found, using fallback');
     return res.json(witnesses);
   } catch (err) {
     return res.json([
@@ -325,6 +327,7 @@ app.get('/api/suspects', async (req: Request, res: Response) => {
     let where: any = {};
     if (caseId) where.caseId = String(caseId);
     const suspects = await prisma.suspect.findMany({ where, orderBy: { riskScore: 'desc' } });
+    if (!suspects || suspects.length === 0) throw new Error('No suspects found, using fallback');
     return res.json(suspects);
   } catch (err) {
     return res.json([
@@ -351,6 +354,7 @@ app.get('/api/timeline', async (req: Request, res: Response) => {
     let where: any = {};
     if (caseId) where.caseId = String(caseId);
     const events = await prisma.timelineEvent.findMany({ where, orderBy: { timestamp: 'asc' } });
+    if (!events || events.length === 0) throw new Error('No timeline events found, using fallback');
     return res.json(events);
   } catch (err) {
     return res.json([
