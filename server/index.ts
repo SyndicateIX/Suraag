@@ -135,7 +135,7 @@ The JSON must follow this exact structure:
     { "title": "Item name", "category": "WEAPON or CCTV or DOCUMENT or PHONE or VEHICLE or BALLISTICS", "fileUrl": "https://images.unsplash.com/photo-1580000000000?auto=format&fit=crop&w=800&q=80", "fileType": "image/jpeg", "confidence": 99.0, "processedStatus": "COMPLETED", "boundingBoxes": [] }
   ],
   "witnesses": [
-    { "witnessName": "Name", "role": "Role", "statementDate": "2026-06-21T12:00:00Z", "statementText": "Quote", "aiExtraction": { "entities": [], "locationClaims": [], "timelineClaims": [] }, "credibilityScore": 90.0 }
+    { "witnessName": "Name", "role": "Role", "statementDate": "2026-06-21T12:00:00Z", "statementText": "Quote", "aiExtraction": { "entities": [], "locationClaims": [], "timelineClaims": [] }, "credibilityScore": 90.0, "contradictions": [{ "target": "What it contradicts", "reason": "Why", "severity": "CRITICAL" }] }
   ],
   "suspects": [
     { "name": "Name", "alias": "Alias", "riskScore": 95, "probability": 0.9, "criminalHistory": [], "phone": "12345", "aiReasoning": "Why" }
@@ -144,6 +144,8 @@ The JSON must follow this exact structure:
     { "timestamp": "2026-06-21T10:00:00Z", "title": "Event name", "description": "What happened", "category": "NETWORK or CCTV or WEAPON or VEHICLE", "confidence": 98.0, "aiReasoning": "Why" }
   ]
 }
+
+Ensure you generate at least 2 witnesses (one of which must have a contradiction) and at least 4 timeline events based on the storyline. If the storyline is too short, creatively extrapolate plausible forensic details that fit the narrative.
 
 Here is the storyline:
 ${storyline}`;
@@ -199,7 +201,6 @@ app.get('/api/evidence', async (req: Request, res: Response) => {
     if (caseId) where.caseId = String(caseId);
     if (category && category !== 'ALL') where.category = String(category);
     const evidence = await prisma.evidence.findMany({ where, orderBy: { createdAt: 'desc' } });
-    if (!evidence || evidence.length === 0) throw new Error('No evidence found, using fallback');
     return res.json(evidence);
   } catch (err) {
     return res.json([
@@ -290,7 +291,6 @@ app.get('/api/witnesses', async (req: Request, res: Response) => {
     let where: any = {};
     if (caseId) where.caseId = String(caseId);
     const witnesses = await prisma.witnessStatement.findMany({ where, orderBy: { statementDate: 'asc' } });
-    if (!witnesses || witnesses.length === 0) throw new Error('No witnesses found, using fallback');
     return res.json(witnesses);
   } catch (err) {
     return res.json([
@@ -327,7 +327,6 @@ app.get('/api/suspects', async (req: Request, res: Response) => {
     let where: any = {};
     if (caseId) where.caseId = String(caseId);
     const suspects = await prisma.suspect.findMany({ where, orderBy: { riskScore: 'desc' } });
-    if (!suspects || suspects.length === 0) throw new Error('No suspects found, using fallback');
     return res.json(suspects);
   } catch (err) {
     return res.json([
@@ -354,7 +353,6 @@ app.get('/api/timeline', async (req: Request, res: Response) => {
     let where: any = {};
     if (caseId) where.caseId = String(caseId);
     const events = await prisma.timelineEvent.findMany({ where, orderBy: { timestamp: 'asc' } });
-    if (!events || events.length === 0) throw new Error('No timeline events found, using fallback');
     return res.json(events);
   } catch (err) {
     return res.json([
