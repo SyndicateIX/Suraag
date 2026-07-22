@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldAlert, Mail, Lock, User as UserIcon, ArrowRight, Activity, Terminal, AlertTriangle } from 'lucide-react';
 import { ScanlineOverlay } from '../components/common/ScanlineOverlay';
@@ -12,6 +12,9 @@ export const AuthPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const redirectUrl = searchParams.get('redirect') || '/dashboard';
   const login = useSuraagStore(state => state.login);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,7 +38,7 @@ export const AuthPage: React.FC = () => {
         }
 
         login(data.user, data.token);
-        navigate('/dashboard');
+        navigate(redirectUrl);
     } catch (err) {
       console.error('Auth error:', err);
       setError('Network error connecting to Suraag AI core.');
