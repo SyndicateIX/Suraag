@@ -65,7 +65,7 @@ export const useSuraagStore = create<SuraagStoreState>()(
       setTheme: (theme) => set({ theme }),
       toggleTheme: () => set({ theme: get().theme === 'dark' ? 'light' : 'dark' }),
 
-      selectedCaseId: 'CASE-2026-901M',
+      selectedCaseId: 'CASE-2026-DT01',
       setSelectedCaseId: (id) => set({ selectedCaseId: id }),
       selectedCase: null,
       setSelectedCase: (c) => set({ selectedCase: c }),

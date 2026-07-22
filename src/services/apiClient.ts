@@ -46,6 +46,11 @@ export const apiClient = {
   },
   timeline: {
     getAll: (caseId?: string) => fetchJSON<TimelineEvent[]>(`/timeline${caseId ? `?caseId=${caseId}` : ''}`),
+    parseReport: (caseId?: string, reportText?: string) =>
+      fetchJSON<{ events: TimelineEvent[]; stats: any }>('/timeline/parse-report', {
+        method: 'POST',
+        body: JSON.stringify({ caseId, reportText }),
+      }),
   },
   reconstruction: {
     getByCaseId: (caseId: string) => fetchJSON<ReconstructionData>(`/reconstruction/${caseId}`),

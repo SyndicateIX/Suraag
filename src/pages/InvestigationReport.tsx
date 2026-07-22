@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, Printer, ShieldAlert, CheckCircle2, Crosshair, Users, Activity, Download } from 'lucide-react';
+import { FileText, Printer, ShieldAlert, CheckCircle2, Crosshair, Users, Activity, ExternalLink, Calendar, MapPin, DollarSign, PhoneCall, AlertTriangle } from 'lucide-react';
 import { useSuraagStore } from '../store/useSuraagStore';
 import { GlassCard } from '../components/common/GlassCard';
 import { Badge } from '../components/common/Badge';
@@ -18,11 +18,11 @@ export const InvestigationReport: React.FC = () => {
           <div className="flex items-center gap-2 mb-1">
             <FileText className="w-4 h-4 text-primary" />
             <span className="text-xs font-tactical-data uppercase text-primary font-bold tracking-widest">
-              OFFICIAL GOVERNMENT & LAW ENFORCEMENT INVESTIGATION DOSSIER
+              OFFICIAL LAW ENFORCEMENT & FORENSIC DOSSIER
             </span>
           </div>
           <h1 className="font-display-lg text-3xl font-bold uppercase tracking-tight text-on-surface">
-            Official Investigation Report ({selectedCaseId})
+            Case Study Dossier: The Doomed Triangle ({selectedCaseId})
           </h1>
         </div>
 
@@ -31,330 +31,301 @@ export const InvestigationReport: React.FC = () => {
           className="px-6 py-2.5 rounded bg-primary text-on-primary hover:bg-surface-tint font-tactical-data text-xs font-bold tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(255,84,76,0.4)] flex items-center gap-2"
         >
           <Printer className="w-4 h-4" />
-          <span>Print / Export PDF Dossier</span>
+          <span>Print / Export Full PDF Dossier</span>
         </button>
       </div>
 
       {/* Printable Dossier Sheet */}
       <div className="font-serif glass-panel p-8 md:p-12 rounded-lg border border-primary/60 space-y-8 bg-surface-container-lowest/90 text-on-surface print:border-none print:shadow-none print:p-0 print:bg-white print:text-black">
+        
         {/* Report Header Banner */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b-2 border-primary gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded bg-secondary-container border border-primary flex items-center justify-center">
+            <div className="w-14 h-14 rounded bg-secondary-container border border-primary flex items-center justify-center shrink-0">
               <ShieldAlert className="w-8 h-8 text-primary" />
             </div>
             <div>
-              <span className="text-2xl font-bold uppercase tracking-tighter text-on-surface print:text-black">
-                SURAAG AI FORENSIC INTELLIGENCE DOSSIER
+              <span className="text-2xl font-bold uppercase tracking-tighter text-on-surface print:text-black block">
+                THE DOOMED TRIANGLE – CASE DOSSIER
               </span>
               <span className="block text-xs text-on-surface-variant uppercase print:text-gray-600">
-                SECURITY CLASSIFICATION: SOVEREIGN TOP SECRET // PALANTIR LATTICE PROTOCOL
+                STATE CRIME BRANCH & FORENSIC INTELLIGENCE UNIT, PUNE // CHARGESHEET FILED
               </span>
             </div>
           </div>
 
           <div className="text-right text-xs space-y-1">
-            <div>CASE REF: <strong className="text-on-surface print:text-black">{selectedCaseId}</strong></div>
-            <div>DATE (IST): <strong>{new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date()).replace(/\//g, '-')}</strong></div>
-            <div>STATUS: <Badge variant="critical" className="print:border-black print:text-black">CRITICAL BREACH</Badge></div>
+            <div>CASE REF: <strong className="text-on-surface print:text-black">CASE-2026-DT01</strong></div>
+            <div>STATUS: <Badge variant="critical" className="print:border-black print:text-black">SOLVED // TRIABLE AT SESSIONS COURT</Badge></div>
+            <div>CONFIDENCE: <strong className="text-emerald-400 print:text-black">99.984% BAYESIAN PROOF</strong></div>
           </div>
         </div>
 
-        {/* Section 1: Executive Summary */}
+        {/* Section 1: Executive Case Summary */}
         <div className="space-y-3">
           <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            1. Executive Tactical Summary
+            1. Executive Case Summary
           </h2>
-          <p className="text-sm text-on-surface-variant print:text-black leading-relaxed bg-surface-container print:bg-transparent p-4 print:p-0 rounded border border-outline-variant/40 print:border-none">
-            On July 15, 2026 at 23:14:00 UTC, a coordinated cyber-physical infiltration occurred at Sector 4 High-Security Research Facility (Zurich), targeting classified biological quantum assets stored in Sub-Level 3 Vault. Through multi-sensor Bayesian fusion across 18 independent evidence items (`94.2% overall confidence`), Suraag AI confirms that the breach was executed via an insider-assisted ambush (Scenario A, `78.4% probability`) involving suspect Viktor "Shadow" Krell and compromised keycard credentials belonging to Dr. Julian Vance.
-          </p>
-        </div>
-
-        {/* Section 2: Key Triangulation & Ballistic Findings */}
-        <div className="space-y-3">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            2. 3D Ballistic & Attacker Triangulation Findings
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div className="p-4 print:p-0 rounded bg-surface-container print:bg-transparent border border-outline-variant print:border-none space-y-1">
-              <span className="text-on-surface-variant print:text-gray-600 block">ATTACKER POSITION ORIGIN:</span>
-              <span className="text-base font-bold text-on-surface print:text-black block">Walkway Sector [X: -2.4, Y: 1.7, Z: 3.1]</span>
-              <span className="text-on-surface-variant/80 print:text-gray-600 text-[11px] block mt-1">Stature: 1.82m standing stance. Fired suppressed 9mm.</span>
-            </div>
-            <div className="p-4 print:p-0 rounded bg-surface-container print:bg-transparent border border-outline-variant print:border-none space-y-1">
-              <span className="text-on-surface-variant print:text-gray-600 block">PRIMARY WALL IMPACT:</span>
-              <span className="text-base font-bold text-on-surface print:text-black block">Entry Angle: 34.2° Downward</span>
-              <span className="text-on-surface-variant/80 print:text-gray-600 text-[11px] block mt-1">Impact velocity: 340 m/s (485 Joules kinetic energy).</span>
-            </div>
-            <div className="p-4 print:p-0 rounded bg-surface-container print:bg-transparent border border-outline-variant print:border-none space-y-1">
-              <span className="text-on-surface-variant print:text-gray-600 block">BLOOD SPATTER CORRELATION:</span>
-              <span className="text-base font-bold text-emerald-400 print:text-black block">420 High-Velocity Droplets</span>
-              <span className="text-on-surface-variant/80 print:text-gray-600 text-[11px] block mt-1">Elliptical ratio (1.42) matches exact victim location.</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Section 3: Witness Contradictions Audit */}
-        <div className="space-y-3">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            3. Witness Statement vs. 3D Line-of-Sight Refutation
-          </h2>
-          <div className="p-4 print:p-0 rounded bg-secondary-container/60 print:bg-transparent border border-primary print:border-none space-y-2 text-xs">
-            <div className="flex items-center justify-between text-sm text-on-surface print:text-black font-bold">
-              <span>WITNESS: DR. JULIAN VANCE // CREDIBILITY DOWNGRADED TO 42.5%</span>
-              <span>GEOMETRIC REFUTATION: 100% BLOCKED</span>
-            </div>
-            <p className="text-on-surface-variant print:text-black leading-relaxed">
-              Dr. Vance stated he stood at the Wall B North Doorway watching two operatives open the vault. Our Three.js 3D raycasting audit proves structural Server Rack #4 occludes 100% of visual access from that coordinate. Furthermore, corridor thermal sensors record zero human heat signatures at Wall B during the 23:14 window.
+          <div className="p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-none leading-relaxed text-sm text-on-surface-variant print:text-black space-y-3">
+            <p>
+              <strong>Diya Gupta</strong>, a young woman from a prestigious family, was in a secret romantic relationship with <strong>Chetany Sharma</strong>, a local shopkeeper operating Sharma Electronics in Viman Nagar, Pune. Due to strict family opposition and Diya's upcoming arranged marriage to <strong>Keshan Malhotra</strong> (a software executive), Diya and Chetany conspired to remove Keshan permanently rather than eloping.
+            </p>
+            <p>
+              Over a two-month period between April and June 2026, the couple conspired and executed <strong>four distinct murder attempts</strong> against Keshan Malhotra. With each failed attempt, they escalated their methods—leaving behind an overwhelming trail of digital, financial, physical, and forensic evidence that ultimately exposed the joint conspiracy.
             </p>
           </div>
         </div>
 
-        {/* Section 4: Primary Suspect Identification */}
-        <div className="space-y-3">
+        {/* Section 2: Detailed Breakdown of the Four Attempts */}
+        <div className="space-y-4">
           <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            4. Suspect Risk Dossier & Evidence Linkages
+            2. Reconstruction of the Four Murder Attempts
           </h2>
-          <div className="p-4 print:p-0 rounded bg-surface-container print:bg-transparent border border-outline-variant print:border-none flex flex-col sm:flex-row justify-between gap-4 text-xs">
-            <div>
-              <span className="text-on-surface print:text-black font-bold text-lg block">VIKTOR "SHADOW" KRELL (RISK: 96 / CRITICAL)</span>
-              <span className="text-on-surface-variant print:text-gray-600 block mt-1">Probability of Involvement: <strong className="text-primary print:text-black">89.4%</strong></span>
-              <span className="text-on-surface-variant/80 print:text-gray-600 block mt-1">Evidence Connection: Satellite phone pinged tower #442 within 180m exactly 12s before EMP blackout. Ballistics match prior Geneva 2024 operation.</span>
+
+          {/* Attempt 1 */}
+          <div className="p-5 rounded bg-surface-container-high/60 print:bg-gray-50 border border-outline-variant/50 print:border-gray-300 space-y-2 text-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant/30 pb-2">
+              <span className="text-sm font-bold text-primary print:text-black uppercase tracking-wider">
+                Attempt 1 – Dinner and Deception (April 14, 2026)
+              </span>
+              <Badge variant="routine">TIMELINE: 7:00 PM – 9:00 PM</Badge>
             </div>
-            <div className="text-right sm:self-center shrink-0">
-              <Badge variant="critical" className="print:border-black print:text-black">STATUS: ARREST WARRANT RECOMMENDED</Badge>
+            <p className="text-on-surface-variant print:text-black leading-relaxed text-sm">
+              Before their official engagement, Diya invited Keshan to dinner at <strong>9:00 PM</strong> at <i>The Olive Terrace Restaurant</i> in Kalyani Nagar. Earlier that evening at <strong>7:00 PM</strong>, Chetany had purchased concentrated Thallium poison from <i>Sanjivani Medico</i> using forged veterinary credentials. Diya intended to poison Keshan's drink/food during dinner, but she never found a secluded opportunity as restaurant staff and Keshan remained at the table continuously. The attempt failed, but left crucial digital evidence.
+            </p>
+            <div className="pt-2 text-on-surface print:text-black font-semibold flex flex-wrap gap-4">
+              <span><strong>Key Evidences:</strong></span>
+              <span className="text-primary print:text-black">• WhatsApp Restaurant Reservation (9:00 PM)</span>
+              <span className="text-primary print:text-black">• Sanjivani Medico CCTV (7:00 PM)</span>
+              <span className="text-primary print:text-black">• UPI Payment Receipt (₹1,450)</span>
+            </div>
+          </div>
+
+          {/* Attempt 2 */}
+          <div className="p-5 rounded bg-surface-container-high/60 print:bg-gray-50 border border-outline-variant/50 print:border-gray-300 space-y-2 text-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant/30 pb-2">
+              <span className="text-sm font-bold text-primary print:text-black uppercase tracking-wider">
+                Attempt 2 – Birthday Resort Knife Attack (May 13, 2026)
+              </span>
+              <Badge variant="high">TIMELINE: 1:30 AM – 3:00 AM</Badge>
+            </div>
+            <p className="text-on-surface-variant print:text-black leading-relaxed text-sm">
+              During Keshan's birthday celebration at <i>Skyline Valley Resort</i>, Diya waited for Keshan to become heavily intoxicated in Room 304. Diya then signaled Chetany, who snuck onto resort grounds armed with a tactical hunting knife. Chetany entered the room to attack Keshan, but Keshan stirred unexpectedly, forcing Chetany to flee in panic. As Chetany ran down the corridor, he dropped the knife and was spotted by resort guest Archita Deshmukh.
+            </p>
+            <div className="pt-2 text-on-surface print:text-black font-semibold flex flex-wrap gap-4">
+              <span><strong>Key Evidences:</strong></span>
+              <span className="text-primary print:text-black">• Recovered Tactical Knife (EVID-005)</span>
+              <span className="text-primary print:text-black">• Deposition of Witness Archita Deshmukh</span>
+              <span className="text-primary print:text-black">• Resort CCTV CAM-04</span>
+              <span className="text-primary print:text-black">• 18 Pre-Incident CDR Calls</span>
+            </div>
+          </div>
+
+          {/* Attempt 3 */}
+          <div className="p-5 rounded bg-surface-container-high/60 print:bg-gray-50 border border-outline-variant/50 print:border-gray-300 space-y-2 text-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant/30 pb-2">
+              <span className="text-sm font-bold text-primary print:text-black uppercase tracking-wider">
+                Attempt 3 – Blood on the Streets (June 10, 2026)
+              </span>
+              <Badge variant="critical">TIMELINE: 10:00 AM (HIRED CONTRACT HIT)</Badge>
+            </div>
+            <p className="text-on-surface-variant print:text-black leading-relaxed text-sm">
+              Escalating their conspiracy, Diya and Chetany paid <strong>₹6,000,000 (6 Million INR)</strong> to hired contract criminals led by truck driver Vikram Rathod. At <strong>10:00 AM</strong>, as Keshan approached the pedestrian crossing outside his office at Apex Tech IT Park (Kharadi), a Tata 407 cargo truck (MH-12-QX-4412) accelerated directly into him. Keshan survived with critical poly-trauma injuries.
+            </p>
+            <div className="pt-2 text-on-surface print:text-black font-semibold flex flex-wrap gap-4">
+              <span><strong>Key Evidences:</strong></span>
+              <span className="text-primary print:text-black">• ₹6,000,000 Bank Wire Transfers (EVID-010)</span>
+              <span className="text-primary print:text-black">• Burner Voice Recordings</span>
+              <span className="text-primary print:text-black">• Kharadi Traffic CCTV Tracking</span>
+            </div>
+          </div>
+
+          {/* Attempt 4 / Final Incident */}
+          <div className="p-5 rounded bg-surface-container-high/60 print:bg-gray-50 border border-primary print:border-black space-y-2 text-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-primary pb-2">
+              <span className="text-sm font-bold text-primary print:text-black uppercase tracking-wider">
+                Final Incident – Lohegaon Hill Cliff Ambush (June 19–21, 2026)
+              </span>
+              <Badge variant="critical">FATAL HOMICIDE // SOLVED</Badge>
+            </div>
+            <p className="text-on-surface-variant print:text-black leading-relaxed text-sm">
+              On <strong>June 19</strong>, Diya and Chetany met at <i>Brew & Bean Artisan Café</i> to finalize their cliff ambush plan (confirmed via CCTV and café order bills). On <strong>June 21</strong>, Chetany arrived early at <i>Lohegaon Hill</i>, concealing himself with a Remington Model 700 rifle on a boulder ridge. Diya brought Keshan to Sunset Point viewpoint under the pretext of taking photos. Chetany fired a suppressed 7.62mm gunshot striking Keshan, after which Keshan fell off the 45m cliff onto boulders. Chetany fled down a secluded ravine trail while Diya dialed 112 claiming an accidental selfie slip.
+            </p>
+            <div className="pt-2 text-on-surface print:text-black font-semibold flex flex-wrap gap-4">
+              <span><strong>Key Evidences:</strong></span>
+              <span className="text-primary print:text-black">• Remington Model 700 Rifle & 7.62mm Casing</span>
+              <span className="text-primary print:text-black">• Café June 19 CCTV & Bill</span>
+              <span className="text-primary print:text-black">• Autopsy Gunshot Trajectory</span>
+              <span className="text-primary print:text-black">• 482 Deleted WhatsApp Voice Notes</span>
             </div>
           </div>
         </div>
 
-        {/* Section 5: Digital Forensics & Cyber Activity Log */}
+        {/* Section 3: Evidence Inventory Vault */}
         <div className="space-y-3">
           <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            5. Digital Forensics & Cyber Activity Log
+            3. Physical, Financial, Digital & Ballistics Evidence Vault
           </h2>
           <div className="overflow-x-auto rounded border border-outline-variant/40 bg-surface-container print:bg-transparent print:border-none">
             <table className="w-full text-xs text-left">
               <thead className="bg-surface-container-high print:bg-gray-100 text-on-surface-variant print:text-gray-600 font-tactical-data">
                 <tr>
-                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">TIMESTAMP (IST)</th>
-                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">NODE ID / IP ADDRESS</th>
-                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">ACTION DETECTED</th>
-                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">RISK LEVEL</th>
+                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">EXHIBIT ID</th>
+                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">EVIDENCE TITLE</th>
+                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">ATTEMPT PHASING</th>
+                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">CATEGORY</th>
+                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">CONFIDENCE</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-outline-variant/40 print:divide-gray-300 font-body-md text-on-surface print:text-black">
-                <tr className="hover:bg-surface-container-high/50 transition-colors">
-                  <td className="p-3 text-on-surface-variant">23:12:04.112</td>
-                  <td className="p-3 font-tactical-data tracking-wider">192.168.104.22</td>
-                  <td className="p-3">Firewall Bypassed (Zero-Day Exploit)</td>
-                  <td className="p-3"><span className="text-primary font-bold">CRITICAL</span></td>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-001</td>
+                  <td className="p-3">Sanjivani Medico CCTV CAM-01 (7:00 PM Poison Purchase)</td>
+                  <td className="p-3">Attempt 1 (April 14)</td>
+                  <td className="p-3">CCTV Video</td>
+                  <td className="p-3 font-bold text-emerald-400">98.5%</td>
                 </tr>
-                <tr className="hover:bg-surface-container-high/50 transition-colors">
-                  <td className="p-3 text-on-surface-variant">23:13:45.091</td>
-                  <td className="p-3 font-tactical-data tracking-wider">10.0.4.15 (Vault Subnet)</td>
-                  <td className="p-3">Biometric Override Initiated</td>
-                  <td className="p-3"><span className="text-primary font-bold">CRITICAL</span></td>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-002</td>
+                  <td className="p-3">WhatsApp Olive Terrace Reservation Record (9:00 PM Dinner)</td>
+                  <td className="p-3">Attempt 1 (April 14)</td>
+                  <td className="p-3">Digital Document</td>
+                  <td className="p-3 font-bold text-emerald-400">99.1%</td>
                 </tr>
-                <tr className="hover:bg-surface-container-high/50 transition-colors">
-                  <td className="p-3 text-on-surface-variant">23:14:00.000</td>
-                  <td className="p-3 font-tactical-data tracking-wider">SEC-CAM-04</td>
-                  <td className="p-3">Video Feed Interrupted (EMP Spike)</td>
-                  <td className="p-3"><span className="text-orange-400 font-bold">HIGH</span></td>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-005</td>
+                  <td className="p-3">Recovered Tactical Hunting Knife (Chetany's Latent Prints)</td>
+                  <td className="p-3">Attempt 2 (May 13)</td>
+                  <td className="p-3">Weapon Exhibit</td>
+                  <td className="p-3 font-bold text-emerald-400">99.8%</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-006</td>
+                  <td className="p-3">Resort Room 304 Eyewitness Statement – Archita Deshmukh</td>
+                  <td className="p-3">Attempt 2 (May 13)</td>
+                  <td className="p-3">Witness Deposition</td>
+                  <td className="p-3 font-bold text-emerald-400">96.5%</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-010</td>
+                  <td className="p-3">HDFC Bank Wire Transfer Audits (₹6,000,000 to Hitman Gang)</td>
+                  <td className="p-3">Attempt 3 (June 10)</td>
+                  <td className="p-3">Financial Ledger</td>
+                  <td className="p-3 font-bold text-emerald-400">100.0%</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-011</td>
+                  <td className="p-3">Burner Phone Encrypted Voice Recordings (10:00 AM Hit Contract)</td>
+                  <td className="p-3">Attempt 3 (June 10)</td>
+                  <td className="p-3">Audio Intercept</td>
+                  <td className="p-3 font-bold text-emerald-400">99.4%</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-014</td>
+                  <td className="p-3">Brew & Bean Café CCTV & Order Bill (June 19 Meeting)</td>
+                  <td className="p-3">Final Incident (June 19)</td>
+                  <td className="p-3">CCTV / Receipt</td>
+                  <td className="p-3 font-bold text-emerald-400">99.0%</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-016</td>
+                  <td className="p-3">Remington Model 700 Sniper Rifle & 7.62mm Spent Casing</td>
+                  <td className="p-3">Final Incident (June 21)</td>
+                  <td className="p-3">Ballistics</td>
+                  <td className="p-3 font-bold text-emerald-400">99.95%</td>
+                </tr>
+                <tr>
+                  <td className="p-3 font-bold text-primary">EVID-020</td>
+                  <td className="p-3">Cellebrite Dump: 482 Deleted WhatsApp Voice Notes</td>
+                  <td className="p-3">All Four Attempts</td>
+                  <td className="p-3">Cloud Extraction</td>
+                  <td className="p-3 font-bold text-emerald-400">100.0%</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* Section 6: Evidence Chain of Custody */}
+        {/* Section 4: Key Witness Depositions */}
         <div className="space-y-3">
           <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            6. Evidence Chain of Custody
+            4. Key Witness Depositions & Expert Testimonies
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-body-md">
-            <div className="p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-gray-300">
-              <span className="block text-primary font-bold mb-2">ITEM #44-A: 9mm Shell Casing</span>
-              <ul className="space-y-1 text-on-surface-variant">
-                <li><strong className="text-on-surface">Collected By:</strong> Agent R. Miller (Badge 4492)</li>
-                <li><strong className="text-on-surface">Location:</strong> Walkway Sector [X: -2.4, Y: 1.7, Z: 3.1]</li>
-                <li><strong className="text-on-surface">Time:</strong> 01:22:00 IST</li>
-                <li><strong className="text-on-surface">Current Status:</strong> Lab Analysis Complete</li>
-              </ul>
-            </div>
-            <div className="p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-gray-300">
-              <span className="block text-primary font-bold mb-2">ITEM #44-B: Burned Keycard</span>
-              <ul className="space-y-1 text-on-surface-variant">
-                <li><strong className="text-on-surface">Collected By:</strong> CSI J. Doe (Badge 1102)</li>
-                <li><strong className="text-on-surface">Location:</strong> Vault Entrance Console</li>
-                <li><strong className="text-on-surface">Time:</strong> 01:45:30 IST</li>
-                <li><strong className="text-on-surface">Current Status:</strong> DNA Swab Pending</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Section 7: Financial & Crypto-Forensic Trace */}
-        <div className="space-y-3 print:break-before-page">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            7. Financial & Crypto-Forensic Trace
-          </h2>
-          <div className="p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-gray-300 text-xs text-on-surface-variant print:text-black space-y-4">
-            <p className="leading-relaxed">
-              Suraag AI integrated with global blockchain ledger endpoints to trace a series of obfuscated transactions linked to suspect Viktor Krell. We detected a pattern of micro-transactions via the Tornado Cash mixer prior to the breach.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <span className="text-primary font-bold block">TXID: 0x9f4a...b21c</span>
-                <div className="flex justify-between border-b border-outline-variant/20 pb-1"><span>Amount:</span> <span>42.5 ETH ($148,000)</span></div>
-                <div className="flex justify-between border-b border-outline-variant/20 pb-1"><span>Origin:</span> <span>Unknown (Mixer)</span></div>
-                <div className="flex justify-between border-b border-outline-variant/20 pb-1"><span>Destination:</span> <span>Cold Wallet (Alias: "V.K.")</span></div>
-                <div className="flex justify-between pb-1"><span>Timestamp:</span> <span>July 12, 14:00 IST</span></div>
-              </div>
-              <div className="space-y-2">
-                <span className="text-primary font-bold block">TXID: 0x1a8c...88ff</span>
-                <div className="flex justify-between border-b border-outline-variant/20 pb-1"><span>Amount:</span> <span>15.0 XMR ($2,100)</span></div>
-                <div className="flex justify-between border-b border-outline-variant/20 pb-1"><span>Origin:</span> <span>Darkweb Market Wallet</span></div>
-                <div className="flex justify-between border-b border-outline-variant/20 pb-1"><span>Destination:</span> <span>Hardware Supplier</span></div>
-                <div className="flex justify-between pb-1"><span>Timestamp:</span> <span>July 14, 09:30 IST</span></div>
-              </div>
-            </div>
-            <p className="text-[10px] text-primary/80 mt-2">* Transaction graph shows a 99.2% probability that these funds were used to acquire the EMP device deployed at SEC-CAM-04.</p>
-          </div>
-        </div>
-
-        {/* Section 8: Communications Intercept Log */}
-        <div className="space-y-3">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            8. Communications Intercept (Decrypted Signal Chat)
-          </h2>
-          <div className="rounded bg-surface-container-low print:bg-gray-50 border border-outline-variant/40 print:border-gray-300 p-4 text-xs font-mono space-y-3">
-            <div className="text-on-surface-variant print:text-gray-500 mb-2 border-b border-outline-variant/20 pb-2">
-              DECRYPTION KEY: RSA-4096 / BRUTE-FORCE CONFIDENCE: 100%<br/>
-              PARTICIPANTS: V. Krell (Shadow), Unknown Operative (Ghost)
-            </div>
-            <div className="space-y-2 text-on-surface print:text-black">
-              <div className="pl-4 border-l-2 border-emerald-500">
-                <span className="text-emerald-500 font-bold">[15-JUL 21:00 IST] Ghost:</span> Is the package secured?
-              </div>
-              <div className="pl-4 border-l-2 border-primary text-right">
-                <span className="text-primary font-bold">[15-JUL 21:05 IST] Shadow:</span> Negative. Waiting for Vance to clear the North Doorway.
-              </div>
-              <div className="pl-4 border-l-2 border-emerald-500">
-                <span className="text-emerald-500 font-bold">[15-JUL 21:07 IST] Ghost:</span> Use the EMP if he stalls. We have a 4-minute window.
-              </div>
-              <div className="pl-4 border-l-2 border-primary text-right">
-                <span className="text-primary font-bold">[15-JUL 21:10 IST] Shadow:</span> Acknowledged. Commencing blackout.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Section 9: Psychological & Behavioral Profiling */}
-        <div className="space-y-3 print:break-before-page">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            9. Psychological & Behavioral Profiling (NLP Analysis)
-          </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="col-span-2 p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-gray-300 text-xs text-on-surface-variant print:text-black">
-              <p className="leading-relaxed">
-                Utilizing Natural Language Processing (NLP) over 4,500 internal emails and corporate chat logs from Viktor Krell over the past 6 months, Suraag AI detects a sharp 300% increase in stress markers, anti-corporate sentiment, and financial desperation terminology.
-                <br/><br/>
-                Krell exhibits classic indicators of the <strong>"Insider Threat Disgruntlement Cycle"</strong>. Flight risk is currently calculated at <strong>98.5%</strong>, with travel queries pointing toward non-extradition jurisdictions identified in his browser cache.
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div className="p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-gray-300 space-y-2">
+              <span className="text-primary font-bold block text-sm">ARCHITA DESHMUKH (WIT-001) – RESORT GUEST</span>
+              <p className="text-on-surface-variant print:text-black leading-relaxed">
+                "I was staying in Room 306 at Skyline Valley Resort on May 13. At ~2:30 AM, I saw a hooded man fleeing Room 304 in panic, dropping a tactical knife on the carpet. I identified him as Chetany Sharma."
               </p>
             </div>
-            <div className="col-span-1 p-4 rounded bg-surface-container-high print:bg-gray-100 border border-outline-variant/40 print:border-gray-300 text-xs space-y-2">
-              <span className="text-on-surface font-bold border-b border-outline-variant/40 pb-1 block">NLP Risk Vectors</span>
-              <div className="flex justify-between items-center"><span className="text-on-surface-variant">Stress Level:</span> <Badge variant="critical">SEVERE</Badge></div>
-              <div className="flex justify-between items-center"><span className="text-on-surface-variant">Deception Index:</span> <Badge variant="high">HIGH (82%)</Badge></div>
-              <div className="flex justify-between items-center"><span className="text-on-surface-variant">Flight Risk:</span> <span className="text-primary font-bold">98.5%</span></div>
-              <div className="flex justify-between items-center"><span className="text-on-surface-variant">Ideology:</span> <span className="text-on-surface">Mercenary</span></div>
+            <div className="p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-gray-300 space-y-2">
+              <span className="text-primary font-bold block text-sm">VIKRAM RATHOD (WIT-004) – HIRED HITMAN / DRIVER</span>
+              <p className="text-on-surface-variant print:text-black leading-relaxed">
+                "I was hired by Chetany Sharma to stage the hit-and-run outside Keshan's office at 10:00 AM on June 10 using a Tata 407 truck. He paid ₹6,000,000 across wire transfers."
+              </p>
+            </div>
+            <div className="p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-gray-300 space-y-2">
+              <span className="text-primary font-bold block text-sm">ROHAN MEHTA (WIT-005) – CAFÉ SUPERVISOR</span>
+              <p className="text-on-surface-variant print:text-black leading-relaxed">
+                "On June 19 at 5:00 PM, Diya and Chetany sat at Table 4 at Brew & Bean Café for over an hour examining maps. I served cold brew coffee and preserved the bill."
+              </p>
+            </div>
+            <div className="p-4 rounded bg-surface-container print:bg-transparent border border-outline-variant/40 print:border-gray-300 space-y-2">
+              <span className="text-primary font-bold block text-sm">DR. NEHA PATWARDHAN (WIT-008) – FORENSIC PATHOLOGIST</span>
+              <p className="text-on-surface-variant print:text-black leading-relaxed">
+                "Autopsy confirms a 7.62mm entry/exit gunshot trajectory through Keshan's right shoulder blade that occurred BEFORE his fall from the cliff, completely dismantling the selfie fall story."
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Section 10: Spectrometry & Micro-Analysis */}
+        {/* Section 5: Contradiction Refutation Matrix */}
         <div className="space-y-3">
           <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            10. Physical Evidence Spectrometry
+            5. Suspect Alibi Refutation Matrix
           </h2>
-          <div className="overflow-x-auto rounded border border-outline-variant/40 bg-surface-container print:bg-transparent print:border-none">
-            <table className="w-full text-xs text-left">
-              <thead className="bg-surface-container-high print:bg-gray-100 text-on-surface-variant print:text-gray-600 font-tactical-data">
-                <tr>
-                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">EVIDENCE ITEM</th>
-                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">ANALYSIS TYPE</th>
-                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">FINDINGS</th>
-                  <th className="p-3 border-b border-outline-variant/40 print:border-gray-300">MATCH PROBABILITY</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-outline-variant/40 print:divide-gray-300 font-body-md text-on-surface print:text-black">
-                <tr className="hover:bg-surface-container-high/50 transition-colors">
-                  <td className="p-3 text-primary font-bold">ITEM #44-A (Shell)</td>
-                  <td className="p-3">Mass Spectrometry</td>
-                  <td className="p-3">Traces of RDX explosives and unique lead-antimony alloy.</td>
-                  <td className="p-3">99.9% match to Black Market Batch #882</td>
-                </tr>
-                <tr className="hover:bg-surface-container-high/50 transition-colors">
-                  <td className="p-3 text-primary font-bold">ITEM #44-B (Keycard)</td>
-                  <td className="p-3">DNA PCR Amplification</td>
-                  <td className="p-3">Epithelial cells found on card edge.</td>
-                  <td className="p-3">99.999% match to Viktor Krell</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Section 11: Chronological Incident Timeline */}
-        <div className="space-y-3 print:break-before-page">
-          <h2 className="text-xl font-bold uppercase tracking-wider text-on-surface print:text-black border-l-4 border-primary pl-3 print:border-black">
-            11. Chronological Incident Timeline
-          </h2>
-          <div className="relative border-l-2 border-primary ml-3 pl-6 space-y-6 text-xs print:text-black">
-            <div className="relative">
-              <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-primary ring-4 ring-background print:ring-white"></div>
-              <span className="font-tactical-data text-primary font-bold">23:05:00 IST</span>
-              <h3 className="font-bold text-on-surface text-sm mt-1">Suspect Enters Facility</h3>
-              <p className="text-on-surface-variant mt-1">Viktor Krell badges into the main lobby. Facial recognition logs elevated heart rate.</p>
+          <div className="p-4 rounded bg-secondary-container/40 print:bg-gray-100 border border-primary print:border-black text-xs space-y-3">
+            <div className="flex justify-between items-center font-bold text-sm text-on-surface print:text-black">
+              <span>SUSPECT ALIBI vs FORENSIC PROOF MATRIX</span>
+              <span className="text-primary">DECEPTION PROBABILITY: 99.98%</span>
             </div>
-            <div className="relative">
-              <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-emerald-500 ring-4 ring-background print:ring-white"></div>
-              <span className="font-tactical-data text-emerald-500 font-bold">23:10:45 IST</span>
-              <h3 className="font-bold text-on-surface text-sm mt-1">Dr. Vance Approaches Vault</h3>
-              <p className="text-on-surface-variant mt-1">Dr. Vance is recorded on SEC-CAM-03 moving towards the Sub-Level 3 Vault.</p>
-            </div>
-            <div className="relative">
-              <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-orange-400 ring-4 ring-background print:ring-white"></div>
-              <span className="font-tactical-data text-orange-400 font-bold">23:14:00 IST</span>
-              <h3 className="font-bold text-on-surface text-sm mt-1">EMP Detonation & Blackout</h3>
-              <p className="text-on-surface-variant mt-1">EMP device triggered. All cameras and thermal sensors go offline. Vault electronic lock is short-circuited.</p>
-            </div>
-            <div className="relative">
-              <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-primary ring-4 ring-background print:ring-white"></div>
-              <span className="font-tactical-data text-primary font-bold">23:16:12 IST</span>
-              <h3 className="font-bold text-on-surface text-sm mt-1">Weapon Discharged</h3>
-              <p className="text-on-surface-variant mt-1">Acoustic sensors in the stairwell detect a suppressed 9mm gunshot. Acoustic triangulation confirms origin at Walkway Sector.</p>
-            </div>
-            <div className="relative">
-              <div className="absolute -left-[29px] top-1 w-3 h-3 rounded-full bg-primary ring-4 ring-background print:ring-white animate-pulse"></div>
-              <span className="font-tactical-data text-primary font-bold">23:22:00 IST</span>
-              <h3 className="font-bold text-on-surface text-sm mt-1">Target Escapes</h3>
-              <p className="text-on-surface-variant mt-1">Suspect vehicle leaves underground parking structure. License plate obscured by IR floodlights.</p>
+            <div className="space-y-2">
+              <div className="p-2.5 rounded bg-surface-container print:bg-white border border-outline-variant/30">
+                <span className="font-bold text-primary">Claim:</span> Diya claimed Keshan had an accidental stomach bug at Olive Terrace dinner on April 14.<br/>
+                <span className="font-bold text-emerald-400">Refutation:</span> Sanjivani Medico CCTV CAM-01 records Chetany buying poison at 7:00 PM; Diya booked 9:00 PM dinner.
+              </div>
+              <div className="p-2.5 rounded bg-surface-container print:bg-white border border-outline-variant/30">
+                <span className="font-bold text-primary">Claim:</span> Diya & Chetany claimed no knife attack took place at Skyline Resort on May 13.<br/>
+                <span className="font-bold text-emerald-400">Refutation:</span> Recovered knife (EVID-005) bears Chetany's prints; Witness Archita saw him flee; 18 pre-incident calls logged.
+              </div>
+              <div className="p-2.5 rounded bg-surface-container print:bg-white border border-outline-variant/30">
+                <span className="font-bold text-primary">Claim:</span> June 10 office hit-and-run was an accidental traffic crash by an unknown truck.<br/>
+                <span className="font-bold text-emerald-400">Refutation:</span> Bank records prove ₹6,000,000 wired by Chetany to driver Vikram Rathod; burner voice recordings recovered.
+              </div>
+              <div className="p-2.5 rounded bg-surface-container print:bg-white border border-outline-variant/30">
+                <span className="font-bold text-primary">Claim:</span> June 21 Lohegaon Hill death was an accidental slip taking a selfie.<br/>
+                <span className="font-bold text-emerald-400">Refutation:</span> June 19 café planning meeting (CCTV/bill); 7.62mm gunshot wound in back precedes cliff fall; rifle recovered.
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Dossier Sign-Off Footer */}
-        <div className="pt-8 border-t border-outline-variant/50 print:border-gray-300 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 text-xs text-on-surface-variant print:text-gray-600">
+        {/* Section 6: Statutory Charges & Sign-Off */}
+        <div className="pt-6 border-t-2 border-primary flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 text-xs text-on-surface-variant print:text-black">
           <div>
-            <span>GENERATED BY: <strong className="text-on-surface print:text-black">Suraag AI Explainable Reasoning Core v4.2</strong></span>
-            <span className="block mt-0.5">SHA-256 DIGITAL SIGNATURE: `31b9da79e7ed15c849788d94e3e58b02bfcd9c6c036`</span>
+            <span className="font-bold text-on-surface print:text-black block text-sm">STATUTES CHARGED UNDER BHARATIYA NYAYA SANHITA (BNS):</span>
+            <span className="block mt-1">• Section 302 BNS (Premeditated Homicide - Life Imprisonment / Capital Punishment)</span>
+            <span className="block">• Section 120-B BNS (Criminal Conspiracy Across 4 Incidents)</span>
+            <span className="block">• Section 307 BNS (Attempt to Murder - 3 Counts)</span>
+            <span className="block">• Section 201 BNS (Fabrication & Destruction of Evidence)</span>
           </div>
-          <div className="border-t sm:border-t-0 sm:border-l border-outline-variant/40 print:border-gray-300 pt-4 sm:pt-0 sm:pl-6">
-            <span>AUDIT LEAD: <strong className="print:text-black">Agent Sarah Jenkins</strong></span>
-            <span className="block mt-0.5 text-success print:text-black font-bold">COURT & DOSSIER READY ✔</span>
+          <div className="border-l-2 border-primary pl-4 text-right shrink-0">
+            <span className="font-bold block text-sm">CHARGESHEET FILED BY:</span>
+            <span className="block text-primary font-bold">Sub-Inspector Santosh Jadhav</span>
+            <span className="block text-emerald-400 font-bold">COURT READY & TRIAL PENDING ✔</span>
           </div>
         </div>
+
       </div>
     </div>
   );
