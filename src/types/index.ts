@@ -45,8 +45,23 @@ export interface WitnessStatement {
     entities: string[];
     locationClaims: string[];
     timelineClaims: string[];
+    normalizedEntities?: {
+      people?: string[];
+      locations?: string[];
+      organizations?: string[];
+      evidenceAndObjects?: string[];
+      timestampsAndEvents?: string[];
+    };
   };
   credibilityScore: number;
+  attemptPhase?: string;
+  corroboratedEvents?: Array<{
+    eventId: string;
+    title: string;
+    timestamp: string;
+    corroborationDetails: string;
+  }>;
+  supportingEvidenceIds?: string[];
   contradictions?: Array<{
     target: string;
     reason: string;

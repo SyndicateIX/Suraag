@@ -40,6 +40,11 @@ export const apiClient = {
   },
   witnesses: {
     getAll: (caseId?: string) => fetchJSON<WitnessStatement[]>(`/witnesses${caseId ? `?caseId=${caseId}` : ''}`),
+    correlate: (caseId?: string) =>
+      fetchJSON<{ witnesses: WitnessStatement[]; stats: any }>('/witnesses/correlate', {
+        method: 'POST',
+        body: JSON.stringify({ caseId }),
+      }),
   },
   suspects: {
     getAll: (caseId?: string) => fetchJSON<Suspect[]>(`/suspects${caseId ? `?caseId=${caseId}` : ''}`),
