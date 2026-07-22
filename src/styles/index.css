@@ -103,8 +103,13 @@
     background-size: 32px 32px;
     color: var(--color-on-background);
     overflow-x: hidden;
-    cursor: crosshair;
   }
+
+  /* Chrome Pointer - https://www.cursors-4u.com/cursor/chrome-pointer */
+  * {
+    cursor: url('https://cdn.cursors-4u.net/previews/chrome-pointer-4db561db-32.webp') 34 34, auto !important;
+  }
+  /* End www.Cursors-4U.com Code */
 
   /* Global theme transition for colors to prevent jarring flashes */
   body, main, header, nav, aside, div, span, p, h1, h2, h3, h4, h5, h6, input, select, button, svg, path, table, tr, td, th {
