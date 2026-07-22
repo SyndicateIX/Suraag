@@ -145,10 +145,7 @@ app.post('/api/auth/register', async (req: Request, res: Response) => {
   
   mockUsers.push(newUser as any);
   
-  // Log to text file as fallback
-  const logEntry = `[${new Date().toISOString()}] Name: ${newUser.name}, Email: ${newUser.email}, Dept: ${newUser.department}, EmpID: ${newUser.employeeId}\n`;
-  try { fs.appendFileSync(path.join(process.cwd(), 'registered_users.txt'), logEntry); } catch(e) {}
-  
+  // Removed text file fallback as per Vercel serverless constraints
   const token = jwt.sign({ id: newUser.id, role: newUser.role, name: newUser.name, employeeId: newUser.employeeId, email: newUser.email }, JWT_SECRET, { expiresIn: '8h' });
   return res.json({ token, user: newUser });
 });
