@@ -186,19 +186,31 @@ export function correlateWitnessStatements(
       corroboratedEvents: [],
       contradictions: [
         {
-          target: 'Attempt 1 Stomach Bug Claim',
-          reason: 'CONTRADICTION DETECTED: Sanjivani Medico CCTV CAM-01 captured Chetany Sharma buying Thallium poison at 7:00 PM prior to Diya\'s 9:00 PM dinner.',
-          severity: 'CRITICAL'
+          target: 'Attempt 1 – Olive Terrace Dinner (April 14)',
+          claim: 'Diya claimed Keshan suffered an unexpected organic stomach bug during dinner.',
+          reason: 'CONTRADICTION DETECTED: Sanjivani Medico CCTV CAM-01 captured Chetany Sharma purchasing concentrated Thallium poison at 7:00 PM prior to Diya\'s 9:00 PM dinner reservation. Deleted WhatsApp threads confirm pre-dinner coordination.',
+          severity: 'CRITICAL',
+          evidenceRefuting: ['EVID-001', 'EVID-002', 'EVID-004'],
+          timelineEvents: ['EV-REP-01', 'EV-REP-02'],
+          occlusionDetails: 'Financial & CCTV Intersection: UPI payment ₹1,450 logged to Chetany; CCTV CAM-01 timestamp 19:00:14.'
         },
         {
-          target: 'Attempt 2 Nocturnal Sleep Claim',
-          reason: 'CONTRADICTION DETECTED: CDR tower audits show 18 calls between Diya and Chetany between 01:00 AM and 02:25 AM right before the knife attack.',
-          severity: 'CRITICAL'
+          target: 'Attempt 2 – Skyline Valley Resort Knife Attack (May 13)',
+          claim: 'Diya claimed she was asleep in Room 304 from midnight to morning and heard no disturbance.',
+          reason: 'CONTRADICTION DETECTED: CDR tower audits reveal 18 pre-incident phone calls between Diya and Chetany between 01:00 AM and 02:25 AM right before the knife flight. Eyewitness Archita Deshmukh saw Chetany flee Room 304.',
+          severity: 'CRITICAL',
+          evidenceRefuting: ['EVID-005', 'EVID-006', 'EVID-020'],
+          timelineEvents: ['EV-REP-03', 'EV-REP-04'],
+          occlusionDetails: '3D Raycast Intersection: Direct line of sight from Room 306 corridor doorway to Room 304 exit; latent prints on knife EVID-005 match Chetany.'
         },
         {
-          target: 'Attempt 4 Selfie Slip Claim',
-          reason: 'CONTRADICTION DETECTED: Autopsy by Dr. Neha Patwardhan confirms a 7.62mm gunshot entry in Keshan\'s back BEFORE cliff fall; café planning CCTV refutes shopping alibi.',
-          severity: 'CRITICAL'
+          target: 'Final Incident – Phoenix Marketcity Shopping Alibi & Selfie Slip (June 19–21)',
+          claim: 'Diya claimed she was shopping alone in Phoenix Marketcity on June 19 and that Keshan slipped taking a selfie on June 21.',
+          reason: 'CONTRADICTION DETECTED: Café supervisor Rohan Mehta and CCTV CAM-05 confirm Diya & Chetany spent over an hour examining Lohegaon Hill maps on June 19. Autopsy by Dr. Neha Patwardhan confirms a 7.62mm gunshot trajectory through scapula BEFORE cliff fall.',
+          severity: 'CRITICAL',
+          evidenceRefuting: ['EVID-014', 'EVID-016', 'EVID-020'],
+          timelineEvents: ['EV-REP-07', 'EV-REP-08'],
+          occlusionDetails: '3D Geometry & Trajectory Refutation: Scapular entry angle 14° downward matches sniper ridge elevation [15m, 8m, -40m]. Accidental selfie slip mathematically impossible.'
         }
       ]
     },
@@ -227,19 +239,31 @@ export function correlateWitnessStatements(
       corroboratedEvents: [],
       contradictions: [
         {
-          target: 'Attempt 2 Alibi Denial',
-          reason: 'CONTRADICTION DETECTED: Latent prints on tactical knife EVID-005 match Chetany; eyewitness Archita Deshmukh saw him flee Room 304.',
-          severity: 'CRITICAL'
+          target: 'Attempt 2 – Skyline Resort Knife Flight Alibi (May 13)',
+          claim: 'Chetany claimed he was at his residence in Viman Nagar all night on May 13 and never possessed a tactical hunting knife.',
+          reason: 'CONTRADICTION DETECTED: Latent fingerprints recovered from tactical knife EVID-005 dropped in resort corridor match Chetany with 99.8% certainty; eyewitness Archita Deshmukh identified him fleeing Room 304.',
+          severity: 'CRITICAL',
+          evidenceRefuting: ['EVID-005', 'EVID-006'],
+          timelineEvents: ['EV-REP-04'],
+          occlusionDetails: 'Dactyloscopic match card #12 confirms 14 minutiae points on knife hilt.'
         },
         {
-          target: 'Attempt 3 Business Wire Claim',
+          target: 'Attempt 3 – ₹6,000,000 Hired Hit Wire Claim (June 10)',
+          claim: 'Chetany claimed the ₹6,000,000 wire to Vikram Rathod was a commercial loan repayment for mobile phone spares inventory.',
           reason: 'CONTRADICTION DETECTED: Hitman Vikram Rathod confessed money was paid for hit-and-run assault; burner voice recordings EVID-011 confirm contract terms.',
-          severity: 'CRITICAL'
+          severity: 'CRITICAL',
+          evidenceRefuting: ['EVID-010', 'EVID-011'],
+          timelineEvents: ['EV-REP-05', 'EV-REP-06'],
+          occlusionDetails: 'Financial ledger audit: HDFC RTGS wire sent at 09:15 AM, truck impact occurred at 10:00 AM.'
         },
         {
-          target: 'Attempt 4 Rifle Denial',
-          reason: 'CONTRADICTION DETECTED: Chetany\'s DNA recovered on trigger guard of Remington Model 700 sniper rifle EVID-016 on Lohegaon boulder ridge.',
-          severity: 'CRITICAL'
+          target: 'Final Incident – Lohegaon Hill Rifle & Sniper Ambush Denial (June 21)',
+          claim: 'Chetany claimed he was at his shop all day on June 21 and has never owned or fired a sniper rifle.',
+          reason: 'CONTRADICTION DETECTED: Chetany\'s epithelial DNA recovered on trigger guard of Remington Model 700 sniper rifle EVID-016 on Lohegaon boulder ridge; spent 7.62mm casing ballistically matches the fatal wound.',
+          severity: 'CRITICAL',
+          evidenceRefuting: ['EVID-016', 'EVID-020'],
+          timelineEvents: ['EV-REP-08'],
+          occlusionDetails: 'Ballistic acoustic echo vector intersects Chetany\'s hidden position on Lohegaon boulder ridge.'
         }
       ]
     }

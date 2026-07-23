@@ -66,6 +66,10 @@ export interface WitnessStatement {
     target: string;
     reason: string;
     severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | string;
+    claim?: string;
+    evidenceRefuting?: string[];
+    timelineEvents?: string[];
+    occlusionDetails?: string;
   }>;
 }
 
