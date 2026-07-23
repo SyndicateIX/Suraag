@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Send, Sparkles, User, ShieldAlert, Radio, HelpCircle } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import { apiClient } from '../services/apiClient';
 import { useSuraagStore } from '../store/useSuraagStore';
 import { GlassCard } from '../components/common/GlassCard';
@@ -59,7 +60,7 @@ export const AIAssistant: React.FC = () => {
           <div className="flex items-center gap-2 mb-1">
             <Bot className="w-4 h-4 text-primary animate-pulse" />
             <span className="text-xs font-tactical-data uppercase text-primary font-bold tracking-widest">
-              GEMINI 3.1 PRO (HIGH) TACTICAL CO-PILOT
+              SURAAG BOT
             </span>
           </div>
           <h1 className="font-display-lg text-3xl font-bold uppercase tracking-tight text-on-surface">
@@ -105,7 +106,7 @@ export const AIAssistant: React.FC = () => {
         {/* Right 3 Columns: Chat Box & Input */}
         <GlassCard className="lg:col-span-3 p-5 flex flex-col h-[600px] border-primary/50 shadow-[0_0_25px_rgba(255,84,76,0.2)]">
           {/* Chat Messages Stream */}
-          <div className="flex-1 overflow-y-auto custom-scrollbar space-y-4 pr-2">
+          <div className="flex-1 overflow-y-scroll custom-scrollbar space-y-4 pr-2">
             {chatHistory.map((msg) => (
               <div
                 key={msg.id}
@@ -135,7 +136,9 @@ export const AIAssistant: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="whitespace-pre-line">{msg.text}</div>
+                  <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-surface-variant prose-pre:border prose-pre:border-outline-variant">
+                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                  </div>
                 </div>
 
                 {msg.role === 'user' && (
@@ -170,7 +173,7 @@ export const AIAssistant: React.FC = () => {
           >
             <input
               type="text"
-              placeholder={`Ask Gemini co-pilot anything regarding ${selectedCaseId} entities, math, or contradictions...`}
+              placeholder={`Ask Suraag Bot anything regarding ${selectedCaseId} entities, math, or contradictions...`}
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               disabled={isThinking}
