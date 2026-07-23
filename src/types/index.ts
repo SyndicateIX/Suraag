@@ -175,6 +175,21 @@ export interface ReconstructionData {
   scenarios: Scenario[];
 }
 
+export interface MissingEvidencePrediction {
+  id: string;
+  title: string;
+  phase: string;
+  area: string;
+  category: 'DIGITAL_LOG' | 'PHYSICAL_EXHIBIT' | 'FINANCIAL_TRAIL' | 'FORENSIC_SPECIMEN' | string;
+  boost: string;
+  confidence: number;
+  reason: string;
+  recommendedAction: string;
+  recoveryWindowMinutes: number;
+  supportingEvidenceIds: string[];
+  linkedTimelineEventIds: string[];
+}
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'model';
