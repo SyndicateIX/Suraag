@@ -85,6 +85,12 @@ export interface Suspect {
   gpsCoordinates?: Array<{ time: string; lat: number; lng: number }>;
   linkedEvidenceIds?: string[];
   aiReasoning?: string;
+  motive?: string;
+  attemptPhases?: string[];
+  telemetryLogs?: Array<{ time: string; location: string; event: string; status: string }>;
+  supportingEvidenceIds?: string[];
+  linkedTimelineEventIds?: string[];
+  refutedAlibis?: string[];
 }
 
 export interface TimelineEvent {
@@ -120,9 +126,16 @@ export interface TimelineEvent {
 export interface Scenario {
   id: string;
   name: string;
+  title?: string;
   probability: number;
   description: string;
   evidenceCount: number;
+  category?: 'PREMEDITATED_CONSPIRACY' | 'HIRED_HITMAN_SOLO' | 'ACCIDENTAL_FALL' | string;
+  supportingEvidenceIds?: string[];
+  linkedTimelineEventIds?: string[];
+  refutedAlibis?: string[];
+  suspectClaims?: string;
+  forensicVerdict?: string;
 }
 
 export interface RaycastProfile {

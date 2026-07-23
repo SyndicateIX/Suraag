@@ -776,21 +776,110 @@ app.get('/api/suspects', async (req: Request, res: Response) => {
     let where: any = {};
     if (caseId) where.caseId = String(caseId);
     const suspects = await prisma.suspect.findMany({ where, orderBy: { riskScore: 'desc' } });
-    return res.json(suspects);
-  } catch (err) {
-    return res.json([
-      {
-        id: 'susp-1',
-        name: 'Viktor "Shadow" Krell',
-        alias: 'V-KRELL',
-        riskScore: 96,
-        probability: 0.89,
-        phone: '+41 79 555 0192',
-        criminalHistory: ['Armed Infiltration - Geneva 2024', 'Industrial Espionage', 'Biometric Spoofing'],
-        aiReasoning: 'Satellite phone pinged within 180m of breach exactly 12 seconds prior to blackout. Ballistic profile matches prior modus operandi.',
-      },
-    ]);
-  }
+    if (suspects && suspects.length > 0) return res.json(suspects);
+  } catch (err) {}
+
+  return res.json([
+    {
+      id: 'SUS-01',
+      caseId: 'CASE-2026-DT01',
+      name: 'Diya Gupta',
+      alias: 'SUS-01 // Primary Conspirator & Mastermind',
+      riskScore: 99,
+      probability: 0.992,
+      motive: 'Financial Gain / Insurance Fraud – ₹45,000,000 HDFC Life Insurance Policy Beneficiary on Victim Keshan Malhotra.',
+      phone: 'iPhone 15 Pro IMEI #354910291 // Audi Q3 GPS MH-12-FR-0007',
+      criminalHistory: [
+        'Premeditated Multi-Stage Homicide Conspiracy (3-Month Planning)',
+        'Insurance Policy Beneficiary Forgery & Financial Concealment',
+        'Subornation of Perjury & False 112 Emergency Reporting',
+        'Covert Communication via Encrypted Voice Notes (Cellebrite EVID-020)'
+      ],
+      attemptPhases: [
+        'Attempt 1 – Dinner and Deception (Poison Procurement)',
+        'Attempt 2 – Birthday Resort Knife Attack (Room 304 Logistics)',
+        'Attempt 3 – Blood on the Streets (Hitman Contracting)',
+        'Final Incident – Lohegaon Hill Cliff Ambush (Staged Selfie Fall)'
+      ],
+      telemetryLogs: [
+        { time: 'Apr 14 19:30', location: 'Olive Terrace Restaurant Table 4', event: 'Credit Card Payment EVID-001 & Poisoning Window', status: 'VERIFIED' },
+        { time: 'May 13 01:15', location: 'Skyline Resort Room 304 Door', event: 'Electronic Keycard Swipe EVID-006', status: 'VERIFIED' },
+        { time: 'Jun 19 17:00', location: 'Brew & Bean Café Table 4', event: 'CCTV CAM-05 Capture & Map Session EVID-014', status: 'VERIFIED' },
+        { time: 'Jun 21 17:18', location: 'Lohegaon Hill Sunset Point', event: 'Staged 112 Emergency Call & Tower Triangulation', status: 'VERIFIED' }
+      ],
+      aiReasoning: 'Multi-sensor fusion correlates Diya Gupta to all 4 incident sites. Cellebrite extraction EVID-020 contains 482 encrypted voice notes detailing ₹6.5M hitman payments to Chetany and Vikram. 112 selfie fall claim is fully refuted by scapular bullet entry trajectory.',
+      supportingEvidenceIds: ['EVID-001', 'EVID-006', 'EVID-014', 'EVID-017', 'EVID-020'],
+      linkedTimelineEventIds: ['EV-REP-01', 'EV-REP-03', 'EV-REP-07', 'EV-REP-08'],
+      refutedAlibis: [
+        'Claimed she was shopping alone at Phoenix Marketcity mall on June 19 (Refuted by Brew & Bean CCTV CAM-05).',
+        'Claimed Keshan slipped on loose gravel taking a selfie (Refuted by Dr. Neha Patwardhan autopsy bullet trajectory EVID-016).'
+      ]
+    },
+    {
+      id: 'SUS-02',
+      caseId: 'CASE-2026-DT01',
+      name: 'Chetany Sharma',
+      alias: 'SUS-02 // Operational Executioner & Shooter',
+      riskScore: 97,
+      probability: 0.985,
+      motive: 'Financial Contract Kickback – Received ₹6,500,000 total compensation wired by Diya Gupta across multiple transactions.',
+      phone: 'Samsung Galaxy S24 IMEI #864902102 // Burner +91 98220 11092',
+      criminalHistory: [
+        'Illegal Chemical Acquisition (Thallium sulphate via forged license #VET-9942)',
+        'Armed Assault with Tactical Hunting Knife (Skyline Resort May 13)',
+        'Contract Hit Procurement & Hitman Coordination (RTGS Wire EVID-010)',
+        'Long-Range Precision Rifle Discharge (Remington Model 700 Sniper Ridge June 21)'
+      ],
+      attemptPhases: [
+        'Attempt 1 – Thallium Sulphate Chemical Sourcing',
+        'Attempt 2 – Room 304 Corridor Knife Assault',
+        'Attempt 3 – Kharadi Crossing Hitman Wire Transfer',
+        'Final Incident – Boulder Ridge Sniper Discharge'
+      ],
+      telemetryLogs: [
+        { time: 'Apr 14 19:00', location: 'Sanjivani Medico Pharmacy', event: 'Forged Veterinary License Invoice EVID-004', status: 'VERIFIED' },
+        { time: 'May 13 02:30', location: 'Skyline Resort Corridor 300', event: 'Dropped Tactical Knife EVID-005 & Eyewitness WIT-001', status: 'VERIFIED' },
+        { time: 'Jun 10 09:45', location: 'HDFC Kharadi Bank Vault', event: 'RTGS ₹6,000,000 Wire Transfer EVID-010 to Vikram', status: 'VERIFIED' },
+        { time: 'Jun 21 17:15', location: 'Lohegaon Hill Boulder Ridge', event: 'Suppressed 7.62mm Rifle Discharge EVID-016 & DNA Match', status: 'VERIFIED' }
+      ],
+      aiReasoning: 'DNA on recovered tactical hunting knife (EVID-005) and Remington sniper rifle (EVID-016) matches Chetany with 99.999% probability. Bank records confirm ₹6.0M RTGS wire transfer to hitman Vikram Rathod 15 minutes before the hit-and-run.',
+      supportingEvidenceIds: ['EVID-004', 'EVID-005', 'EVID-010', 'EVID-011', 'EVID-016'],
+      linkedTimelineEventIds: ['EV-REP-02', 'EV-REP-04', 'EV-REP-05', 'EV-REP-08'],
+      refutedAlibis: [
+        'Claimed RTGS wire was a legitimate business loan payment (Refuted by burner voice intercept EVID-011).',
+        'Claimed he was out of town on June 21 (Refuted by DNA match on Remington 700 rifle recovered on boulder ridge).'
+      ]
+    },
+    {
+      id: 'SUS-03',
+      caseId: 'CASE-2026-DT01',
+      name: 'Vikram Rathod',
+      alias: 'WIT-004 / SUS-03 // Hired Vehicular Operative',
+      riskScore: 88,
+      probability: 0.942,
+      motive: 'Hired Contract Driver – Paid ₹6,000,000 by Chetany Sharma for staged vehicular hit-and-run assault.',
+      phone: 'Nokia Feature Burner IMEI #351092004 // Tata 407 MH-12-QX-4412',
+      criminalHistory: [
+        'Vehicular Hit-and-Run Assault (Apex Tech IT Park Kharadi)',
+        'Premeditated Pedestrian Ambush & Steering Vector Manipulation',
+        'Illicit Financial Wire Receipt & Commercial Vehicle Tampering'
+      ],
+      attemptPhases: [
+        'Attempt 3 – Blood on the Streets (Apex Tech IT Park Kharadi Collision)'
+      ],
+      telemetryLogs: [
+        { time: 'Jun 10 09:45', location: 'Apex Tech IT Park Perimeter', event: 'RTGS ₹6,000,000 Bank Credit Confirmation', status: 'VERIFIED' },
+        { time: 'Jun 10 09:58', location: 'Kharadi Pedestrian Crossing', event: 'Truck Acceleration (62 km/h) & Steering Correction EVID-012', status: 'VERIFIED' },
+        { time: 'Jun 10 10:15', location: 'Hadapsar Abandoned Quarry', event: 'Vehicle Abandonment & Burner Handset Disposal', status: 'VERIFIED' }
+      ],
+      aiReasoning: 'CCTV telemetry of Tata 407 cargo truck proves deliberate steering vector adjustment directly into pedestrian sanctuary zone. Vikram Rathod confessed under interrogation after HDFC wire records linked him to Chetany.',
+      supportingEvidenceIds: ['EVID-010', 'EVID-011', 'EVID-012', 'EVID-013'],
+      linkedTimelineEventIds: ['EV-REP-05', 'EV-REP-06'],
+      refutedAlibis: [
+        'Initially claimed an accidental steering gear breakdown (Refuted by mechanical audit EVID-013 proving steering system was 100% operational).'
+      ]
+    }
+  ]);
 });
 
 // ==========================================
@@ -1043,9 +1132,42 @@ app.get('/api/reconstruction/:caseId', async (req: Request, res: Response) => {
       },
     },
     scenarios: [
-      { id: 'SCENARIO-A', name: 'Premeditated Insider-Assisted Ambush', probability: 78.4, description: 'Suspect Viktor Krell utilized compromised credentials from Dr. Vance to enter via airlock.', evidenceCount: 18 },
-      { id: 'SCENARIO-B', name: 'External Cyber-Kinetic Assault', probability: 18.1, description: 'Automated drone swarm disabled external sensors while two operatives forced entry.', evidenceCount: 6 },
-      { id: 'SCENARIO-C', name: 'Accidental Containment Failure & Coverup', probability: 3.5, description: 'Internal biological containment pressure surge caused equipment failure.', evidenceCount: 2 },
+      {
+        id: 'SCENARIO-A',
+        name: 'Premeditated Multi-Attempt Conspiracy & Staged Selfie Fall',
+        title: 'Premeditated Multi-Attempt Conspiracy & Staged Selfie Fall',
+        probability: 92.4,
+        description: 'Diya Gupta (Primary Mastermind) and Chetany Sharma (Co-Conspirator) executed a 3-month multi-attempt conspiracy to eliminate Keshan Malhotra for ₹45,000,000 insurance.',
+        evidenceCount: 18,
+        category: 'PREMEDITATED_CONSPIRACY',
+        supportingEvidenceIds: ['EVID-001', 'EVID-005', 'EVID-010', 'EVID-011', 'EVID-014', 'EVID-016', 'EVID-020'],
+        linkedTimelineEventIds: ['EV-REP-01', 'EV-REP-03', 'EV-REP-05', 'EV-REP-07', 'EV-REP-08'],
+        forensicVerdict: 'DOMINANT HYPOTHESIS – 100% Corroborated by Ballistics, DNA, Autopsy, and Digital Intercepts.'
+      },
+      {
+        id: 'SCENARIO-B',
+        name: 'Isolated Hired Hitman Vehicular Assault Hypothesis',
+        title: 'Isolated Hired Hitman Vehicular Assault Hypothesis',
+        probability: 5.8,
+        description: 'Hypothesis that hitman Vikram Rathod acted as an independent rogue driver without mastermind backing. Fails to explain Thallium poisoning in April or 7.62mm rifle recovery.',
+        evidenceCount: 4,
+        category: 'HIRED_HITMAN_SOLO',
+        supportingEvidenceIds: ['EVID-010', 'EVID-011', 'EVID-012'],
+        linkedTimelineEventIds: ['EV-REP-05', 'EV-REP-06'],
+        forensicVerdict: 'REJECTED AS SOLE CAUSE – Accounts for Attempt 3 only; fails holistic multi-attempt timeline.'
+      },
+      {
+        id: 'SCENARIO-C',
+        name: 'Accidental Cliff Edge Slip & Structural Fall Defense Claim',
+        title: 'Accidental Cliff Edge Slip & Structural Fall Defense Claim',
+        probability: 1.8,
+        description: 'Diya Gupta\'s emergency 112 defense claim that Keshan lost footing taking a selfie. Fully refuted by autopsy confirming 7.62mm scapular bullet wound BEFORE fall.',
+        evidenceCount: 1,
+        category: 'ACCIDENTAL_FALL',
+        supportingEvidenceIds: ['EVID-017'],
+        linkedTimelineEventIds: ['EV-REP-08'],
+        forensicVerdict: 'REFUTED DEFENSE CLAIM – Contradicted by physical autopsy evidence and ballistic raycasting.'
+      },
     ],
   });
 });
