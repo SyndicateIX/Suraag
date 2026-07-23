@@ -1,313 +1,175 @@
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, Grid, Text, Line, Sphere, Box, MeshReflectorMaterial, Cylinder } from '@react-three/drei';
+import { OrbitControls, PerspectiveCamera, Grid, Text, Line, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
-import { SimulationState } from '../../types';
+import { SimulationState, ReconstructionData, InvestigationScene, CinematicCameraMode } from '../../types';
+import {
+  RestaurantScene,
+  ResortScene,
+  RoadScene,
+  CafeScene,
+  LohegaonCliffScene
+} from './DoomedTriangleScenes';
 
 interface Scene3DCanvasProps {
   simulationState: SimulationState;
+  reconData?: ReconstructionData;
+  activeStageIndex: number;
+  cinematicMode?: CinematicCameraMode;
   onSelectObject?: (objId: string, label: string, details: string) => void;
+  onOcclusionUpdate?: (blockPercentage: number) => void;
 }
 
-const RoomGeometry: React.FC<{
-  lightingMode: SimulationState['lightingMode'];
-  onSelectObject?: (objId: string, label: string, details: string) => void;
-}> = ({ lightingMode, onSelectObject }) => {
-  const wallMaterialProps = useMemo(() => {
-    if (lightingMode === 'UV') {
-      return { color: '#0b162c', emissive: '#1d3557', roughness: 0.8, wireframe: false };
-    }
-    if (lightingMode === 'INFRARED') {
-      return { color: '#2a0808', emissive: '#4a0e17', roughness: 0.9, wireframe: false };
-    }
-    if (lightingMode === 'WIREFRAME') {
-      return { color: '#ff544c', wireframe: true };
-    }
-    return { color: '#1a1a1a', roughness: 0.7, wireframe: false };
-  }, [lightingMode]);
-
-  return (
-    <group>
-      {/* Floor with reflective material */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-        <planeGeometry args={[16, 16]} />
-        <meshStandardMaterial {...wallMaterialProps} color={lightingMode === 'UV' ? '#070d18' : '#111111'} />
-      </mesh>
-
-      {/* Back Wall (Wall A) */}
-      <mesh position={[0, 2.5, -8]} receiveShadow>
-        <boxGeometry args={[16, 5, 0.2]} />
-        <meshStandardMaterial {...wallMaterialProps} />
-      </mesh>
-
-      {/* Left Wall (Wall B - North Doorway Area where Dr. Vance claimed to stand) */}
-      <mesh
-        position={[-8, 2.5, 0]}
-        rotation={[0, Math.PI / 2, 0]}
-        receiveShadow
-        onClick={() =>
-          onSelectObject?.(
-            'WALL_B_DOOR',
-            'North Doorway (Wall B Corridor)',
-            'Claimed witness position of Dr. Julian Vance at 23:14:00 UTC.'
-          )
-        }
-      >
-        <boxGeometry args={[16, 5, 0.2]} />
-        <meshStandardMaterial {...wallMaterialProps} color={lightingMode === 'UV' ? '#1a2c4e' : '#1f1f1f'} />
-      </mesh>
-
-      {/* North Doorway Frame Highlight on Wall B */}
-      <mesh position={[-7.8, 1.5, -2]}>
-        <boxGeometry args={[0.3, 3, 1.6]} />
-        <meshStandardMaterial color="#ff544c" emissive="#ff544c" emissiveIntensity={0.3} />
-      </mesh>
-      <Text position={[-7.5, 3.3, -2]} rotation={[0, Math.PI / 2, 0]} fontSize={0.3} color="#ffb4ac" anchorX="center">
-        North Doorway (Wall B)
-      </Text>
-
-      {/* Structural Server Racks & Columns that Occlude Line-of-Sight */}
-      {/* Server Rack #4 (The Primary Occlusion Obstacle) */}
-      <mesh
-        position={[-4, 1.8, -1]}
-        castShadow
-        receiveShadow
-        onClick={() =>
-          onSelectObject?.(
-            'SERVER_RACK_4',
-            'Structural Server Rack #4 (Occlusion Obstacle)',
-            'Blocks 100% raycast visibility from Wall B North Doorway to Vault Lock.'
-          )
-        }
-      >
-        <boxGeometry args={[1.2, 3.6, 2.4]} />
-        <meshStandardMaterial color={lightingMode === 'WIREFRAME' ? '#ab8985' : '#252525'} roughness={0.4} />
-      </mesh>
-      <Text position={[-4, 3.8, -1]} fontSize={0.25} color="#ff544c" anchorX="center">
-        Server Rack #4 (Occlusion Block)
-      </Text>
-
-      {/* Additional Vault Columns */}
-      <mesh position={[2, 2.5, -3]} castShadow receiveShadow>
-        <cylinderGeometry args={[0.5, 0.5, 5, 16]} />
-        <meshStandardMaterial color="#2c2c2c" />
-      </mesh>
-      <mesh position={[2, 2.5, 3]} castShadow receiveShadow>
-        <cylinderGeometry args={[0.5, 0.5, 5, 16]} />
-        <meshStandardMaterial color="#2c2c2c" />
-      </mesh>
-    </group>
-  );
-};
-
-const BallisticTrajectoryLab: React.FC<{
+// ==========================================
+// 1. BALLISTIC 7.62mm SNIPER TRAJECTORY LAB (STAGE 5 ONLY)
+// ==========================================
+const Stage5Ballistics: React.FC<{
   simulationState: SimulationState;
+  reconData?: ReconstructionData;
   onSelectObject?: (objId: string, label: string, details: string) => void;
-}> = ({ simulationState, onSelectObject }) => {
-  const { isPlaying, currentTime, playbackSpeed, lightingMode, showVisibilityCone } = simulationState;
+}> = ({ simulationState, reconData, onSelectObject }) => {
+  const { currentTime } = simulationState;
   const bulletRef = useRef<THREE.Mesh>(null!);
 
-  const startVec = useMemo(() => new THREE.Vector3(-2.4, 1.7, 3.1), []);
-  const impactVec = useMemo(() => new THREE.Vector3(1.8, 1.2, 0.5), []);
-  const ricochetVec = useMemo(() => new THREE.Vector3(4.5, 0.4, -2.0), []);
+  const sniperStart = useMemo(() => new THREE.Vector3(-8.5, 3.8, -4.5), []);
+  const victimImpact = useMemo(() => new THREE.Vector3(2.5, 2.0, 1.2), []);
 
-  // Animate bullet moving along path if simulation is playing
-  useFrame((_, delta) => {
-    if (isPlaying && bulletRef.current) {
-      const progress = (currentTime % 100) / 100;
-      bulletRef.current.position.lerpVectors(startVec, impactVec, progress);
+  useFrame(() => {
+    if (bulletRef.current) {
+      const progress = Math.max(0, Math.min(1, (currentTime % 100) / 100));
+      bulletRef.current.position.lerpVectors(sniperStart, victimImpact, progress);
     }
   });
 
   return (
     <group>
-      {/* 1. Attacker Position Node (Elevated Walkway Area) */}
-      <group
-        position={[-2.4, 1.7, 3.1]}
-        onClick={() =>
-          onSelectObject?.(
-            'ATTACKER_NODE',
-            'Attacker Estimated Coordinate',
-            '[X: -2.4m, Y: 1.7m, Z: 3.1m] Elev: +1.7m above floor plane. Suppressed 9mm discharge point.'
-          )
-        }
-      >
-        <Sphere args={[0.25, 32, 32]}>
-          <meshStandardMaterial color="#ff544c" emissive="#ff544c" emissiveIntensity={0.8} />
-        </Sphere>
-        {/* Pulsing ring around attacker */}
-        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.65, 0]}>
-          <ringGeometry args={[0.4, 0.55, 32]} />
-          <meshBasicMaterial color="#ff544c" side={THREE.DoubleSide} />
-        </mesh>
-        <Text position={[0, 0.6, 0]} fontSize={0.3} color="#ffb4ac" anchorX="center" anchorY="bottom">
-          Attacker Origin [-2.4, 1.7, 3.1]
-        </Text>
-      </group>
-
-      {/* 2. Victim & Primary Impact Point */}
-      <group
-        position={[1.8, 1.2, 0.5]}
-        onClick={() =>
-          onSelectObject?.(
-            'IMPACT_POINT',
-            'Victim & Wall Impact Point',
-            '[X: 1.8m, Y: 1.2m, Z: 0.5m] Entry angle 34.2° downward. Subsonic bullet struck wall structure.'
-          )
-        }
-      >
-        <Sphere args={[0.2, 32, 32]}>
-          <meshStandardMaterial color="#e53935" emissive="#e53935" emissiveIntensity={0.6} />
-        </Sphere>
-        <Text position={[0, 0.5, 0]} fontSize={0.28} color="#ffb4ac" anchorX="center">
-          Primary Impact Point (Angle: 34.2°)
-        </Text>
-      </group>
-
-      {/* 3. Ballistic Bullet Trajectory Laser Ray */}
+      {/* 7.62mm Sniper Trajectory Ray */}
       <Line
-        points={[startVec.toArray(), impactVec.toArray()]}
-        color="#ff544c"
-        lineWidth={3.5}
-        dashed={false}
-      />
-      {/* Ricochet Line */}
-      <Line
-        points={[impactVec.toArray(), ricochetVec.toArray()]}
-        color="#ffb4ac"
-        lineWidth={2}
+        points={[sniperStart.toArray(), victimImpact.toArray()]}
+        color="#ff1744"
+        lineWidth={4}
         dashed={true}
-        dashScale={5}
+        dashScale={10}
       />
 
       {/* Animated Projectile Bullet Mesh */}
-      <mesh ref={bulletRef} position={[-2.4, 1.7, 3.1]}>
-        <Sphere args={[0.1, 16, 16]}>
+      <mesh ref={bulletRef} position={sniperStart.toArray()}>
+        <Sphere args={[0.15, 16, 16]}>
           <meshBasicMaterial color="#ffffff" />
         </Sphere>
       </mesh>
 
-      {/* 4. High-Velocity Blood Spatter Droplets (UV Luminescence when UV mode is on) */}
-      <group position={[1.8, 0.1, 0.5]}>
-        {Array.from({ length: 24 }).map((_, i) => {
-          const angle = (i / 24) * Math.PI * 2;
-          const dist = 0.3 + (i % 5) * 0.25;
-          const x = Math.cos(angle) * dist;
-          const z = Math.sin(angle) * dist;
-          return (
-            <mesh
-              key={i}
-              position={[x, 0.02, z]}
-              rotation={[-Math.PI / 2, 0, angle]}
-              onClick={() =>
-                onSelectObject?.(
-                  'BLOOD_SPATTER',
-                  'High-Velocity Arterial Blood Spatter',
-                  `Droplet #${i + 1} ellipsoid ratio confirms origin launch vector.`
-                )
-              }
-            >
-              <circleGeometry args={[0.06 + (i % 3) * 0.03, 16]} />
-              <meshBasicMaterial
-                color={lightingMode === 'UV' ? '#00ffff' : '#8b0000'}
-              />
-            </mesh>
-          );
-        })}
-        <Text position={[0, 0.4, 0]} fontSize={0.24} color={lightingMode === 'UV' ? '#00ffff' : '#e53935'}>
-          {lightingMode === 'UV' ? '✦ UV BLOOD LUMINESCENCE ✦' : 'Blood Spatter Pool (Type O+)'}
-        </Text>
-      </group>
-
-      {/* 5. Recovered Glock 19 Pistol Node near Ventilation Duct */}
+      {/* Entry Wound Impact Marker */}
       <group
-        position={[3.2, 0.15, -4.5]}
+        position={victimImpact.toArray()}
         onClick={() =>
           onSelectObject?.(
-            'GLOCK_19',
-            'Recovered Glock 19 Gen 5 Pistol',
-            'Recovered inside North ventilation duct. Ballistics match spent 9mm casing.'
+            'SCAPULAR_WOUND',
+            'Scapular Gunshot Entry Wound',
+            'Autopsy Report #881 (Dr. Neha Patwardhan): 7.62mm scapular bullet wound inflicted BEFORE 45m cliff fall.'
           )
         }
       >
-        <Box args={[0.4, 0.15, 0.2]}>
-          <meshStandardMaterial color="#444444" metalness={0.8} />
-        </Box>
-        <Text position={[0, 0.4, 0]} fontSize={0.25} color="#ffb4ac">
-          [EV-1] Glock 19 Pistol
+        <Sphere args={[0.22, 32, 32]}>
+          <meshStandardMaterial color="#ff1744" emissive="#ff1744" emissiveIntensity={0.9} />
+        </Sphere>
+        <Text position={[0, 0.5, 0]} fontSize={0.28} color="#ffb4ac" anchorX="center">
+          7.62mm Scapular Entry Wound (Angle: 34.2°)
         </Text>
       </group>
-
-      {/* 6. 3D Line-of-Sight Occlusion Cone & Raycast Vectors */}
-      {showVisibilityCone && (
-        <group>
-          {/* Occlusion Ray aiming from North Doorway towards Vault Lock */}
-          <group position={[-7.5, 1.7, -2]}>
-            <Line
-              points={[
-                [0, 0, 0],
-                [3.5, 0.1, 1.0], // hits Server Rack #4 at [-4, 1.8, -1]
-              ]}
-              color="#e53935"
-              lineWidth={3}
-              dashed
-            />
-            <Text position={[1.8, 0.4, 0.5]} fontSize={0.26} color="#e53935" anchorX="center">
-              ⚠ OCCLUSIONAL RAYCAST: STRUCTURAL BLOCKAGE (0% VISIBILITY)
-            </Text>
-          </group>
-
-          {/* Unobstructed Sniper / Attacker Line of Sight Vector */}
-          <group position={[-2.4, 1.7, 3.1]}>
-            <Line
-              points={[
-                [0, 0, 0],
-                [4.2, -0.5, -2.6]
-              ]}
-              color="#00ffcc"
-              lineWidth={2}
-              dashed={false}
-            />
-            <Text position={[2.1, 0.3, -1.3]} fontSize={0.24} color="#00ffcc" anchorX="center">
-              ✔ CLEAR BALLISTIC LINE OF SIGHT (100% VISIBILITY)
-            </Text>
-          </group>
-        </group>
-      )}
     </group>
   );
 };
 
+// ==========================================
+// 2. CINEMATIC CAMERA CONTROLLER COMPONENT
+// ==========================================
+const CinematicCameraController: React.FC<{
+  cinematicMode?: CinematicCameraMode;
+  cameraPreset: SimulationState['cameraPreset'];
+  activeScene?: InvestigationScene;
+  currentTime: number;
+}> = ({ cinematicMode, cameraPreset, activeScene, currentTime }) => {
+  const controlsRef = useRef<any>(null!);
+
+  useFrame(({ camera, clock }) => {
+    const t = clock.getElapsedTime();
+
+    if (cinematicMode === 'CINEMATIC_ORBIT') {
+      const radius = 12;
+      camera.position.x = Math.cos(t * 0.25) * radius;
+      camera.position.z = Math.sin(t * 0.25) * radius;
+      camera.position.y = 7;
+      camera.lookAt(0, 1, 0);
+    } else if (cinematicMode === 'SLOW_MOTION_BALLISTIC') {
+      const progress = Math.max(0, Math.min(1, (currentTime % 100) / 100));
+      const bulletX = -8.5 + progress * 11.0;
+      const bulletY = 3.8 - progress * 1.8;
+      const bulletZ = -4.5 + progress * 5.7;
+
+      camera.position.set(bulletX - 2, bulletY + 1.2, bulletZ + 2);
+      camera.lookAt(bulletX, bulletY, bulletZ);
+    }
+  });
+
+  return null;
+};
+
+// ==========================================
+// 3. MAIN 3D CANVAS & SCENE ROUTER COMPONENT
+// ==========================================
 export const Scene3DCanvas: React.FC<Scene3DCanvasProps> = ({
   simulationState,
+  reconData,
+  activeStageIndex,
+  cinematicMode,
   onSelectObject,
+  onOcclusionUpdate
 }) => {
-  const { cameraPreset, lightingMode, showMeasurements } = simulationState;
+  const { cameraPreset, lightingMode, showMeasurements, currentTime, isPlaying } = simulationState;
 
+  // Active stage dataset lookup
+  const activeScene: InvestigationScene | undefined = useMemo(() => {
+    if (reconData?.scenes && reconData.scenes.length >= activeStageIndex) {
+      return reconData.scenes[activeStageIndex - 1];
+    }
+    return undefined;
+  }, [reconData, activeStageIndex]);
+
+  // Camera settings
   const cameraSettings = useMemo(() => {
+    const defaultCam = activeScene?.cameraDefault || { position: [-10, 8, 10], target: [0, 1.5, 0] };
+
     switch (cameraPreset) {
       case 'TOP':
-        return { position: [0, 14, 0] as [number, number, number], fov: 45 };
+        return { position: [0, 14, 0] as [number, number, number], fov: 45, target: defaultCam.target };
       case 'FRONT':
-        return { position: [0, 3, 12] as [number, number, number], fov: 50 };
+        return { position: [0, 3, 12] as [number, number, number], fov: 50, target: defaultCam.target };
       case 'BULLET_CAM':
-        return { position: [-3.5, 2.2, 4.5] as [number, number, number], fov: 40 };
+        return { position: [-8.5, 3.8, -4.5] as [number, number, number], fov: 40, target: [2.5, 2.0, 1.2] as [number, number, number] };
       case 'ISOMETRIC':
       default:
-        return { position: [-10, 8, 10] as [number, number, number], fov: 50 };
+        return { position: defaultCam.position as [number, number, number], fov: 50, target: defaultCam.target as [number, number, number] };
     }
-  }, [cameraPreset]);
+  }, [cameraPreset, activeScene]);
 
   return (
-    <div className="w-full h-full relative select-none bg-[#090b10] rounded-lg overflow-hidden border border-primary/40 shadow-[0_0_30px_rgba(0,0,0,0.9)]">
+    <div className="w-full h-full relative select-none bg-[#070a12] rounded-lg overflow-hidden border border-primary/40 shadow-[0_0_30px_rgba(0,0,0,0.9)]">
       <Canvas shadows>
         <PerspectiveCamera makeDefault position={cameraSettings.position} fov={cameraSettings.fov} />
         <OrbitControls
           makeDefault
-          target={[0, 1.5, 0]}
+          target={cameraSettings.target}
           maxPolarAngle={Math.PI / 2 - 0.05}
           minDistance={3}
-          maxDistance={25}
+          maxDistance={30}
+        />
+
+        <CinematicCameraController
+          cinematicMode={cinematicMode}
+          cameraPreset={cameraPreset}
+          activeScene={activeScene}
+          currentTime={currentTime}
         />
 
         {/* Dynamic Multi-Spectral Lighting Modes */}
@@ -325,30 +187,87 @@ export const Scene3DCanvas: React.FC<Scene3DCanvasProps> = ({
           </>
         ) : (
           <>
-            <ambientLight intensity={0.6} color="#ffffff" />
+            <ambientLight intensity={0.65} color="#ffffff" />
             <directionalLight position={[10, 15, 10]} intensity={1.2} castShadow />
             <pointLight position={[-2.4, 3, 3.1]} intensity={0.8} color="#ff544c" />
           </>
         )}
 
-        {/* Room Architectural Geometry */}
-        <RoomGeometry lightingMode={lightingMode} onSelectObject={onSelectObject} />
+        {/* Dynamic Scene Environment Switcher */}
+        {activeStageIndex === 1 && (
+          <RestaurantScene
+            lightingMode={lightingMode}
+            characters={activeScene?.characters || []}
+            objects={activeScene?.objects || []}
+            currentTime={currentTime}
+            isPlaying={isPlaying}
+            onSelectObject={onSelectObject}
+          />
+        )}
 
-        {/* Ballistics, Trajectory Ray, Blood Spatter, Line of Sight Cone */}
-        <BallisticTrajectoryLab simulationState={simulationState} onSelectObject={onSelectObject} />
+        {activeStageIndex === 2 && (
+          <ResortScene
+            lightingMode={lightingMode}
+            characters={activeScene?.characters || []}
+            objects={activeScene?.objects || []}
+            currentTime={currentTime}
+            isPlaying={isPlaying}
+            onSelectObject={onSelectObject}
+          />
+        )}
 
-        {/* Precision Tactical Distance Measurement Grid & Ruler */}
+        {activeStageIndex === 3 && (
+          <RoadScene
+            lightingMode={lightingMode}
+            characters={activeScene?.characters || []}
+            objects={activeScene?.objects || []}
+            currentTime={currentTime}
+            isPlaying={isPlaying}
+            onSelectObject={onSelectObject}
+          />
+        )}
+
+        {activeStageIndex === 4 && (
+          <CafeScene
+            lightingMode={lightingMode}
+            characters={activeScene?.characters || []}
+            objects={activeScene?.objects || []}
+            currentTime={currentTime}
+            isPlaying={isPlaying}
+            onSelectObject={onSelectObject}
+          />
+        )}
+
+        {activeStageIndex === 5 && (
+          <>
+            <LohegaonCliffScene
+              lightingMode={lightingMode}
+              characters={activeScene?.characters || []}
+              objects={activeScene?.objects || []}
+              currentTime={currentTime}
+              isPlaying={isPlaying}
+              onSelectObject={onSelectObject}
+            />
+            <Stage5Ballistics
+              simulationState={simulationState}
+              reconData={reconData}
+              onSelectObject={onSelectObject}
+            />
+          </>
+        )}
+
+        {/* Tactical Distance Measurement Grid */}
         {showMeasurements && (
           <group position={[0, 0.01, 0]}>
             <Grid
-              args={[16, 16]}
+              args={[20, 20]}
               cellSize={1}
               cellThickness={1}
               cellColor="#ff544c"
               sectionSize={4}
               sectionThickness={1.5}
               sectionColor="#ffb4ac"
-              fadeDistance={25}
+              fadeDistance={30}
               fadeStrength={1}
             />
           </group>
