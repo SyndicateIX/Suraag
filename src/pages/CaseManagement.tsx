@@ -97,7 +97,7 @@ export const CaseManagement: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="w-full max-w-full min-w-0 space-y-4 sm:space-y-6 pb-8 sm:pb-12">
       {/* Header & Create Button */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
@@ -229,7 +229,7 @@ export const CaseManagement: React.FC = () => {
                     {c.summary}
                   </p>
 
-                  <div className="grid grid-cols-2 gap-3 mt-5 text-xs font-tactical-data text-on-surface-variant/90">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 text-xs font-tactical-data text-on-surface-variant/90">
                     <div className="flex items-center gap-2 truncate">
                       <User className="w-3.5 h-3.5 text-primary shrink-0" />
                       <span className="truncate">{c.assignedTo}</span>

@@ -9,7 +9,7 @@ export const Profile: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="w-full max-w-4xl mx-auto space-y-4 sm:space-y-6">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
           <h1 className="text-2xl font-display-lg font-bold text-primary flex items-center gap-2">

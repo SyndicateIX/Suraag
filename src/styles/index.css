@@ -104,6 +104,8 @@
 
   body {
     min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
     background-color: var(--color-background);
     background-image: 
       linear-gradient(var(--grid-line) 1px, transparent 1px),
@@ -115,6 +117,8 @@
 
   #root {
     min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
   }
 
   *, *::before, *::after {
@@ -131,12 +135,23 @@
     touch-action: manipulation;
   }
 
+  main, section, article, header, footer, aside, nav, form, div {
+    max-width: 100%;
+    min-width: 0;
+  }
+
   button, input, select, textarea {
     min-height: 44px;
   }
 
   p, span, li, h1, h2, h3, h4, h5, h6 {
     overflow-wrap: anywhere;
+  }
+
+  .recharts-wrapper,
+  .recharts-responsive-container {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   /* Chrome Pointer - https://www.cursors-4u.com/cursor/chrome-pointer */
