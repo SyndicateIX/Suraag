@@ -129,7 +129,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
               onChange={handleCaseChange}
               className="min-h-11 bg-transparent font-tactical-data text-[10px] text-primary font-bold focus:outline-none cursor-pointer max-w-[88px] sm:max-w-[140px] truncate"
             >
-              {cases.length === 0 && <option value="CASE-2026-901M" className="bg-surface-container-high text-primary">CASE-2026-901M: The Doomed Triangle</option>}
+              {cases.length === 0 && <option value="CASE-2026-DT01" className="bg-surface-container-high text-primary">CASE-2026-DT01: The Doomed Triangle</option>}
               {cases.map(c => (
                 <option key={c.id} value={c.id} className="bg-surface-container-high text-primary">
                   {c.caseNumber}: {c.title}

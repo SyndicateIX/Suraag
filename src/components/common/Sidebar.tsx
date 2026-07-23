@@ -107,6 +107,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
       <aside className={`fixed left-0 top-16 bottom-0 z-50 w-[86vw] max-w-72 bg-surface/95 backdrop-blur-2xl border-r border-outline-variant/40 flex flex-col justify-between overflow-y-auto custom-scrollbar shadow-[4px_0_20px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:w-64 md:z-30`}>
         <div className="p-3 space-y-4">
           {navGroups.map((group, idx) => {
+    <aside className="fixed left-0 top-16 bottom-0 w-64 z-30 bg-surface/95 backdrop-blur-2xl border-r border-outline-variant/40 flex flex-col justify-between shadow-[4px_0_20px_rgba(0,0,0,0.5)]">
+      <div className="p-3 space-y-4 flex-1 overflow-y-auto custom-scrollbar">
+        {navGroups.map((group, idx) => {
           const isExpanded = expandedGroups[group.title];
           return (
             <div

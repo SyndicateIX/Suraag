@@ -45,8 +45,23 @@ export interface WitnessStatement {
     entities: string[];
     locationClaims: string[];
     timelineClaims: string[];
+    normalizedEntities?: {
+      people?: string[];
+      locations?: string[];
+      organizations?: string[];
+      evidenceAndObjects?: string[];
+      timestampsAndEvents?: string[];
+    };
   };
   credibilityScore: number;
+  attemptPhase?: string;
+  corroboratedEvents?: Array<{
+    eventId: string;
+    title: string;
+    timestamp: string;
+    corroborationDetails: string;
+  }>;
+  supportingEvidenceIds?: string[];
   contradictions?: Array<{
     target: string;
     reason: string;
@@ -74,11 +89,29 @@ export interface TimelineEvent {
   timestamp: string;
   title: string;
   description: string;
-  category: 'AUDIO' | 'CCTV' | 'BALLISTICS' | 'WITNESS' | 'VEHICLE' | 'NETWORK' | string;
+  category: 'AUDIO' | 'CCTV' | 'BALLISTICS' | 'WITNESS' | 'VEHICLE' | 'NETWORK' | 'PLANNING' | string;
   confidence: number;
   aiReasoning?: string;
   supportingEvidenceIds?: string[];
+  // Extracted report fields
+  entities?: {
+    persons?: string[];
+    locations?: string[];
+    objects?: string[];
+    vehicles?: string[];
+  };
+  relationships?: {
+    suspects?: string[];
+    witnesses?: string[];
+    victim?: string;
+    relationshipType?: string;
+  };
+  attemptGroup?: string;
+  alibiClaim?: string;
+  forensicRefutation?: string;
+  linkedWitnessIds?: string[];
 }
+
 
 export interface Scenario {
   id: string;

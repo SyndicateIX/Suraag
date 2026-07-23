@@ -52,7 +52,7 @@ export const IngestCaseModal: React.FC<IngestCaseModalProps> = ({ isOpen, onClos
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="AI Case Ingestion" maxWidth="max-w-3xl">
+    <Modal isOpen={isOpen} onClose={onClose} title="AI Case Ingestion" maxWidth="max-w-4xl">
       <div className="flex flex-col gap-4">
         <div className="bg-primary/10 border border-primary/30 p-3 rounded flex gap-3 text-sm text-primary">
           <Database className="w-5 h-5 shrink-0" />

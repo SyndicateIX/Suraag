@@ -40,12 +40,22 @@ export const apiClient = {
   },
   witnesses: {
     getAll: (caseId?: string) => fetchJSON<WitnessStatement[]>(`/witnesses${caseId ? `?caseId=${caseId}` : ''}`),
+    correlate: (caseId?: string) =>
+      fetchJSON<{ witnesses: WitnessStatement[]; stats: any }>('/witnesses/correlate', {
+        method: 'POST',
+        body: JSON.stringify({ caseId }),
+      }),
   },
   suspects: {
     getAll: (caseId?: string) => fetchJSON<Suspect[]>(`/suspects${caseId ? `?caseId=${caseId}` : ''}`),
   },
   timeline: {
     getAll: (caseId?: string) => fetchJSON<TimelineEvent[]>(`/timeline${caseId ? `?caseId=${caseId}` : ''}`),
+    parseReport: (caseId?: string, reportText?: string) =>
+      fetchJSON<{ events: TimelineEvent[]; stats: any }>('/timeline/parse-report', {
+        method: 'POST',
+        body: JSON.stringify({ caseId, reportText }),
+      }),
   },
   reconstruction: {
     getByCaseId: (caseId: string) => fetchJSON<ReconstructionData>(`/reconstruction/${caseId}`),

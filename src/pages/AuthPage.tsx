@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldAlert, Mail, Lock, User as UserIcon, ArrowRight, Activity, Terminal, AlertTriangle } from 'lucide-react';
 import { ScanlineOverlay } from '../components/common/ScanlineOverlay';
 import { useSuraagStore } from '../store/useSuraagStore';
 
 export const AuthPage: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [department, setDepartment] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const redirectUrl = searchParams.get('redirect') || '/dashboard';
   const login = useSuraagStore(state => state.login);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +23,6 @@ export const AuthPage: React.FC = () => {
     setLoading(true);
 
     try {
-      if (isLogin) {
         const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -34,47 +33,12 @@ export const AuthPage: React.FC = () => {
         
         if (!response.ok) {
           setError(data.error || 'Invalid credentials.');
-          // Auto-switch to register if email not found
-          if (data.error && data.error.includes('credentials')) {
-            // It could be not found or wrong password, we don't switch automatically anymore
-            // to avoid exposing user enumeration, but keeping error clear.
-            setError(data.error);
-          }
           setLoading(false);
           return;
         }
 
         login(data.user, data.token);
-        navigate('/dashboard');
-      } else {
-        const employeeId = 'AGT-' + Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-        const response = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            employeeId,
-            password,
-            role: 'Investigator',
-            name: name || 'Agent',
-            email,
-            department
-          })
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          setError(data.error || 'Registration failed.');
-          if (data.error && data.error.includes('already registered')) {
-            setTimeout(() => setIsLogin(true), 1500);
-          }
-          setLoading(false);
-          return;
-        }
-
-        login(data.user, data.token);
-        navigate('/dashboard');
-      }
+        navigate(redirectUrl);
     } catch (err) {
       console.error('Auth error:', err);
       setError('Network error connecting to Suraag AI core.');
@@ -120,26 +84,6 @@ export const AuthPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Toggle */}
-          <div className="flex p-1 bg-surface-container rounded-md mb-6 border border-outline-variant/30">
-            <button
-              onClick={() => { setIsLogin(true); setError(''); }}
-              className={`flex-1 py-2 text-xs font-tactical-data uppercase tracking-wider rounded transition-all ${
-                isLogin ? 'bg-primary text-on-primary shadow-[0_0_10px_rgba(255,84,76,0.3)]' : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-            >
-              Login
-            </button>
-            <button
-              onClick={() => { setIsLogin(false); setError(''); }}
-              className={`flex-1 py-2 text-xs font-tactical-data uppercase tracking-wider rounded transition-all ${
-                !isLogin ? 'bg-primary text-on-primary shadow-[0_0_10px_rgba(255,84,76,0.3)]' : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-            >
-              Register
-            </button>
-          </div>
-
           <AnimatePresence>
             {error && (
               <motion.div
@@ -155,46 +99,6 @@ export const AuthPage: React.FC = () => {
           </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <AnimatePresence mode="popLayout">
-              {!isLogin && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="space-y-4 overflow-hidden"
-                >
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-tactical-data text-on-surface-variant uppercase tracking-wider block">Full Name</label>
-                    <div className="relative group">
-                      <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant group-focus-within:text-primary transition-colors" />
-                      <input
-                        type="text"
-                        required
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="w-full bg-surface-container-high border border-outline-variant/50 rounded pl-10 pr-4 py-2.5 text-sm font-body-md text-on-surface focus:outline-none focus:border-primary/70 transition-all placeholder:text-on-surface-variant/50"
-                        placeholder="Agent Name"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-tactical-data text-on-surface-variant uppercase tracking-wider block">Department / Agency</label>
-                    <div className="relative group">
-                      <Terminal className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant group-focus-within:text-primary transition-colors" />
-                      <input
-                        type="text"
-                        required
-                        value={department}
-                        onChange={(e) => setDepartment(e.target.value)}
-                        className="w-full bg-surface-container-high border border-outline-variant/50 rounded pl-10 pr-4 py-2.5 text-sm font-body-md text-on-surface focus:outline-none focus:border-primary/70 transition-all placeholder:text-on-surface-variant/50"
-                        placeholder="e.g. Forensics Division"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
             <div className="space-y-1.5">
               <label className="text-[10px] font-tactical-data text-on-surface-variant uppercase tracking-wider block">Official Email</label>
               <div className="relative group">
@@ -229,7 +133,7 @@ export const AuthPage: React.FC = () => {
               type="submit"
               className="w-full mt-6 flex min-h-12 items-center justify-center gap-2 py-3 rounded bg-primary text-on-primary font-tactical-data text-xs font-bold uppercase tracking-wider hover:bg-surface-tint transition-all shadow-[0_0_20px_rgba(255,84,76,0.3)] group"
             >
-              <span>{isLogin ? 'Login' : 'Register'}</span>
+              <span>Login</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </form>
