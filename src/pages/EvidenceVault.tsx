@@ -138,7 +138,7 @@ export const EvidenceVault: React.FC = () => {
   return (
     <div className="space-y-6 pb-12">
       {/* Header & Case indicator */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
@@ -151,7 +151,7 @@ export const EvidenceVault: React.FC = () => {
           </h1>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <Badge variant="confidence" pulse>YOLOv9 VISION ONLINE</Badge>
           <Badge variant="routine">{filteredEvidence.length} ITEMS CATALOGED</Badge>
         </div>
@@ -273,7 +273,7 @@ export const EvidenceVault: React.FC = () => {
           <span>NO EVIDENCE ITEMS MATCHING CURRENT CATEGORY OR SEARCH QUERY.</span>
         </GlassCard>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredEvidence.map((ev) => {
             const Icon = getCategoryIcon(ev.category);
             const boxCount = ev.boundingBoxes?.length || 1;

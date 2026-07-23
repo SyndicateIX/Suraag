@@ -48,7 +48,7 @@ export const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-on-surface font-body-md flex items-center justify-center relative overflow-hidden selection:bg-primary selection:text-on-primary p-4">
+    <div className="min-h-screen bg-background text-on-surface font-body-md flex items-center justify-center relative overflow-hidden selection:bg-primary selection:text-on-primary p-2 sm:p-4">
       <ScanlineOverlay laser={true} />
       
       {/* Background Grid */}
@@ -62,7 +62,7 @@ export const AuthPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-md relative z-10"
       >
-        <div className="glass-panel p-8 rounded-lg border border-primary/40 shadow-[0_0_30px_rgba(255,84,76,0.15)] bg-surface-container-lowest/80 backdrop-blur-xl relative overflow-hidden">
+        <div className="glass-panel p-4 sm:p-8 rounded-lg border border-primary/40 shadow-[0_0_30px_rgba(255,84,76,0.15)] bg-surface-container-lowest/80 backdrop-blur-xl relative overflow-hidden w-full max-w-[480px]">
           
           {/* Decorative corners */}
           <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-primary/60" />
@@ -131,7 +131,7 @@ export const AuthPage: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full mt-6 flex items-center justify-center gap-2 py-3 rounded bg-primary text-on-primary font-tactical-data text-xs font-bold uppercase tracking-wider hover:bg-surface-tint transition-all shadow-[0_0_20px_rgba(255,84,76,0.3)] group"
+              className="w-full mt-6 flex min-h-12 items-center justify-center gap-2 py-3 rounded bg-primary text-on-primary font-tactical-data text-xs font-bold uppercase tracking-wider hover:bg-surface-tint transition-all shadow-[0_0_20px_rgba(255,84,76,0.3)] group"
             >
               <span>Login</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

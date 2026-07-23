@@ -104,7 +104,7 @@ export const LandingPage: React.FC = () => {
       </div>
 
       {/* Landing Navigation Header */}
-      <header className="relative z-20 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto border-b border-outline-variant/40 bg-background/60 backdrop-blur-md">
+      <header className="relative z-20 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between px-4 sm:px-6 lg:px-8 py-6 max-w-7xl mx-auto border-b border-outline-variant/40 bg-background/60 backdrop-blur-md">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center border border-primary/60 shadow-[0_0_15px_rgba(255,84,76,0.4)]">
             <ShieldAlert className="w-6 h-6 text-primary animate-pulse" />
@@ -124,10 +124,10 @@ export const LandingPage: React.FC = () => {
           <a href="#faq" className="hover:text-primary transition-colors">System FAQ</a>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <Link
             to="/auth"
-            className="px-6 py-2.5 rounded-md bg-primary text-on-primary font-tactical-data text-xs font-bold tracking-wider uppercase hover:bg-surface-tint transition-all shadow-[0_0_20px_rgba(255,84,76,0.4)] flex items-center gap-2 group"
+            className="w-full sm:w-auto justify-center px-6 py-2.5 rounded-md bg-primary text-on-primary font-tactical-data text-xs font-bold tracking-wider uppercase hover:bg-surface-tint transition-all shadow-[0_0_20px_rgba(255,84,76,0.4)] flex items-center gap-2 group"
           >
             <span>Launch Command Center</span>
             <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -136,7 +136,7 @@ export const LandingPage: React.FC = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-20 pb-28 px-6 max-w-7xl mx-auto text-center">
+      <section className="relative z-10 pt-14 sm:pt-20 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -151,7 +151,7 @@ export const LandingPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="font-display-lg text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight uppercase leading-none max-w-5xl mx-auto"
+          className="font-display-lg text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight uppercase leading-none max-w-5xl mx-auto"
         >
           Reconstruct. <span className="text-primary glow-red">Analyze.</span> Reveal the Truth.
         </motion.h1>
@@ -160,7 +160,7 @@ export const LandingPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-6 text-lg md:text-xl text-on-surface-variant max-w-3xl mx-auto font-body-md leading-relaxed"
+          className="mt-6 text-base sm:text-lg md:text-xl text-on-surface-variant max-w-3xl mx-auto font-body-md leading-relaxed"
         >
           An Explainable AI-powered forensic intelligence platform designed for complex crime scene reconstruction, 3D physics trajectory simulation, witness statement validation, and multi-scenario probability analysis.
         </motion.p>
@@ -169,16 +169,18 @@ export const LandingPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 flex flex-wrap items-center justify-center gap-6"
+          className="mt-10 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 sm:gap-6"
         >
           <Link
             to="/auth"
-            className="px-8 py-4 rounded-md bg-primary text-on-primary font-tactical-data text-sm font-bold tracking-wider uppercase hover:bg-surface-tint transition-all shadow-[0_0_30px_rgba(255,84,76,0.5)] flex items-center gap-3 group"
+            className="w-full sm:w-auto justify-center px-8 py-4 rounded-md bg-primary text-on-primary font-tactical-data text-sm font-bold tracking-wider uppercase hover:bg-surface-tint transition-all shadow-[0_0_30px_rgba(255,84,76,0.5)] flex items-center gap-3 group"
           >
             <Play className="w-5 h-5 fill-current" />
             <span>Enter Mission Control (Active Demo)</span>
           </Link>
           <Link
+            to="/reconstruction"
+            className="w-full sm:w-auto justify-center px-8 py-4 rounded-md bg-surface-container-high text-on-surface font-tactical-data text-sm font-bold tracking-wider uppercase border border-outline-variant hover:border-primary transition-all flex items-center gap-2"
             to="/auth?redirect=/reconstruction"
             className="px-8 py-4 rounded-md bg-surface-container-high text-on-surface font-tactical-data text-sm font-bold tracking-wider uppercase border border-outline-variant hover:border-primary transition-all flex items-center gap-2"
           >
@@ -188,7 +190,7 @@ export const LandingPage: React.FC = () => {
         </motion.div>
 
         {/* Tactical Metrics Strip */}
-        <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        <div className="mt-16 sm:mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
           {[
             { label: 'MULTI-SENSOR CONFIDENCE', value: '94.2%', sub: 'Real-time Bayesian Fusion' },
             { label: 'SIMULATED TRAJECTORIES', value: '< 12ms', sub: 'Three.js Ballistic Math' },
@@ -215,8 +217,8 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Interactive Workflow Section */}
-      <section id="workflow" className="relative z-10 py-24 px-6 max-w-7xl mx-auto border-t border-outline-variant/30">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+      <section id="workflow" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-outline-variant/30">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <Badge variant="confidence" className="mb-3">TACTICAL PIPELINE</Badge>
           <h2 className="font-display-lg text-3xl md:text-5xl font-bold uppercase tracking-tight">
             How Suraag AI Reveals the Truth
@@ -277,8 +279,8 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Core Capabilities Grid */}
-      <section id="features" className="relative z-10 py-24 px-6 max-w-7xl mx-auto border-t border-outline-variant/30">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+      <section id="features" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-outline-variant/30">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
           <div>
             <Badge variant="critical" className="mb-3">SYSTEM MODULES</Badge>
             <h2 className="font-display-lg text-3xl md:text-5xl font-bold uppercase tracking-tight">
@@ -320,15 +322,15 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Interactive Feature Demo Tabs */}
-      <section className="relative z-10 py-24 px-6 max-w-7xl mx-auto border-t border-outline-variant/30">
-        <div className="text-center max-w-3xl mx-auto mb-12">
+      <section className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-outline-variant/30">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
           <Badge variant="active" className="mb-3">LIVE DIAGNOSTIC PREVIEW</Badge>
           <h2 className="font-display-lg text-3xl md:text-4xl font-bold uppercase tracking-tight">
             See Suraag AI in Action
           </h2>
         </div>
 
-        <div className="flex justify-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mb-8">
           {[
             { id: 'reconstruction', label: '3D Crime Scene & Ballistics' },
             { id: 'contradictions', label: 'Witness vs Line-of-Sight Check' },
@@ -347,7 +349,7 @@ export const LandingPage: React.FC = () => {
           ))}
         </div>
 
-        <div className="glass-panel p-8 rounded-lg border border-primary/50 shadow-[0_0_30px_rgba(255,84,76,0.2)]">
+        <div className="glass-panel p-4 sm:p-8 rounded-lg border border-primary/50 shadow-[0_0_30px_rgba(255,84,76,0.2)]">
           <AnimatePresence mode="wait">
             {activeTab === 'reconstruction' && (
               <motion.div
@@ -510,8 +512,8 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* Technologies & Lattice Architecture */}
-      <section id="technologies" className="relative z-10 py-24 px-6 max-w-7xl mx-auto border-t border-outline-variant/30">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+      <section id="technologies" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-outline-variant/30">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <Badge variant="neutral" className="mb-3">MISSION SPECIFICATION</Badge>
           <h2 className="font-display-lg text-3xl md:text-5xl font-bold uppercase tracking-tight">
             Built on Sovereign Stack Standards
@@ -521,7 +523,7 @@ export const LandingPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {[
             { name: 'React 19', type: 'Frontend Engine' },
             { name: 'TypeScript', type: 'Strict Type Safety' },
@@ -549,8 +551,8 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* FAQ Accordion Section */}
-      <section id="faq" className="relative z-10 py-24 px-6 max-w-4xl mx-auto border-t border-outline-variant/30">
-        <div className="text-center mb-16">
+      <section id="faq" className="relative z-10 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto border-t border-outline-variant/30">
+        <div className="text-center mb-10 sm:mb-16">
           <Badge variant="routine" className="mb-3">INTELLIGENCE KNOWLEDGE BASE</Badge>
           <h2 className="font-display-lg text-3xl md:text-4xl font-bold uppercase tracking-tight">
             Frequently Asked Questions
