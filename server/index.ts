@@ -405,9 +405,83 @@ app.post('/api/evidence/process', async (req: Request, res: Response) => {
       fileType: fileType || 'image/jpeg',
       confidence,
       boundingBoxes,
-      processedStatus: 'COMPLETED',
     });
   }
+});
+
+app.get('/api/evidence/predictions', async (req: Request, res: Response) => {
+  return res.json([
+    {
+      id: 'PRED-REP-01',
+      title: 'Forged Veterinary License Registry & Chemical Wholesaler Invoice',
+      phase: 'Attempt 1 – Dinner and Deception (April 14)',
+      area: 'Sanjivani Medico (Viman Nagar) & State Veterinary Board DB',
+      category: 'DIGITAL_LOG',
+      boost: '+16.8%',
+      confidence: 96.5,
+      reason: 'Graph gap analysis reveals Chetany Sharma used a fake license number (#VET-9942) to purchase concentrated Thallium sulphate at 19:00. Cross-referencing chemical wholesaler invoices will identify the secondary distributor.',
+      recommendedAction: 'Issue subpoena to State Veterinary Licensing Authority for registry audit and seize pharmacy distributor manifest.',
+      recoveryWindowMinutes: 60,
+      supportingEvidenceIds: ['EVID-001', 'EVID-004'],
+      linkedTimelineEventIds: ['EV-REP-01']
+    },
+    {
+      id: 'PRED-REP-02',
+      title: 'Skyline Resort Emergency Stairwell Access Log & Soil Impression',
+      phase: 'Attempt 2 – Birthday Resort Knife Attack (May 13)',
+      area: 'Skyline Valley Resort Room 304 Exterior Stairwell & Lawn',
+      category: 'PHYSICAL_EXHIBIT',
+      boost: '+18.4%',
+      confidence: 98.1,
+      reason: 'While tactical hunting knife EVID-005 was recovered in the corridor, the forced exterior stairwell door lock log and mud footwear impression on the exit threshold remain un-annexed. Recovery will corroborate forced entry at 02:22 AM.',
+      recommendedAction: 'Cast dental stone impression of exterior stairwell soil and extract electronic keycard audit file #SK-304.',
+      recoveryWindowMinutes: 45,
+      supportingEvidenceIds: ['EVID-005', 'EVID-006'],
+      linkedTimelineEventIds: ['EV-REP-03', 'EV-REP-04']
+    },
+    {
+      id: 'PRED-REP-03',
+      title: 'Hitman Secondary Burner Phone IMEI & Cash Kickback Receipt',
+      phase: 'Attempt 3 – Blood on the Streets (June 10)',
+      area: 'Apex Tech IT Park Kharadi Perimeter & HDFC Kharadi Branch',
+      category: 'FINANCIAL_TRAIL',
+      boost: '+22.5%',
+      confidence: 99.4,
+      reason: 'RTGS transfer EVID-010 accounts for ₹6,000,000, but voice intercept EVID-011 references a ₹500,000 upfront cash deposit. Extracting tower pings for burner IMEI #864902102 will localize the cash drop location.',
+      recommendedAction: 'Triangulate cell tower pings for burner handset IMEI #864902102 and retrieve HDFC cash vault serial logs.',
+      recoveryWindowMinutes: 30,
+      supportingEvidenceIds: ['EVID-010', 'EVID-011'],
+      linkedTimelineEventIds: ['EV-REP-05', 'EV-REP-06']
+    },
+    {
+      id: 'PRED-REP-04',
+      title: 'Brew & Bean Café Table 4 Paper Scrap & GPS Track',
+      phase: 'Final Incident – Ambush Planning Session (June 19)',
+      area: 'Brew & Bean Café Table 4 Trash Bin & Audi Q3 Telemetry',
+      category: 'DIGITAL_LOG',
+      boost: '+19.2%',
+      confidence: 97.8,
+      reason: 'Order bill EVID-014 confirms June 19 café meeting. Witness Rohan Mehta noted suspects sketched notes on paper napkin scraps. Audi Q3 GPS telemetry will prove precise route taken from café to Lohegaon Hill.',
+      recommendedAction: 'Extract Audi Q3 MH-12-FR-0007 onboard ECU telemetry logs and examine café paper scrap for latent handwriting.',
+      recoveryWindowMinutes: 90,
+      supportingEvidenceIds: ['EVID-014'],
+      linkedTimelineEventIds: ['EV-REP-07']
+    },
+    {
+      id: 'PRED-REP-05',
+      title: 'Remington Model 700 Rifle Suppressor Thread Micro-Analysis',
+      phase: 'Final Incident – Lohegaon Hill Cliff Ambush (June 21)',
+      area: 'Lohegaon Hill Boulder Ridge & Sassoon Forensic Mortuary',
+      category: 'FORENSIC_SPECIMEN',
+      boost: '+24.1%',
+      confidence: 99.9,
+      reason: 'Autopsy by Dr. Neha Patwardhan recovered 7.62mm bullet core. Microscopic toolmark matching on rifle EVID-016 suppressor threading will prove exact acoustic suppressor attachment used on ridge.',
+      recommendedAction: 'Perform scanning electron microscopy (SEM) on Remington 700 barrel threading and match spent casing striations.',
+      recoveryWindowMinutes: 120,
+      supportingEvidenceIds: ['EVID-016', 'EVID-020'],
+      linkedTimelineEventIds: ['EV-REP-08']
+    }
+  ]);
 });
 
 // ==========================================

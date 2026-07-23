@@ -1,4 +1,4 @@
-import { Case, Evidence, WitnessStatement, Suspect, TimelineEvent, ReconstructionData } from '../types';
+import { Case, Evidence, WitnessStatement, Suspect, TimelineEvent, ReconstructionData, MissingEvidencePrediction } from '../types';
 
 const BASE_URL = '/api';
 
@@ -35,6 +35,8 @@ export const apiClient = {
       if (params?.category && params.category !== 'ALL') query.set('category', params.category);
       return fetchJSON<Evidence[]>(`/evidence?${query.toString()}`);
     },
+    getPredictions: (caseId?: string) =>
+      fetchJSON<MissingEvidencePrediction[]>(`/evidence/predictions${caseId ? `?caseId=${caseId}` : ''}`),
     processUpload: (data: { fileName: string; fileType: string; caseId?: string; category?: string }) =>
       fetchJSON<Evidence>('/evidence/process', { method: 'POST', body: JSON.stringify(data) }),
   },
