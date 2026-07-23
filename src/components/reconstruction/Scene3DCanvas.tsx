@@ -238,22 +238,40 @@ const BallisticTrajectoryLab: React.FC<{
         </Text>
       </group>
 
-      {/* 6. 3D Line-of-Sight Occlusion Cone (Dr. Vance -> Vault Lock) */}
+      {/* 6. 3D Line-of-Sight Occlusion Cone & Raycast Vectors */}
       {showVisibilityCone && (
-        <group position={[-7.5, 1.7, -2]}>
-          {/* Ray aiming from North Doorway towards the Vault lock at [0, 1.5, -6] */}
-          <Line
-            points={[
-              [0, 0, 0],
-              [3.5, 0.1, 1.0], // hits Server Rack #4 at [-4, 1.8, -1]
-            ]}
-            color="#e53935"
-            lineWidth={3}
-            dashed
-          />
-          <Text position={[1.8, 0.4, 0.5]} fontSize={0.26} color="#e53935" anchorX="center">
-            ⚠ LINE OF SIGHT OCCLUDED BY RACK #4 (0% VISIBILITY)
-          </Text>
+        <group>
+          {/* Occlusion Ray aiming from North Doorway towards Vault Lock */}
+          <group position={[-7.5, 1.7, -2]}>
+            <Line
+              points={[
+                [0, 0, 0],
+                [3.5, 0.1, 1.0], // hits Server Rack #4 at [-4, 1.8, -1]
+              ]}
+              color="#e53935"
+              lineWidth={3}
+              dashed
+            />
+            <Text position={[1.8, 0.4, 0.5]} fontSize={0.26} color="#e53935" anchorX="center">
+              ⚠ OCCLUSIONAL RAYCAST: STRUCTURAL BLOCKAGE (0% VISIBILITY)
+            </Text>
+          </group>
+
+          {/* Unobstructed Sniper / Attacker Line of Sight Vector */}
+          <group position={[-2.4, 1.7, 3.1]}>
+            <Line
+              points={[
+                [0, 0, 0],
+                [4.2, -0.5, -2.6]
+              ]}
+              color="#00ffcc"
+              lineWidth={2}
+              dashed={false}
+            />
+            <Text position={[2.1, 0.3, -1.3]} fontSize={0.24} color="#00ffcc" anchorX="center">
+              ✔ CLEAR BALLISTIC LINE OF SIGHT (100% VISIBILITY)
+            </Text>
+          </group>
         </group>
       )}
     </group>

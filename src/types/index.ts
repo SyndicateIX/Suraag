@@ -125,6 +125,25 @@ export interface Scenario {
   evidenceCount: number;
 }
 
+export interface RaycastProfile {
+  id: string;
+  title: string;
+  phase: string;
+  subjectName: string;
+  origin: { x: number; y: number; z: number; label: string };
+  target: { x: number; y: number; z: number; label: string };
+  horizontalFov: number;
+  verticalFov: number;
+  maxDistance: number;
+  visibilityScore: number;
+  isOccluded: boolean;
+  primaryObstacle: string;
+  intersectDistanceMeters: number;
+  forensicSummary: string;
+  supportingEvidenceIds: string[];
+  linkedTimelineEventIds: string[];
+}
+
 export interface ReconstructionData {
   id?: string;
   caseId: string;
@@ -136,6 +155,7 @@ export interface ReconstructionData {
     visibilityScore: number;
     occludedBy: string[];
   };
+  raycastProfiles?: RaycastProfile[];
   physicsResults: {
     bulletTrajectory: {
       start: [number, number, number];
