@@ -1034,9 +1034,9 @@ Use the following case context to answer questions about the active investigatio
   } catch (error: any) {
     console.error('[Suraag AI] Gemini API Error:', error);
     // Return a fallback response so the frontend still functions gracefully
-    return res.status(500).json({
+    return res.status(200).json({
       role: 'model',
-      text: `**ERROR**: AI Reasoning Core offline or unreachable. Please check API key configuration.\n\nDetails: ${error.message}`,
+      text: `**ERROR**: AI Reasoning Core offline or unreachable.\n\nDetails: ${error.message}`,
       confidence: 0,
       timestamp: new Date().toISOString()
     });
