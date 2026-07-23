@@ -1,4 +1,4 @@
-import { Case, Evidence, WitnessStatement, Suspect, TimelineEvent, ReconstructionData, MissingEvidencePrediction } from '../types';
+import { Case, Evidence, WitnessStatement, Suspect, TimelineEvent, ReconstructionData, MissingEvidencePrediction, CorrelationGraphData } from '../types';
 
 const BASE_URL = '/api';
 
@@ -37,6 +37,8 @@ export const apiClient = {
     },
     getPredictions: (caseId?: string) =>
       fetchJSON<MissingEvidencePrediction[]>(`/evidence/predictions${caseId ? `?caseId=${caseId}` : ''}`),
+    getCorrelationGraph: (caseId?: string) =>
+      fetchJSON<CorrelationGraphData>(`/evidence/graph${caseId ? `?caseId=${caseId}` : ''}`),
     processUpload: (data: { fileName: string; fileType: string; caseId?: string; category?: string }) =>
       fetchJSON<Evidence>('/evidence/process', { method: 'POST', body: JSON.stringify(data) }),
   },

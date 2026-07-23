@@ -188,6 +188,33 @@ export interface ReconstructionData {
   scenarios: Scenario[];
 }
 
+export interface GraphNode {
+  id: string;
+  label: string;
+  type: 'SUSPECT' | 'WITNESS' | 'VICTIM' | 'EXHIBIT' | 'TIMELINE_EVENT' | 'LOCATION' | 'VEHICLE' | string;
+  x: number;
+  y: number;
+  color: string;
+  details: string;
+  phase?: string;
+  confidenceScore?: number;
+  supportingEvidenceIds?: string[];
+  linkedTimelineEventIds?: string[];
+}
+
+export interface GraphLink {
+  from: string;
+  to: string;
+  label: string;
+  probabilityScore: number;
+  isCritical?: boolean;
+}
+
+export interface CorrelationGraphData {
+  nodes: GraphNode[];
+  links: GraphLink[];
+}
+
 export interface MissingEvidencePrediction {
   id: string;
   title: string;

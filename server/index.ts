@@ -481,7 +481,181 @@ app.get('/api/evidence/predictions', async (req: Request, res: Response) => {
       supportingEvidenceIds: ['EVID-016', 'EVID-020'],
       linkedTimelineEventIds: ['EV-REP-08']
     }
-  ]);
+app.get('/api/evidence/graph', async (req: Request, res: Response) => {
+  return res.json({
+    nodes: [
+      {
+        id: 'DIYA',
+        label: 'Diya Gupta (Primary Mastermind)',
+        type: 'SUSPECT',
+        x: 300,
+        y: 220,
+        color: '#ff544c',
+        details: 'Primary suspect & mastermind. Risk score 99/100. ₹45,000,000 insurance policy beneficiary on victim Keshan. Correlated across all 4 incident phases.',
+        phase: 'Mastermind (All Incidents)',
+        confidenceScore: 99.2,
+        supportingEvidenceIds: ['EVID-001', 'EVID-006', 'EVID-014', 'EVID-017', 'EVID-020'],
+        linkedTimelineEventIds: ['EV-REP-01', 'EV-REP-03', 'EV-REP-07', 'EV-REP-08']
+      },
+      {
+        id: 'CHETANY',
+        label: 'Chetany Sharma (Executioner)',
+        type: 'SUSPECT',
+        x: 560,
+        y: 220,
+        color: '#e53935',
+        details: 'Operational executioner & shooter. Risk score 97/100. DNA match on tactical knife EVID-005 and Remington sniper rifle EVID-016.',
+        phase: 'Executioner (All Incidents)',
+        confidenceScore: 98.5,
+        supportingEvidenceIds: ['EVID-004', 'EVID-005', 'EVID-010', 'EVID-011', 'EVID-016'],
+        linkedTimelineEventIds: ['EV-REP-02', 'EV-REP-04', 'EV-REP-05', 'EV-REP-08']
+      },
+      {
+        id: 'VIKRAM',
+        label: 'Vikram Rathod (Hitman WIT-004)',
+        type: 'SUSPECT',
+        x: 860,
+        y: 220,
+        color: '#ff8a80',
+        details: 'Hired contract driver. Received ₹6,000,000 RTGS wire from Chetany 15 mins prior to Kharadi pedestrian crossing collision.',
+        phase: 'Attempt 3 (Vehicular Hit)',
+        confidenceScore: 94.2,
+        supportingEvidenceIds: ['EVID-010', 'EVID-011', 'EVID-012', 'EVID-013'],
+        linkedTimelineEventIds: ['EV-REP-05', 'EV-REP-06']
+      },
+      {
+        id: 'KESHAN',
+        label: 'Keshan Malhotra (Victim)',
+        type: 'VICTIM',
+        x: 330,
+        y: 380,
+        color: '#00e676',
+        details: 'Deceased victim. Target of 3-month multi-attempt homicide conspiracy. Deceased at Lohegaon Hill Sunset Point via 7.62mm scapular gunshot.',
+        phase: 'Victim Target',
+        confidenceScore: 100.0,
+        supportingEvidenceIds: ['EVID-001', 'EVID-005', 'EVID-016', 'EVID-017'],
+        linkedTimelineEventIds: ['EV-REP-01', 'EV-REP-03', 'EV-REP-05', 'EV-REP-08']
+      },
+      {
+        id: 'ARCHITA',
+        label: 'Archita Deshmukh (Witness WIT-001)',
+        type: 'WITNESS',
+        x: 870,
+        y: 380,
+        color: '#ab8985',
+        details: 'Eyewitness at Skyline Resort Room 306. Identified Chetany Sharma fleeing Room 304 and dropping tactical knife EVID-005 at 02:30 AM.',
+        phase: 'Attempt 2 Eyewitness',
+        confidenceScore: 98.2,
+        supportingEvidenceIds: ['EVID-005', 'EVID-006'],
+        linkedTimelineEventIds: ['EV-REP-03', 'EV-REP-04']
+      },
+      {
+        id: 'NEHA',
+        label: 'Dr. Neha Patwardhan (Autopsy Expert WIT-008)',
+        type: 'WITNESS',
+        x: 140,
+        y: 520,
+        color: '#ffb4ac',
+        details: 'Senior Forensic Pathologist. Autopsy trajectory confirms 7.62mm scapular gunshot wound inflicted BEFORE 45m cliff fall.',
+        phase: 'Final Incident Autopsy',
+        confidenceScore: 99.9,
+        supportingEvidenceIds: ['EVID-016', 'EVID-020'],
+        linkedTimelineEventIds: ['EV-REP-08']
+      },
+      {
+        id: 'EVID-005',
+        label: 'Tactical Knife (EVID-005)',
+        type: 'EXHIBIT',
+        x: 620,
+        y: 380,
+        color: '#ffab40',
+        details: '8-inch serrated tactical hunting knife with blood traces recovered in Corridor 300. Chetany Sharma DNA match 99.999%.',
+        phase: 'Attempt 2 Exhibit',
+        confidenceScore: 99.5,
+        supportingEvidenceIds: ['EVID-005'],
+        linkedTimelineEventIds: ['EV-REP-03', 'EV-REP-04']
+      },
+      {
+        id: 'EVID-010',
+        label: 'RTGS ₹6.0M Wire (EVID-010)',
+        type: 'EXHIBIT',
+        x: 740,
+        y: 80,
+        color: '#ffd700',
+        details: 'HDFC Bank RTGS wire transfer receipt of ₹6,000,000 from Chetany Sharma account to Vikram Rathod prior to Kharadi truck collision.',
+        phase: 'Attempt 3 Financial Exhibit',
+        confidenceScore: 99.4,
+        supportingEvidenceIds: ['EVID-010', 'EVID-011'],
+        linkedTimelineEventIds: ['EV-REP-05']
+      },
+      {
+        id: 'EVID-016',
+        label: 'Remington 700 Rifle (EVID-016)',
+        type: 'EXHIBIT',
+        x: 380,
+        y: 520,
+        color: '#e040fb',
+        details: 'Suppressed 7.62mm Remington Model 700 sniper rifle recovered on Lohegaon boulder ridge. Ballistics & epithelial DNA match Chetany.',
+        phase: 'Final Homicide Weapon',
+        confidenceScore: 99.9,
+        supportingEvidenceIds: ['EVID-016'],
+        linkedTimelineEventIds: ['EV-REP-08']
+      },
+      {
+        id: 'EVID-020',
+        label: 'Cellebrite Dump (EVID-020)',
+        type: 'EXHIBIT',
+        x: 110,
+        y: 220,
+        color: '#00e5ff',
+        details: 'Cellebrite forensic extraction of Diya\'s iPhone 15 Pro. Contains 482 encrypted voice notes detailing hitman payments and ambush plans.',
+        phase: 'Digital Forensic Exhibit',
+        confidenceScore: 99.8,
+        supportingEvidenceIds: ['EVID-020'],
+        linkedTimelineEventIds: ['EV-REP-07', 'EV-REP-08']
+      },
+      {
+        id: 'EV-REP-01',
+        label: 'Olive Terrace Dinner (EV-REP-01)',
+        type: 'TIMELINE_EVENT',
+        x: 280,
+        y: 80,
+        color: '#00bcd4',
+        details: 'April 14 dinner at Olive Terrace Restaurant where Keshan suffered initial acute Thallium sulphate poisoning.',
+        phase: 'Attempt 1 Timeline Event',
+        confidenceScore: 97.5,
+        supportingEvidenceIds: ['EVID-001', 'EVID-004'],
+        linkedTimelineEventIds: ['EV-REP-01']
+      },
+      {
+        id: 'EV-REP-08',
+        label: 'Lohegaon Cliff Homicide (EV-REP-08)',
+        type: 'TIMELINE_EVENT',
+        x: 650,
+        y: 520,
+        color: '#ff1744',
+        details: 'June 21 fatal cliff ambush at Lohegaon Hill Sunset Point. Suppressed 7.62mm rifle discharge followed by 45m cliff fall.',
+        phase: 'Final Homicide Event',
+        confidenceScore: 99.95,
+        supportingEvidenceIds: ['EVID-016', 'EVID-020'],
+        linkedTimelineEventIds: ['EV-REP-08']
+      }
+    ],
+    links: [
+      { from: 'DIYA', to: 'CHETANY', label: 'Conspiracy Co-Conspirators (Cellebrite EVID-020)', probabilityScore: 99.8, isCritical: true },
+      { from: 'DIYA', to: 'KESHAN', label: 'Fiancee / ₹45M Policy Beneficiary', probabilityScore: 99.2, isCritical: true },
+      { from: 'CHETANY', to: 'VIKRAM', label: 'RTGS ₹6.0M Contract Wire (EVID-010)', probabilityScore: 99.4, isCritical: true },
+      { from: 'CHETANY', to: 'EVID-005', label: 'Epithelial DNA Match 99.999%', probabilityScore: 99.9, isCritical: true },
+      { from: 'CHETANY', to: 'EVID-016', label: 'Sniper Rifle DNA & Ballistic Strike', probabilityScore: 99.9, isCritical: true },
+      { from: 'ARCHITA', to: 'CHETANY', label: 'Eyewitness Lineup Flight Identification', probabilityScore: 98.2 },
+      { from: 'NEHA', to: 'EVID-016', label: 'Autopsy 7.62mm Scapular Wound Match', probabilityScore: 99.9, isCritical: true },
+      { from: 'VIKRAM', to: 'KESHAN', label: 'Kharadi Crossing Pedestrian Hit', probabilityScore: 94.2 },
+      { from: 'EVID-020', to: 'DIYA', label: '482 Voice Notes Intercept', probabilityScore: 99.8 },
+      { from: 'EV-REP-01', to: 'DIYA', label: 'Olive Terrace Table 4 Payment', probabilityScore: 97.5 },
+      { from: 'EV-REP-08', to: 'NEHA', label: 'Autopsy Pathological Verdict', probabilityScore: 99.95 },
+      { from: 'EV-REP-08', to: 'EVID-016', label: 'Boulder Ridge Rifle Recovery', probabilityScore: 99.9 }
+    ]
+  });
 });
 
 // ==========================================
