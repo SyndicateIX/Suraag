@@ -13,8 +13,8 @@ export const Settings: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-12">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="w-full max-w-full min-w-0 space-y-4 sm:space-y-6 pb-8 sm:pb-12">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <SettingsIcon className="w-4 h-4 text-primary" />
@@ -30,7 +30,7 @@ export const Settings: React.FC = () => {
         <Badge variant="confidence">4096-BIT SOVEREIGN ENCRYPTION</Badge>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <GlassCard className="p-6 space-y-4">
           <div className="flex items-center gap-2 pb-2 border-b border-outline-variant/30 font-tactical-data text-xs text-primary font-bold">
             <Palette className="w-4 h-4" />

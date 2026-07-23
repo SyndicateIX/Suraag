@@ -26,7 +26,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
     <div
       className={twMerge(
         clsx(
-          'glass-panel relative rounded-lg overflow-hidden transition-all duration-300 border border-outline-variant/40 bg-surface/80 backdrop-blur-xl',
+          'glass-panel relative w-full max-w-full min-w-0 rounded-lg overflow-hidden transition-all duration-300 border border-outline-variant/40 bg-surface/80 backdrop-blur-xl',
           glow && 'glow-red border-primary/60 shadow-[0_0_20px_rgba(255,84,76,0.25)]',
           active && 'border-primary shadow-[0_0_15px_rgba(255,84,76,0.3)] bg-surface-container/90',
           className

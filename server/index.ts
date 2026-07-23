@@ -279,7 +279,7 @@ Here is the storyline:
 ${storyline}`;
 
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-3.6-flash',
       generationConfig: { responseMimeType: "application/json" }
     });
 
@@ -1009,10 +1009,13 @@ app.post('/api/ai/assistant/chat', async (req: Request, res: Response) => {
       }
     }
 
-    const systemInstruction = `You are a highly advanced AI investigative co-pilot (Gemini 3.1 Pro Tactical Co-Pilot) working for Suraag AI, a forensic intelligence platform. You analyze crime scene data, 3D reconstructions, ballistic trajectories, witness statements, and sensor telemetry. Adopt a tactical, analytical, and highly precise tone. Provide structured, concise intelligence briefings when asked questions. Always format with markdown for readability. Use the following case context to answer questions about the active investigation:\n\n${caseContext}`;
+    const systemInstruction = `You are a highly advanced AI Evidence Analysis model (Suraag Bot) working for Suraag AI, a forensic intelligence platform. You analyze crime scene data, 3D reconstructions, ballistic trajectories, witness statements, and sensor telemetry.
+You must politely reply to general greetings like "hello", "hi", etc. But always remember and remind users of your primary identity as an AI Evidence Analysis model for Suraag AI.
+Adopt a tactical, analytical, and highly precise tone when discussing cases. Provide structured, concise intelligence briefings when asked questions. Always format with markdown for readability.
+Use the following case context to answer questions about the active investigation and seamlessly sync your answers with the added cases data:\n\n${caseContext}`;
 
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-3.6-flash',
       systemInstruction,
     });
 
@@ -1055,9 +1058,9 @@ app.post('/api/ai/assistant/chat', async (req: Request, res: Response) => {
   } catch (error: any) {
     console.error('[Suraag AI] Gemini API Error:', error);
     // Return a fallback response so the frontend still functions gracefully
-    return res.status(500).json({
+    return res.status(200).json({
       role: 'model',
-      text: `**ERROR**: AI Reasoning Core offline or unreachable. Please check API key configuration.\n\nDetails: ${error.message}`,
+      text: `**ERROR**: AI Reasoning Core offline or unreachable.\n\nDetails: ${error.message}`,
       confidence: 0,
       timestamp: new Date().toISOString()
     });

@@ -124,9 +124,9 @@ export const MissionControl: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="w-full max-w-full min-w-0 space-y-4 sm:space-y-6 pb-8 sm:pb-12">
       {/* Dashboard Title & Diagnostic Strip */}
-      <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-4">
+      <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
         <div>
           <div className="flex flex-wrap items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full bg-primary animate-ping shrink-0" />
@@ -141,24 +141,24 @@ export const MissionControl: React.FC = () => {
         </div>
 
         {/* Quick Action Navigation Buttons */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 w-full sm:w-auto">
           <Link
             to="/reconstruction"
-            className="px-4 py-2 rounded bg-primary/20 hover:bg-primary text-primary hover:text-on-primary border border-primary/50 transition-all font-tactical-data text-xs font-bold uppercase flex items-center gap-2 shadow-[0_0_12px_rgba(255,84,76,0.2)]"
+            className="justify-center px-4 py-2 rounded bg-primary/20 hover:bg-primary text-primary hover:text-on-primary border border-primary/50 transition-all font-tactical-data text-xs font-bold uppercase flex items-center gap-2 shadow-[0_0_12px_rgba(255,84,76,0.2)]"
           >
             <Crosshair className="w-4 h-4" />
             <span>3D Crime Scene</span>
           </Link>
           <Link
             to="/ai-assistant"
-            className="px-4 py-2 rounded bg-surface-container-high hover:bg-secondary-container text-on-surface hover:text-primary border border-outline-variant transition-all font-tactical-data text-xs uppercase flex items-center gap-2"
+            className="justify-center px-4 py-2 rounded bg-surface-container-high hover:bg-secondary-container text-on-surface hover:text-primary border border-outline-variant transition-all font-tactical-data text-xs uppercase flex items-center gap-2"
           >
             <Radio className="w-4 h-4 text-primary animate-pulse" />
             <span>AI Assistant Chat</span>
           </Link>
           <Link
             to="/report"
-            className="px-4 py-2 rounded bg-surface-container-high hover:bg-secondary-container text-on-surface hover:text-primary border border-outline-variant transition-all font-tactical-data text-xs uppercase flex items-center gap-2"
+            className="justify-center px-4 py-2 rounded bg-surface-container-high hover:bg-secondary-container text-on-surface hover:text-primary border border-outline-variant transition-all font-tactical-data text-xs uppercase flex items-center gap-2"
           >
             <FileText className="w-4 h-4 text-primary" />
             <span>Export Report</span>
@@ -170,7 +170,7 @@ export const MissionControl: React.FC = () => {
       {caseLoading || evidenceLoading ? (
         <LoadingSkeleton rows={1} height="h-32" />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {/* Card 1: Active Case Intelligence */}
           <GlassCard glow className="p-4 flex flex-col justify-between">
             <div className="flex flex-col">

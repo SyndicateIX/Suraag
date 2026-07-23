@@ -9,8 +9,8 @@ export const Profile: React.FC = () => {
   if (!user) return null;
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between mb-8">
+    <div className="w-full max-w-4xl mx-auto space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between mb-8">
         <div>
           <h1 className="text-2xl font-display-lg font-bold text-primary flex items-center gap-2">
             <User className="w-6 h-6" /> AGENT PROFILE
@@ -21,7 +21,7 @@ export const Profile: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
         <div className="bg-surface-container-lowest border border-outline-variant/30 rounded-xl p-6 relative overflow-hidden shadow-sm">
           <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
             <Shield className="w-32 h-32" />
