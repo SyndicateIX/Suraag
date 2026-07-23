@@ -136,7 +136,7 @@ export const EvidenceVault: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="w-full max-w-full min-w-0 space-y-4 sm:space-y-6 pb-8 sm:pb-12">
       {/* Header & Case indicator */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>

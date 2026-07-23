@@ -67,7 +67,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
           type="button"
           aria-label="Open navigation"
           onClick={onMenuClick}
-          className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-outline-variant/50 bg-surface-container text-on-surface shadow-sm"
+          className="lg:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-outline-variant/50 bg-surface-container text-on-surface shadow-sm"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -120,7 +120,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
         </form>
 
         {/* Active Case Selector */}
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="hidden sm:flex items-center gap-1.5 shrink-0">
           <div className="flex items-center gap-1.5 bg-surface-container-high px-2 py-1 rounded border border-primary/40 shadow-[0_0_10px_rgba(255,84,76,0.15)]">
             <Database className="w-3.5 h-3.5 text-primary" />
             <span className="hidden sm:inline-block text-[10px] font-tactical-data text-on-surface-variant uppercase">Case:</span>
@@ -156,7 +156,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
         <Link
           to="/"
           title="Return to Landing Page Overview"
-          className="flex h-11 w-11 items-center justify-center rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 shrink-0"
+          className="hidden sm:flex h-11 w-11 items-center justify-center rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 shrink-0"
         >
           <ExternalLink className="w-4 h-4" />
         </Link>

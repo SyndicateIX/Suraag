@@ -22,8 +22,10 @@ export const MainLayout: React.FC = () => {
         <div className="print:hidden shrink-0">
           <Sidebar isOpen={isNavOpen} onClose={() => setIsNavOpen(false)} />
         </div>
-        <main className="flex-1 md:ml-64 print:ml-0 p-3 sm:p-4 md:p-6 print:p-0 min-h-[calc(100vh-4rem)] print:min-h-0 relative overflow-x-hidden print:overflow-visible">
-          <Outlet />
+        <main className="flex-1 w-full min-w-0 max-w-full lg:ml-64 print:ml-0 p-3 sm:p-4 md:p-6 print:p-0 min-h-[calc(100vh-4rem)] print:min-h-0 relative overflow-x-hidden print:overflow-visible">
+          <div className="w-full min-w-0 max-w-full overflow-x-hidden">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>
