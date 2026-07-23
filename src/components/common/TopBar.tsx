@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShieldAlert, Activity, Radio, Search, Bell, Database, ExternalLink, Moon, Sun } from 'lucide-react';
+import { ShieldAlert, Activity, Radio, Search, Bell, Database, ExternalLink, Moon, Sun, Menu } from 'lucide-react';
 import { useSuraagStore } from '../../store/useSuraagStore';
 import { useTheme } from '../../hooks/useTheme';
 import { Badge } from './Badge';
 import { IngestCaseModal } from './IngestCaseModal';
 
-export const TopBar: React.FC = () => {
+interface TopBarProps {
+  onMenuClick?: () => void;
+}
+
+export const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
   const navigate = useNavigate();
   const { selectedCaseId, setSelectedCaseId } = useSuraagStore();
   const { theme, toggleTheme } = useTheme();
@@ -56,14 +60,22 @@ export const TopBar: React.FC = () => {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 z-40 bg-background/85 backdrop-blur-xl border-b border-outline-variant/50 shadow-[0_4px_20px_rgba(0,0,0,0.6)] flex items-center justify-between px-6">
+    <header className="fixed top-0 left-0 right-0 h-16 z-40 bg-background/85 backdrop-blur-xl border-b border-outline-variant/50 shadow-[0_4px_20px_rgba(0,0,0,0.6)] flex items-center justify-between px-3 sm:px-4 md:px-6">
       {/* Brand & Landing Link */}
-      <div className="flex items-center gap-6 shrink-0">
-        <Link to="/" className="flex items-center gap-3 group shrink-0">
+      <div className="flex items-center gap-2 sm:gap-3 md:gap-6 shrink-0 min-w-0">
+        <button
+          type="button"
+          aria-label="Open navigation"
+          onClick={onMenuClick}
+          className="md:hidden flex h-11 w-11 items-center justify-center rounded-lg border border-outline-variant/50 bg-surface-container text-on-surface shadow-sm"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+        <Link to="/" className="flex items-center gap-3 group shrink-0 min-w-0">
           <div className="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center border border-primary/60 shadow-[0_0_15px_rgba(255,84,76,0.3)] group-hover:scale-105 transition-transform shrink-0">
             <ShieldAlert className="w-6 h-6 text-primary animate-pulse" />
           </div>
-          <div className="hidden sm:flex flex-col">
+          <div className="hidden sm:flex flex-col min-w-0">
             <div className="flex items-center gap-2">
               <span className="font-display-lg text-xl font-bold tracking-tighter uppercase text-primary whitespace-nowrap">
                 Suraag AI
@@ -94,7 +106,7 @@ export const TopBar: React.FC = () => {
       </div>
 
       {/* Center/Right Controls: Case Selector & Quick Search */}
-      <div className="flex items-center gap-3 shrink-0 overflow-hidden">
+      <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3 shrink-0 overflow-hidden">
         {/* Quick Search */}
         <form onSubmit={handleSearchSubmit} className="hidden lg:flex items-center relative shrink-0">
           <input
@@ -115,7 +127,7 @@ export const TopBar: React.FC = () => {
             <select
               value={selectedCaseId}
               onChange={handleCaseChange}
-              className="bg-transparent font-tactical-data text-[10px] text-primary font-bold focus:outline-none cursor-pointer max-w-[100px] sm:max-w-[140px] truncate"
+              className="min-h-11 bg-transparent font-tactical-data text-[10px] text-primary font-bold focus:outline-none cursor-pointer max-w-[88px] sm:max-w-[140px] truncate"
             >
               {cases.length === 0 && <option value="CASE-2026-901M" className="bg-surface-container-high text-primary">CASE-2026-901M: The Doomed Triangle</option>}
               {cases.map(c => (
@@ -127,7 +139,7 @@ export const TopBar: React.FC = () => {
           </div>
           <button 
             onClick={() => setIsIngestModalOpen(true)}
-            className="flex items-center gap-1 bg-primary/20 text-primary hover:bg-primary/40 border border-primary/40 px-2 py-1 rounded text-[10px] font-tactical-data uppercase transition-all"
+            className="flex min-h-11 items-center gap-1 bg-primary/20 text-primary hover:bg-primary/40 border border-primary/40 px-2 py-1 rounded text-[10px] font-tactical-data uppercase transition-all"
             title="Ingest New Case via AI"
           >
             + NEW CASE
@@ -144,7 +156,7 @@ export const TopBar: React.FC = () => {
         <Link
           to="/"
           title="Return to Landing Page Overview"
-          className="p-2 rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 shrink-0"
+          className="flex h-11 w-11 items-center justify-center rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 shrink-0"
         >
           <ExternalLink className="w-4 h-4" />
         </Link>
@@ -152,12 +164,12 @@ export const TopBar: React.FC = () => {
         <button 
           onClick={toggleTheme}
           title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Theme`}
-          className="p-2 rounded-full bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 shrink-0 hover:scale-105 active:scale-95"
+          className="flex h-11 w-11 items-center justify-center rounded-full bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 shrink-0 hover:scale-105 active:scale-95"
         >
           {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
         </button>
 
-        <button className="p-2 rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 relative shrink-0">
+        <button className="flex h-11 w-11 items-center justify-center rounded bg-surface-container hover:bg-secondary-container hover:text-primary transition-all border border-outline-variant/50 relative shrink-0">
           <Bell className="w-4 h-4" />
           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-primary animate-ping" />
         </button>

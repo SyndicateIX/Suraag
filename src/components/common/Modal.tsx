@@ -20,17 +20,17 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-md">
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
-            className={`w-full ${maxWidth} glass-panel rounded-lg border border-primary/50 shadow-[0_0_30px_rgba(255,84,76,0.3)] overflow-hidden`}
+            className={`w-full ${maxWidth} max-w-[min(95vw,56rem)] max-h-[90vh] glass-panel rounded-lg border border-primary/50 shadow-[0_0_30px_rgba(255,84,76,0.3)] overflow-hidden`}
           >
-            <div className="px-6 py-4 bg-surface-container-high/60 border-b border-outline-variant/40 flex items-center justify-between">
+            <div className="px-4 sm:px-6 py-3 sm:py-4 bg-surface-container-high/60 border-b border-outline-variant/40 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <h3 className="font-display-lg text-lg uppercase tracking-wider text-primary font-bold">
+                <h3 className="font-display-lg text-base sm:text-lg uppercase tracking-wider text-primary font-bold break-words">
                   {title}
                 </h3>
               </div>
@@ -41,7 +41,7 @@ export const Modal: React.FC<ModalProps> = ({
                 <X className="w-5 h-5" />
               </button>
             </div>
-            <div className="p-6 max-h-[80vh] overflow-y-auto custom-scrollbar">{children}</div>
+            <div className="p-4 sm:p-6 max-h-[calc(90vh-5rem)] overflow-y-auto custom-scrollbar">{children}</div>
           </motion.div>
         </div>
       )}

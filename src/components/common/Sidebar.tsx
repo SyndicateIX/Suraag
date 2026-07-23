@@ -25,7 +25,12 @@ import {
   User
 } from 'lucide-react';
 
-export const Sidebar: React.FC = () => {
+interface SidebarProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => {
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
     'COMMAND & CONTROL': true,
     '3D RECONSTRUCTION & PHYSICS': false,
@@ -90,9 +95,18 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="fixed left-0 top-16 bottom-0 w-64 z-30 bg-surface/95 backdrop-blur-2xl border-r border-outline-variant/40 flex flex-col justify-between overflow-y-auto custom-scrollbar shadow-[4px_0_20px_rgba(0,0,0,0.5)]">
-      <div className="p-3 space-y-4">
-        {navGroups.map((group, idx) => {
+    <>
+      {isOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation"
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm md:hidden"
+          onClick={onClose}
+        />
+      )}
+      <aside className={`fixed left-0 top-16 bottom-0 z-50 w-[86vw] max-w-72 bg-surface/95 backdrop-blur-2xl border-r border-outline-variant/40 flex flex-col justify-between overflow-y-auto custom-scrollbar shadow-[4px_0_20px_rgba(0,0,0,0.5)] transition-transform duration-300 ease-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:w-64 md:z-30`}>
+        <div className="p-3 space-y-4">
+          {navGroups.map((group, idx) => {
           const isExpanded = expandedGroups[group.title];
           return (
             <div
@@ -126,6 +140,7 @@ export const Sidebar: React.FC = () => {
                     <NavLink
                       key={item.path}
                       to={item.path}
+                      onClick={onClose}
                       className={({ isActive }) =>
                         `flex items-center gap-3 px-3 py-2.5 rounded-md transition-all font-tactical-data text-sm ${
                           isActive
@@ -164,6 +179,7 @@ export const Sidebar: React.FC = () => {
       <div className="px-3 py-2 border-t border-outline-variant/30 bg-surface-container/30 shrink-0">
         <NavLink
           to="/profile"
+          onClick={onClose}
           className={({ isActive }) =>
             `flex items-center gap-3 px-3 py-2.5 rounded-md transition-all font-tactical-data text-sm ${
               isActive
@@ -176,6 +192,7 @@ export const Sidebar: React.FC = () => {
           <span className="truncate uppercase tracking-wider">Agent Profile</span>
         </NavLink>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 };
