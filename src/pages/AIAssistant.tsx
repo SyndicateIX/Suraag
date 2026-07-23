@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Send, Sparkles, User, ShieldAlert, Radio, HelpCircle } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
 import { apiClient } from '../services/apiClient';
 import { useSuraagStore } from '../store/useSuraagStore';
 import { GlassCard } from '../components/common/GlassCard';
@@ -137,7 +136,7 @@ export const AIAssistant: React.FC = () => {
                   )}
 
                   <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-surface-variant prose-pre:border prose-pre:border-outline-variant">
-                    <ReactMarkdown>{msg.text}</ReactMarkdown>
+                    <div className="whitespace-pre-wrap">{msg.text}</div>
                   </div>
                 </div>
 
