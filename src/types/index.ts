@@ -157,6 +157,52 @@ export interface RaycastProfile {
   linkedTimelineEventIds: string[];
 }
 
+export interface SceneCharacter {
+  id: string;
+  name: string;
+  role: 'SUSPECT' | 'VICTIM' | 'WITNESS' | 'HITMAN';
+  position: [number, number, number];
+  color: string;
+  activity: string;
+  waypoints?: CharacterWaypoint[];
+  attachedItem?: string;
+}
+
+export interface SceneObject {
+  id: string;
+  label: string;
+  type: 'WEAPON' | 'VEHICLE' | 'EVIDENCE' | 'TELEMETRY' | 'OBSTACLE';
+  position: [number, number, number];
+  details: string;
+  supportingEvidenceId?: string;
+}
+
+export interface SceneOverlay {
+  timestamp: string;
+  title: string;
+  type: 'CCTV' | 'BANK_TRANSFER' | 'VOICE_INTERCEPT' | 'CELL_TOWER' | 'AUTOPSY' | 'EMERGENCY_CALL';
+  details: string;
+  evidenceId?: string;
+}
+
+export interface InvestigationScene {
+  id: string;
+  stageIndex: number;
+  stageName: string;
+  locationName: string;
+  timestamp: string;
+  phase: string;
+  cameraDefault: { position: [number, number, number]; target: [number, number, number] };
+  characters: SceneCharacter[];
+  objects: SceneObject[];
+  overlays: SceneOverlay[];
+  hasBallistics: boolean;
+  hasVehicleMotion?: boolean;
+  linkedEvidenceIds: string[];
+  linkedTimelineEventId: string;
+  forensicSummary: string;
+}
+
 export interface ReconstructionData {
   id?: string;
   caseId: string;
@@ -185,6 +231,7 @@ export interface ReconstructionData {
       ellipsoidRatio?: number;
     };
   };
+  scenes?: InvestigationScene[];
   scenarios: Scenario[];
 }
 
@@ -230,6 +277,33 @@ export interface MissingEvidencePrediction {
   linkedTimelineEventIds: string[];
 }
 
+export type CharacterAnimationState =
+  | 'IDLE'
+  | 'WALK'
+  | 'RUN'
+  | 'SIT'
+  | 'TURN'
+  | 'AIM'
+  | 'PUSH'
+  | 'ATTACK'
+  | 'FALL'
+  | 'DEATH';
+
+export interface CharacterWaypoint {
+  timeProgress: number; // 0.0 to 1.0 (0% to 100%)
+  position: [number, number, number];
+  animationState: CharacterAnimationState;
+  headingAngle?: number; // radians
+  attachedItem?: 'POISON_BOTTLE' | 'TACTICAL_KNIFE' | 'SNIPER_RIFLE' | string;
+}
+
+export type CinematicCameraMode =
+  | 'FREE_ORBIT'
+  | 'FOLLOW_SUBJECT'
+  | 'CINEMATIC_ORBIT'
+  | 'EVIDENCE_ZOOM'
+  | 'SLOW_MOTION_BALLISTIC';
+
 export interface ChatMessage {
   id: string;
   role: 'user' | 'model';
@@ -247,4 +321,6 @@ export interface SimulationState {
   lightingMode: 'NORMAL' | 'UV' | 'INFRARED' | 'WIREFRAME';
   showMeasurements: boolean;
   showVisibilityCone: boolean;
+  cinematicMode?: CinematicCameraMode;
+  activeSubjectId?: string;
 }

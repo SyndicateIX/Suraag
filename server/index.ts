@@ -1276,11 +1276,11 @@ app.get('/api/reconstruction/:caseId', async (req: Request, res: Response) => {
         OR: [{ caseId: req.params.caseId }, { case: { caseNumber: req.params.caseId } }],
       },
     });
-    if (data) return res.json(data);
+    if (data && (data as any).scenes) return res.json(data);
   } catch (err) {}
-  
+
   return res.json({
-    caseId: req.params.caseId,
+    caseId: req.params.caseId || 'CASE-2026-DT01',
     attackerPosition: { x: -2.4, y: 1.7, z: 3.1 },
     victimPosition: { x: 1.8, y: 1.2, z: 0.5 },
     attackDirection: 'Azimuth 38° East, Elevation -14° Downward',
@@ -1294,17 +1294,154 @@ app.get('/api/reconstruction/:caseId', async (req: Request, res: Response) => {
         start: [-2.4, 1.7, 3.1],
         impact: [1.8, 1.2, 0.5],
         velocityMps: 340,
-        caliber: '9mm Subsonic',
+        caliber: '7.62mm Suppressed Sniper Discharge',
         ricochetAngle: 12.4,
-        kineticEnergyJoules: 485,
+        kineticEnergyJoules: 2450,
       },
       bloodSpatter: {
         origin: [1.8, 1.2, 0.5],
         dropletCount: 420,
-        patternType: 'High-Velocity Forward Spatter',
+        patternType: 'High-Velocity Scapular Arterial Spatter',
         ellipsoidRatio: 1.42,
       },
     },
+    scenes: [
+      {
+        id: 'STAGE-01',
+        stageIndex: 1,
+        stageName: 'Attempt 1 – Dinner and Deception',
+        locationName: 'Olive Terrace Restaurant (Table 4)',
+        timestamp: '2026-04-14 19:30',
+        phase: 'Attempt 1 (Poison Procurement & Administration)',
+        cameraDefault: { position: [-6, 5, 8], target: [0, 1, 0] },
+        characters: [
+          { id: 'DIYA', name: 'Diya Gupta', role: 'SUSPECT', position: [-1.2, 0.9, 0.5], color: '#ff544c', activity: 'Administering Thallium sulphate in red wine' },
+          { id: 'KESHAN', name: 'Keshan Malhotra', role: 'VICTIM', position: [1.2, 0.9, 0.5], color: '#00e676', activity: 'Consuming poisoned dinner course' },
+          { id: 'WAITER', name: 'Restaurant Server', role: 'WITNESS', position: [-3.5, 0.9, -2], color: '#ab8985', activity: 'Serving food at Table 4' }
+        ],
+        objects: [
+          { id: 'WINE_GLASS', label: 'Poisoned Red Wine Glass (EVID-001)', type: 'EVIDENCE', position: [0.2, 0.9, 0.5], details: 'Toxicology confirmed Thallium sulphate residue (0.85 mg/L).', supportingEvidenceId: 'EVID-001' },
+          { id: 'INVOICE', label: 'Veterinary License Invoice (EVID-004)', type: 'EVIDENCE', position: [-2.0, 0.9, -1.8], details: 'Forged license #VET-9942 used by Chetany Sharma at Sanjivani Medico.', supportingEvidenceId: 'EVID-004' }
+        ],
+        overlays: [
+          { timestamp: '19:00 PM', title: 'CCTV CAM-01 Chemical Purchase Intercept', type: 'CCTV', details: 'Chetany Sharma recorded purchasing Thallium sulphate using forged license #VET-9942.', evidenceId: 'EVID-004' },
+          { timestamp: '19:30 PM', title: 'Card Transaction (EVID-001)', type: 'BANK_TRANSFER', details: 'Diya Gupta credit card payment ₹4,200 at Olive Terrace Table 4.', evidenceId: 'EVID-001' }
+        ],
+        hasBallistics: false,
+        hasVehicleMotion: false,
+        linkedEvidenceIds: ['EVID-001', 'EVID-004'],
+        linkedTimelineEventId: 'EV-REP-01',
+        forensicSummary: 'Attempt 1: Acute Thallium poisoning administered at Olive Terrace Restaurant Table 4.'
+      },
+      {
+        id: 'STAGE-02',
+        stageIndex: 2,
+        stageName: 'Attempt 2 – Birthday Resort Attack',
+        locationName: 'Skyline Resort (Corridor 300 & Room 304)',
+        timestamp: '2026-05-13 01:15',
+        phase: 'Attempt 2 (Corridor Knife Attack)',
+        cameraDefault: { position: [-8, 6, 9], target: [0, 1.2, 0] },
+        characters: [
+          { id: 'CHETANY', name: 'Chetany Sharma', role: 'SUSPECT', position: [-3.2, 0.9, -1.0], color: '#e53935', activity: 'Fleeing Room 304 corridor with knife' },
+          { id: 'KESHAN', name: 'Keshan Malhotra', role: 'VICTIM', position: [2.0, 0.9, 0.5], color: '#00e676', activity: 'Wounded inside Room 304' },
+          { id: 'DIYA', name: 'Diya Gupta', role: 'SUSPECT', position: [0.5, 0.9, 1.2], color: '#ff544c', activity: 'Unlocking door & orchestrating entry' },
+          { id: 'ARCHITA', name: 'Archita Deshmukh (WIT-001)', role: 'WITNESS', position: [5.5, 0.9, -2.5], color: '#ab8985', activity: 'Observing flee from Room 306 doorway' }
+        ],
+        objects: [
+          { id: 'TACTICAL_KNIFE', label: 'Tactical Hunting Knife (EVID-005)', type: 'WEAPON', position: [-2.2, 0.1, -1.0], details: '8-inch tactical knife dropped in Corridor 300. Epithelial DNA match Chetany 99.999%.', supportingEvidenceId: 'EVID-005' },
+          { id: 'KEYCARD_LOCK', label: 'Electronic Keycard Lock (EVID-006)', type: 'EVIDENCE', position: [1.2, 1.4, 0.5], details: 'Audit log confirms keycard swipe by Diya at 01:15:22 AM.', supportingEvidenceId: 'EVID-006' }
+        ],
+        overlays: [
+          { timestamp: '01:15 AM', title: 'Electronic Keycard Audit Log (EVID-006)', type: 'CELL_TOWER', details: 'Diya Gupta scanned keycard to disarm interior deadbolt.', evidenceId: 'EVID-006' },
+          { timestamp: '02:30 AM', title: 'Eyewitness Deposition WIT-001', type: 'CCTV', details: 'Archita Deshmukh identified Chetany Sharma dropping tactical knife EVID-005 in corridor.', evidenceId: 'EVID-005' }
+        ],
+        hasBallistics: false,
+        hasVehicleMotion: false,
+        linkedEvidenceIds: ['EVID-005', 'EVID-006'],
+        linkedTimelineEventId: 'EV-REP-03',
+        forensicSummary: 'Attempt 2: Staged knife attack inside Skyline Resort Room 304 disarmed by victim.'
+      },
+      {
+        id: 'STAGE-03',
+        stageIndex: 3,
+        stageName: 'Attempt 3 – Blood on the Streets',
+        locationName: 'Apex Tech IT Park (Kharadi Crossing)',
+        timestamp: '2026-06-10 09:58',
+        phase: 'Attempt 3 (Vehicular Hit-and-Run)',
+        cameraDefault: { position: [-12, 10, 12], target: [0, 1, 0] },
+        characters: [
+          { id: 'VIKRAM', name: 'Vikram Rathod (Hitman)', role: 'HITMAN', position: [-5.0, 1.8, 0.0], color: '#ff8a80', activity: 'Operating Tata 407 cargo truck' },
+          { id: 'KESHAN', name: 'Keshan Malhotra', role: 'VICTIM', position: [3.5, 0.9, 1.5], color: '#00e676', activity: 'Pedestrian crossing pavement' }
+        ],
+        objects: [
+          { id: 'TRUCK', label: 'Tata 407 Cargo Truck (EVID-012)', type: 'VEHICLE', position: [-4.0, 1.2, 0.0], details: 'Commercial truck MH-12-QX-4412 accelerated to 62 km/h into pedestrian zone.', supportingEvidenceId: 'EVID-012' },
+          { id: 'RTGS_RECEIPT', label: 'RTGS ₹6.0M Wire Receipt (EVID-010)', type: 'TELEMETRY', position: [-8.0, 0.5, -4.0], details: 'Bank wire of ₹6,000,000 from Chetany to Vikram 15 mins prior.', supportingEvidenceId: 'EVID-010' }
+        ],
+        overlays: [
+          { timestamp: '09:45 AM', title: 'HDFC RTGS Wire Transfer (EVID-010)', type: 'BANK_TRANSFER', details: 'Chetany Sharma transferred ₹6,000,000 to hitman Vikram Rathod.', evidenceId: 'EVID-010' },
+          { timestamp: '09:58 AM', title: 'Traffic CCTV Telemetry & Steering Vector', type: 'CCTV', details: 'Deliberate 42° steering correction directly into pedestrian sanctuary zone.', evidenceId: 'EVID-012' }
+        ],
+        hasBallistics: false,
+        hasVehicleMotion: true,
+        linkedEvidenceIds: ['EVID-010', 'EVID-011', 'EVID-012', 'EVID-013'],
+        linkedTimelineEventId: 'EV-REP-05',
+        forensicSummary: 'Attempt 3: Staged vehicular hit-and-run assault by hired hitman Vikram Rathod.'
+      },
+      {
+        id: 'STAGE-04',
+        stageIndex: 4,
+        stageName: 'Ambush Planning & Reconnaissance',
+        locationName: 'Brew & Bean Café (Table 4)',
+        timestamp: '2026-06-19 17:00',
+        phase: 'Ambush Logistics & Site Reconnaissance',
+        cameraDefault: { position: [-5, 4, 7], target: [0, 1, 0] },
+        characters: [
+          { id: 'DIYA', name: 'Diya Gupta', role: 'SUSPECT', position: [-1.0, 0.9, 0.4], color: '#ff544c', activity: 'Reviewing Lohegaon topographic map' },
+          { id: 'CHETANY', name: 'Chetany Sharma', role: 'SUSPECT', position: [1.0, 0.9, 0.4], color: '#e53935', activity: 'Confirming sniper ridge vantage point' },
+          { id: 'SUPERVISOR', name: 'Rohan Mehta (WIT-005)', role: 'WITNESS', position: [3.8, 0.9, -2.0], color: '#ab8985', activity: 'Observing Table 4 planning session' }
+        ],
+        objects: [
+          { id: 'CAFE_BILL', label: 'Brew & Bean Order Bill (EVID-014)', type: 'EVIDENCE', position: [0.0, 0.9, 0.4], details: 'Bill #BB-9921 timestamped 17:04 PM. Refutes Diya\'s Phoenix Mall alibi.', supportingEvidenceId: 'EVID-014' }
+        ],
+        overlays: [
+          { timestamp: '17:00 PM', title: 'CCTV CAM-05 Capture & Map Session', type: 'CCTV', details: 'Diya and Chetany recorded studying Lohegaon Sunset Point topographic map at Table 4.', evidenceId: 'EVID-014' },
+          { timestamp: '17:30 PM', title: 'Refuted Phoenix Mall Alibi Claim', type: 'VOICE_INTERCEPT', details: 'Diya\'s claim of shopping alone at Phoenix Marketcity refuted by CCTV CAM-05.', evidenceId: 'EVID-014' }
+        ],
+        hasBallistics: false,
+        hasVehicleMotion: false,
+        linkedEvidenceIds: ['EVID-014', 'EVID-015'],
+        linkedTimelineEventId: 'EV-REP-07',
+        forensicSummary: 'Ambush Planning: Co-conspirators finalized Lohegaon Hill cliff ambush logistics at Brew & Bean Café.'
+      },
+      {
+        id: 'STAGE-05',
+        stageIndex: 5,
+        stageName: 'Final Incident – Lohegaon Hill Homicide',
+        locationName: 'Lohegaon Hill Sunset Point & Boulder Ridge',
+        timestamp: '2026-06-21 17:15',
+        phase: 'Final Incident (Cliff Ambush & Sniper Discharge)',
+        cameraDefault: { position: [-14, 12, 14], target: [0, 2, 0] },
+        characters: [
+          { id: 'CHETANY', name: 'Chetany Sharma (Sniper)', role: 'SUSPECT', position: [-8.5, 3.8, -4.5], color: '#e53935', activity: 'Discharging suppressed Remington 700 rifle from boulder ridge' },
+          { id: 'DIYA', name: 'Diya Gupta (Mastermind)', role: 'SUSPECT', position: [1.2, 2.2, 0.8], color: '#ff544c', activity: 'Positioning victim near cliff edge for staged fall' },
+          { id: 'KESHAN', name: 'Keshan Malhotra (Victim)', role: 'VICTIM', position: [2.5, 2.0, 1.2], color: '#00e676', activity: 'Struck by 7.62mm bullet & falling 45m' }
+        ],
+        objects: [
+          { id: 'SNIPER_RIFLE', label: 'Remington 700 Sniper Rifle (EVID-016)', type: 'WEAPON', position: [-8.2, 3.5, -4.5], details: 'Suppressed 7.62mm Remington rifle recovered on boulder ridge. DNA & ballistics match Chetany.', supportingEvidenceId: 'EVID-016' },
+          { id: 'AUDI_Q3', label: 'Audi Q3 Vehicle (MH-12-FR-0007)', type: 'VEHICLE', position: [-3.0, 2.2, 4.0], details: 'Diya\'s Audi Q3 GPS tracker confirmed arrival at Sunset Point 17:08 PM.', supportingEvidenceId: 'EVID-017' },
+          { id: 'CELLEBRITE_DUMP', label: 'Cellebrite Voice Notes (EVID-020)', type: 'EVIDENCE', position: [3.5, 0.5, 3.5], details: '482 encrypted voice notes detailing ₹6.5M hitman payments and staged selfie fall script.', supportingEvidenceId: 'EVID-020' }
+        ],
+        overlays: [
+          { timestamp: '17:15 PM', title: '7.62mm Suppressed Sniper Discharge', type: 'AUTOPSY', details: 'Remington 700 fired from 120m distance. Entry trajectory 34.2° downward through scapula.', evidenceId: 'EVID-016' },
+          { timestamp: '17:18 PM', title: 'Staged 112 Emergency Call & Tower Ping', type: 'EMERGENCY_CALL', details: 'Diya reported false selfie slip. Refuted by Dr. Neha Patwardhan autopsy (gunshot prior to fall).', evidenceId: 'EVID-020' }
+        ],
+        hasBallistics: true,
+        hasVehicleMotion: false,
+        linkedEvidenceIds: ['EVID-016', 'EVID-017', 'EVID-020'],
+        linkedTimelineEventId: 'EV-REP-08',
+        forensicSummary: 'Final Homicide: Suppressed 7.62mm sniper rifle discharge at Lohegaon Hill followed by 45m cliff fall.'
+      }
+    ],
     scenarios: [
       {
         id: 'SCENARIO-A',
@@ -1341,8 +1478,8 @@ app.get('/api/reconstruction/:caseId', async (req: Request, res: Response) => {
         supportingEvidenceIds: ['EVID-017'],
         linkedTimelineEventIds: ['EV-REP-08'],
         forensicVerdict: 'REFUTED DEFENSE CLAIM – Contradicted by physical autopsy evidence and ballistic raycasting.'
-      },
-    ],
+      }
+    ]
   });
 });
 
