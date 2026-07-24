@@ -18,7 +18,13 @@ export interface Case {
   incidentDate: string | Date;
   summary: string;
   confidenceScore: number;
+  attemptPhases?: string[];
+  correlatedSuspects?: string[];
+  evidenceCount?: number;
+  timelineEventsCount?: number;
+  forensicVerdict?: string;
 }
+
 
 export interface Evidence {
   id: string;

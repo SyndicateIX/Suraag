@@ -1,4 +1,5 @@
-import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile, ExplainableReasoningChain, SystemAuditRecord, Evidence } from '../types';
+import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile, ExplainableReasoningChain, SystemAuditRecord, Evidence, Case } from '../types';
+
 
 
 
@@ -1109,6 +1110,38 @@ export function getReportEvidenceArtifacts(): Evidence[] {
     }
   ];
 }
+
+/**
+ * Returns structured investigation report case intelligence records
+ * extracted from the official investigation report dossier.
+ */
+export function getReportCaseDossiers(): Case[] {
+  return [
+    {
+      id: 'CASE-2026-088',
+      caseNumber: 'CASE-2026-088',
+      title: 'Project Syndicate: Keshan Malhotra Attempted Homicide & Ambush Investigation',
+      status: 'CRITICAL',
+      priority: 'CRITICAL',
+      assignedTo: 'SI Santosh Jadhav & Dr. Neha Patwardhan (Crime Branch Unit 4)',
+      location: 'Lohegaon Hill, Apex IT Park Kharadi, Skyline Resort & Viman Nagar, Pune',
+      incidentDate: '2026-06-21T17:15:00.000Z',
+      summary: 'Comprehensive multi-phase investigation into Diya Gupta (SUS-01) and Chetany Sharma (SUS-02) conspiracy to murder Keshan Malhotra across 4 attempt phases (Olive Terrace Thallium Poisoning, Resort Birthday Knife Attack, Apex IT Park Hit-and-Run, Lohegaon Hill Rifle Ambush). 20 physical exhibits ingested.',
+      confidenceScore: 99.95,
+      attemptPhases: [
+        'Attempt 1 – Dinner and Deception (Thallium Poisoning)',
+        'Attempt 2 – Birthday Resort Knife Attack',
+        'Attempt 3 – Blood on the Streets (Hit-and-Run)',
+        'Final Incident – Lohegaon Hill Cliff Ambush (Remington 700 Rifle)'
+      ],
+      correlatedSuspects: ['Diya Gupta (SUS-01)', 'Chetany Sharma (SUS-02)', 'Vikram Rathod (Hitman/WIT-004)'],
+      evidenceCount: 20,
+      timelineEventsCount: 8,
+      forensicVerdict: 'PREMEDITATED HOMICIDE CONSPIRACY PROVEN BEYOND REASONABLE DOUBT'
+    }
+  ];
+}
+
 
 
 
