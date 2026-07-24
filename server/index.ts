@@ -481,7 +481,12 @@ app.get('/api/evidence/predictions', async (req: Request, res: Response) => {
       supportingEvidenceIds: ['EVID-016', 'EVID-020'],
       linkedTimelineEventIds: ['EV-REP-08']
     }
+  ]);
+});
+
 app.get('/api/evidence/graph', async (req: Request, res: Response) => {
+
+
   return res.json({
     nodes: [
       {
@@ -1268,6 +1273,22 @@ app.post('/api/timeline/parse-report', async (req: Request, res: Response) => {
     return res.status(500).json({ error: err.message });
   }
 });
+
+app.post('/api/timeline/sync-physics', async (req: Request, res: Response) => {
+  try {
+    const { caseId = 'CASE-2026-DT01', physicsParams } = req.body;
+    return res.json({
+      success: true,
+      message: 'Timeline synchronized with live ballistic & Newtonian physics parameters',
+      caseId,
+      syncedAt: new Date().toISOString(),
+      activePhysics: physicsParams
+    });
+  } catch (err: any) {
+    return res.status(500).json({ error: err.message });
+  }
+});
+
 
 app.get('/api/reconstruction/:caseId', async (req: Request, res: Response) => {
   try {

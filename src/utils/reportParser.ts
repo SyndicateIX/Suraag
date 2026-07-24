@@ -1,4 +1,4 @@
-import { TimelineEvent } from '../types';
+import { TimelineEvent, ReportPhysicsPreset } from '../types';
 
 export interface ExtractionStats {
   totalEventsExtracted: number;
@@ -14,7 +14,7 @@ export interface ExtractionStats {
 
 /**
  * Parses the official investigation report dossier text and extracts structured events,
- * timestamps, entities, relationships, attempt groups, and suspect alibi refutations.
+ * timestamps, entities, relationships, attempt groups, suspect alibi refutations, and normalized physics parameters.
  */
 export function parseInvestigationReport(reportText?: string, caseId: string = 'CASE-2026-DT01'): {
   events: TimelineEvent[];
@@ -45,7 +45,18 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
       supportingEvidenceIds: ['EVID-001'],
       alibiClaim: 'Diya claimed Keshan suffered an unexpected organic stomach bug during dinner.',
       forensicRefutation: 'Sanjivani Medico CCTV CAM-01 captured Chetany buying Thallium at 19:00; UPI receipt (₹1,450) logged to Chetany.',
-      aiReasoning: 'CCTV timestamps and pharmacy store registers refute claims of spontaneous illness.'
+      aiReasoning: 'CCTV timestamps and pharmacy store registers refute claims of spontaneous illness.',
+      physicsData: {
+        velocityMps: 250,
+        caliberMassGrams: 6.0,
+        angleDeg: 18.0,
+        airResistance: 0.025,
+        kineticEnergyJoules: 188,
+        impactForceN: 14,
+        ricochetAngleDeg: 0,
+        dropHeightMeters: 0,
+        flightTimeSec: 2.1
+      }
     },
     {
       id: 'EV-REP-02',
@@ -70,7 +81,18 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
       supportingEvidenceIds: ['EVID-002'],
       alibiClaim: 'Claimed dinner was a routine pre-wedding romantic date.',
       forensicRefutation: 'Digital extraction of deleted WhatsApp threads confirms coordination with Chetany 15 minutes before arrival.',
-      aiReasoning: 'WhatsApp reservation timestamps align precisely with Chetany\'s poison purchase 2 hours earlier.'
+      aiReasoning: 'WhatsApp reservation timestamps align precisely with Chetany\'s poison purchase 2 hours earlier.',
+      physicsData: {
+        velocityMps: 250,
+        caliberMassGrams: 6.0,
+        angleDeg: 18.0,
+        airResistance: 0.025,
+        kineticEnergyJoules: 188,
+        impactForceN: 14,
+        ricochetAngleDeg: 0,
+        dropHeightMeters: 0,
+        flightTimeSec: 2.1
+      }
     },
     {
       id: 'EV-REP-03',
@@ -95,7 +117,18 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
       supportingEvidenceIds: ['EVID-020'],
       alibiClaim: 'Diya claimed she was asleep in Room 304 from midnight to morning.',
       forensicRefutation: 'CDR tower audits reveal 18 pre-incident phone calls between Diya and Chetany between 01:00 AM and 02:25 AM.',
-      aiReasoning: 'High-frequency nocturnal call volume directly refutes claim of sleep.'
+      aiReasoning: 'High-frequency nocturnal call volume directly refutes claim of sleep.',
+      physicsData: {
+        velocityMps: 340,
+        caliberMassGrams: 8.0,
+        angleDeg: 34.2,
+        airResistance: 0.015,
+        kineticEnergyJoules: 462,
+        impactForceN: 85,
+        ricochetAngleDeg: 12.4,
+        dropHeightMeters: 1.4,
+        flightTimeSec: 0.53
+      }
     },
     {
       id: 'EV-REP-04',
@@ -122,7 +155,18 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
       linkedWitnessIds: ['WIT-001'],
       alibiClaim: 'Chetany claimed he was at his residence in Viman Nagar all night.',
       forensicRefutation: 'Latent fingerprints on EVID-005 knife match Chetany; eyewitness Archita Deshmukh identified him fleeing Room 304.',
-      aiReasoning: 'Dactyloscopy (fingerprint) matching on tactical knife yields 99.8% probabilistic certainty.'
+      aiReasoning: 'Dactyloscopy (fingerprint) matching on tactical knife yields 99.8% probabilistic certainty.',
+      physicsData: {
+        velocityMps: 340,
+        caliberMassGrams: 8.0,
+        angleDeg: 34.2,
+        airResistance: 0.015,
+        kineticEnergyJoules: 462,
+        impactForceN: 85,
+        ricochetAngleDeg: 12.4,
+        dropHeightMeters: 1.4,
+        flightTimeSec: 0.53
+      }
     },
     {
       id: 'EV-REP-05',
@@ -149,7 +193,18 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
       linkedWitnessIds: ['WIT-004'],
       alibiClaim: 'Chetany claimed money wire was a business loan payment for electronics inventory.',
       forensicRefutation: 'Bank audits show instant transfer to truck owner; burner phone voice recordings detail contract terms.',
-      aiReasoning: 'Financial transaction trail is immutable and confirmed by banking ledgers.'
+      aiReasoning: 'Financial transaction trail is immutable and confirmed by banking ledgers.',
+      physicsData: {
+        velocityMps: 15.0,
+        caliberMassGrams: 4200000,
+        angleDeg: 90.0,
+        airResistance: 0.045,
+        kineticEnergyJoules: 472500,
+        impactForceN: 68500,
+        ricochetAngleDeg: 0,
+        dropHeightMeters: 0,
+        flightTimeSec: 0.83
+      }
     },
     {
       id: 'EV-REP-06',
@@ -176,7 +231,18 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
       linkedWitnessIds: ['WIT-004'],
       alibiClaim: 'Reported as an accidental steering failure by an unknown commercial driver.',
       forensicRefutation: 'Vikram Rathod confessed under interrogation; CCTV telemetry proves deliberate steering correction into pedestrian zone.',
-      aiReasoning: 'Collision trajectory modeling proves intentional steering vector.'
+      aiReasoning: 'Collision trajectory modeling proves intentional steering vector.',
+      physicsData: {
+        velocityMps: 15.0,
+        caliberMassGrams: 4200000,
+        angleDeg: 90.0,
+        airResistance: 0.045,
+        kineticEnergyJoules: 472500,
+        impactForceN: 68500,
+        ricochetAngleDeg: 0,
+        dropHeightMeters: 0,
+        flightTimeSec: 0.83
+      }
     },
     {
       id: 'EV-REP-07',
@@ -203,7 +269,18 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
       linkedWitnessIds: ['WIT-005'],
       alibiClaim: 'Diya claimed she was shopping alone in Phoenix Marketcity mall on June 19.',
       forensicRefutation: 'Café supervisor Rohan Mehta served cold brew to both suspects at Table 4; CCTV & order bill confirm presence.',
-      aiReasoning: 'Biometric face matching on CCTV CAM-05 positively identifies both suspects.'
+      aiReasoning: 'Biometric face matching on CCTV CAM-05 positively identifies both suspects.',
+      physicsData: {
+        velocityMps: 850.0,
+        caliberMassGrams: 9.7,
+        angleDeg: 14.0,
+        airResistance: 0.012,
+        kineticEnergyJoules: 3504,
+        impactForceN: 14200,
+        ricochetAngleDeg: 8.5,
+        dropHeightMeters: 45.0,
+        flightTimeSec: 0.14
+      }
     },
     {
       id: 'EV-REP-08',
@@ -230,7 +307,18 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
       linkedWitnessIds: ['WIT-008'],
       alibiClaim: 'Diya dialed 112 claiming Keshan slipped on loose gravel while posing for a selfie.',
       forensicRefutation: 'Autopsy by Dr. Neha Patwardhan confirms a 7.62mm gunshot trajectory through shoulder blade BEFORE cliff fall; rifle recovered with Chetany\'s DNA.',
-      aiReasoning: 'Wound ballistics and acoustic gunshot echo analysis refute accidental slip claim beyond reasonable doubt.'
+      aiReasoning: 'Wound ballistics and acoustic gunshot echo analysis refute accidental slip claim beyond reasonable doubt.',
+      physicsData: {
+        velocityMps: 850.0,
+        caliberMassGrams: 9.7,
+        angleDeg: 14.0,
+        airResistance: 0.012,
+        kineticEnergyJoules: 3504,
+        impactForceN: 14200,
+        ricochetAngleDeg: 8.5,
+        dropHeightMeters: 45.0,
+        flightTimeSec: 0.14
+      }
     }
   ];
 
@@ -268,4 +356,121 @@ export function parseInvestigationReport(reportText?: string, caseId: string = '
     events: extractedEvents,
     stats
   };
+}
+
+/**
+ * Returns structured ballistic & Newtonian physics simulation preset profiles
+ * extracted from the official investigation report dossier.
+ */
+export function getReportPhysicsProfiles(): ReportPhysicsPreset[] {
+  return [
+    {
+      id: 'PRESET-EV-REP-08',
+      name: 'Final Incident – Lohegaon Hill Cliff Ambush (Remington 700 Sniper)',
+      eventId: 'EV-REP-08',
+      attemptPhase: 'Final Incident – Lohegaon Hill Cliff Ambush',
+      category: 'BALLISTICS',
+      weaponOrVehicle: 'Remington Model 700 Suppressed Rifle (7.62×51mm)',
+      evidenceId: 'EVID-016',
+      velocity: 850, // m/s
+      caliberMass: 9.7, // grams
+      angleDeg: 14.0, // downward scapular entry angle
+      airResistance: 0.012,
+      muzzleEnergyJoules: 3504,
+      impactForceN: 14200,
+      flightTimeSec: 0.14,
+      ricochetAngleDeg: 8.5,
+      dropHeightMeters: 45.0, // cliff fall height
+      description: 'Chetany Sharma fired a suppressed 7.62mm bullet from a Remington Model 700 rifle from a boulder ridge into Keshan Malhotra\'s right scapula at 120m range, precipitating a 45m cliff fall.',
+      alibiClaim: 'Diya Gupta claimed Keshan slipped on loose gravel taking a selfie at Sunset Point.',
+      forensicRefutation: 'Scapular entry angle (14° downward) and wound trajectory precede cliff impact. Remington Model 700 rifle recovered on boulder ridge with Chetany\'s DNA on trigger guard.',
+      entities: {
+        persons: ['Diya Gupta (SUS-01)', 'Chetany Sharma (SUS-02)', 'Keshan Malhotra (Victim)', 'Dr. Neha Patwardhan (WIT-008)'],
+        locations: ['Lohegaon Hill Sunset Point & Boulder Ridge'],
+        objects: ['Remington Model 700 Rifle (EVID-016)', 'Spent 7.62mm Casing', 'Cellebrite Dump EVID-020'],
+        vehicles: []
+      }
+    },
+    {
+      id: 'PRESET-EV-REP-06',
+      name: 'Attempt 3 – Apex Tech IT Park Staged Hit & Run (Tata 407 Truck)',
+      eventId: 'EV-REP-06',
+      attemptPhase: 'Attempt 3 – Blood on the Streets',
+      category: 'VEHICLE',
+      weaponOrVehicle: 'Tata 407 Cargo Truck (MH-12-QX-4412)',
+      evidenceId: 'EVID-010',
+      velocity: 540, // scaled m/s velocity equivalent for momentum simulation
+      caliberMass: 14.0, // mass index metric
+      angleDeg: 45.0, // impact vector angle
+      airResistance: 0.035,
+      muzzleEnergyJoules: 472500, // Newtonian kinetic energy 0.5 * 4200kg * (15m/s)^2
+      impactForceN: 68500,
+      flightTimeSec: 0.83,
+      ricochetAngleDeg: 0,
+      dropHeightMeters: 0,
+      description: 'Tata 407 cargo truck driven by hitman Vikram Rathod accelerated directly into pedestrian Keshan Malhotra outside his Kharadi office following ₹6,000,000 bank wire.',
+      alibiClaim: 'Chetany & Diya claimed collision was an accidental steering failure by an unknown driver.',
+      forensicRefutation: 'Kharadi traffic CCTV tracking proves deliberate steering alignment into pedestrian zone; hitman Vikram Rathod confessed money wire paid for assault.',
+      entities: {
+        persons: ['Keshan Malhotra (Victim)', 'Vikram Rathod (Hitman/WIT-004)', 'Chetany Sharma (SUS-02)'],
+        locations: ['Apex Tech IT Park Pedestrian Crossing, Kharadi'],
+        objects: ['HDFC Wire Audit Manifest (EVID-010)', 'Burner Voice Recordings (EVID-011)'],
+        vehicles: ['Tata 407 Cargo Truck (MH-12-QX-4412)']
+      }
+    },
+    {
+      id: 'PRESET-EV-REP-04',
+      name: 'Attempt 2 – Resort Corridor Knife Attack Flight & Drop',
+      eventId: 'EV-REP-04',
+      attemptPhase: 'Attempt 2 – Birthday Resort Knife Attack',
+      category: 'WITNESS',
+      weaponOrVehicle: 'Tactical Hunting Knife (EVID-005)',
+      evidenceId: 'EVID-005',
+      velocity: 340,
+      caliberMass: 8.0,
+      angleDeg: 34.2,
+      airResistance: 0.015,
+      muzzleEnergyJoules: 462,
+      impactForceN: 85,
+      flightTimeSec: 0.53,
+      ricochetAngleDeg: 12.4,
+      dropHeightMeters: 1.4,
+      description: 'Chetany Sharma fled Room 304 in panic after Keshan stirred, dropping a tactical hunting knife on the resort corridor carpet.',
+      alibiClaim: 'Chetany claimed he was at his Viman Nagar residence all night on May 13.',
+      forensicRefutation: '14 minutiae dactyloscopy points on knife hilt match Chetany; eyewitness Archita Deshmukh identified Chetany fleeing Room 304.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Archita Deshmukh (WIT-001)', 'Keshan Malhotra (Victim)'],
+        locations: ['Skyline Valley Resort, Corridor 300'],
+        objects: ['Tactical Hunting Knife (EVID-005)', 'Resort CCTV CAM-04 Footage'],
+        vehicles: []
+      }
+    },
+    {
+      id: 'PRESET-EV-REP-01',
+      name: 'Attempt 1 – Olive Terrace Thallium Ingestion Kinetic Decay',
+      eventId: 'EV-REP-01',
+      attemptPhase: 'Attempt 1 – Dinner and Deception',
+      category: 'CCTV',
+      weaponOrVehicle: 'Concentrated Thallium Sulphate (EVID-004)',
+      evidenceId: 'EVID-004',
+      velocity: 250,
+      caliberMass: 6.0,
+      angleDeg: 18.0,
+      airResistance: 0.025,
+      muzzleEnergyJoules: 188,
+      impactForceN: 14,
+      flightTimeSec: 2.1,
+      ricochetAngleDeg: 0,
+      dropHeightMeters: 0,
+      description: 'Chetany purchased concentrated Thallium poison at Sanjivani Medico using forged veterinary credentials prior to Diya\'s dinner date with Keshan at Olive Terrace.',
+      alibiClaim: 'Diya claimed Keshan suffered a spontaneous organic stomach bug.',
+      forensicRefutation: 'CCTV CAM-01 recorded Chetany buying poison at 19:00; UPI receipt (₹1,450) and deleted WhatsApp threads link Diya and Chetany.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Diya Gupta (SUS-01)', 'Keshan Malhotra (Victim)'],
+        locations: ['Sanjivani Medico, Viman Nagar', 'The Olive Terrace Restaurant'],
+        objects: ['Concentrated Thallium Poison (EVID-004)', 'WhatsApp Reservation Record (EVID-002)'],
+        vehicles: ['Audi Q3 MH-12-FR-0007']
+      }
+    }
+  ];
 }

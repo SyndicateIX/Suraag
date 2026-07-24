@@ -120,6 +120,45 @@ export interface TimelineEvent {
   alibiClaim?: string;
   forensicRefutation?: string;
   linkedWitnessIds?: string[];
+  physicsData?: {
+    velocityMps?: number;
+    caliberMassGrams?: number;
+    angleDeg?: number;
+    airResistance?: number;
+    kineticEnergyJoules?: number;
+    impactForceN?: number;
+    ricochetAngleDeg?: number;
+    dropHeightMeters?: number;
+    flightTimeSec?: number;
+  };
+}
+
+export interface ReportPhysicsPreset {
+  id: string;
+  name: string;
+  eventId: string;
+  attemptPhase: string;
+  category: string;
+  weaponOrVehicle: string;
+  evidenceId: string;
+  velocity: number;
+  caliberMass: number;
+  angleDeg: number;
+  airResistance: number;
+  muzzleEnergyJoules: number;
+  impactForceN: number;
+  flightTimeSec: number;
+  ricochetAngleDeg: number;
+  dropHeightMeters: number;
+  description: string;
+  alibiClaim: string;
+  forensicRefutation: string;
+  entities: {
+    persons: string[];
+    locations: string[];
+    objects: string[];
+    vehicles: string[];
+  };
 }
 
 
