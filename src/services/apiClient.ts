@@ -60,6 +60,11 @@ export const apiClient = {
         method: 'POST',
         body: JSON.stringify({ caseId, reportText }),
       }),
+    syncPhysics: (caseId?: string, physicsParams?: any) =>
+      fetchJSON<{ success: boolean; message: string; syncedAt: string }>('/timeline/sync-physics', {
+        method: 'POST',
+        body: JSON.stringify({ caseId, physicsParams }),
+      }),
   },
   reconstruction: {
     getByCaseId: (caseId: string) => fetchJSON<ReconstructionData>(`/reconstruction/${caseId}`),
