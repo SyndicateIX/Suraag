@@ -1,4 +1,5 @@
-import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile, ExplainableReasoningChain } from '../types';
+import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile, ExplainableReasoningChain, SystemAuditRecord } from '../types';
+
 
 
 
@@ -872,5 +873,91 @@ export function getReportReasoningChains(): ExplainableReasoningChain[] {
     }
   ];
 }
+
+/**
+ * Returns structured system audit records & security compliance logs
+ * extracted from the official investigation report dossier.
+ */
+export function getReportAuditRecords(): SystemAuditRecord[] {
+  return [
+    {
+      id: 'AUD-REP-01',
+      auditId: 'AUDIT-LOG-01',
+      timestamp: '2026-06-21 17:15:00 UTC',
+      attemptPhase: 'Final Incident – Lohegaon Hill Cliff Ambush',
+      eventId: 'EV-REP-08',
+      actionType: 'BALLISTIC_EXHIBIT_SHA256_VERIFIED',
+      evidenceId: 'EVID-016',
+      actor: 'SI Santosh Jadhav (Investigating Officer)',
+      details: 'Remington Model 700 Rifle (EVID-016) & spent 7.62mm casing ingested into forensic vault. Epithelial DNA card #881 & scapular autopsy trajectory report #881 verified with 4096-bit sovereign signature.',
+      securityStatus: 'COMPLIANT // IMMUTABLE CHAIN OF CUSTODY',
+      sha256Checksum: 'a8f9d0c2e41b783fa12e54d6980b1129f7c32e185a498017c6b2df15421c900e',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Dr. Neha Patwardhan (WIT-008)', 'SI Santosh Jadhav'],
+        locations: ['Lohegaon Hill Boulder Ridge'],
+        objects: ['Remington Model 700 Rifle (EVID-016)', 'Spent 7.62mm Casing'],
+        vehicles: []
+      }
+    },
+    {
+      id: 'AUD-REP-02',
+      auditId: 'AUDIT-LOG-02',
+      timestamp: '2026-06-10 09:15:00 UTC',
+      attemptPhase: 'Attempt 3 – Blood on the Streets',
+      eventId: 'EV-REP-05',
+      actionType: 'FINANCIAL_LEDGER_WIRE_INTERCEPT',
+      evidenceId: 'EVID-010',
+      actor: 'HDFC Banking Compliance Audit Unit',
+      details: 'RTGS wire transfers totaling ₹6,000,000 from Chetany Sharma HDFC account to hitman Vikram Rathod logged with immutable banking checksum TXN-6000000-0. Deliberate contract killing transaction confirmed.',
+      securityStatus: 'CRITICAL DISCREPANCY DETECTED',
+      sha256Checksum: 'e71b29a8f4c0382d19e05417bfa64119842c12d098547b11c201a4e98f0918cc',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Vikram Rathod (WIT-004)'],
+        locations: ['HDFC Viman Nagar Branch'],
+        objects: ['HDFC Wire Audit Manifest (EVID-010)'],
+        vehicles: ['Tata 407 Cargo Truck (MH-12-QX-4412)']
+      }
+    },
+    {
+      id: 'AUD-REP-03',
+      auditId: 'AUDIT-LOG-03',
+      timestamp: '2026-05-13 02:30:00 UTC',
+      attemptPhase: 'Attempt 2 – Birthday Resort Knife Attack',
+      eventId: 'EV-REP-04',
+      actionType: 'CCTV_FRAME_INTEGRITY_AUDIT',
+      evidenceId: 'EVID-005',
+      actor: 'Skyline Resort Security & Forensic Cyber Cell',
+      details: 'Skyline Valley Resort Room 304 keycard access audit & CCTV CAM-04 timestamp verified. Tactical hunting knife EVID-005 dactyloscopic hash (14 minutiae points matching Chetany) cryptographically sealed.',
+      securityStatus: 'COMPLIANT // FINGERPRINT MATCH 99.8%',
+      sha256Checksum: '91f8c0a2e7b154d89304e21a007bc49e8b15d2a93817456c201948df01a23e59',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Archita Deshmukh (WIT-001)'],
+        locations: ['Skyline Valley Resort, Corridor 300'],
+        objects: ['Tactical Hunting Knife (EVID-005)', 'Resort CCTV CAM-04'],
+        vehicles: []
+      }
+    },
+    {
+      id: 'AUD-REP-04',
+      auditId: 'AUDIT-LOG-04',
+      timestamp: '2026-04-14 19:00:00 UTC',
+      attemptPhase: 'Attempt 1 – Dinner and Deception',
+      eventId: 'EV-REP-01',
+      actionType: 'VETERINARY_CREDENTIAL_FORGERY_FLAGGED',
+      evidenceId: 'EVID-004',
+      actor: 'Sanjivani Medico Digital Register & Suraag NLP',
+      details: 'Sanjivani Medico CCTV CAM-01 & UPI receipt (₹1,450) audited. Forged veterinary license #VET-9942 used by Chetany Sharma to purchase concentrated Thallium sulphate flagged by automated parser.',
+      securityStatus: 'FORGERY DETECTED // AUDIT TRAIL LOGGED',
+      sha256Checksum: '3b09d1e4f8a290c7154e819b207c42a198c054117b489012a9e7018340df8210',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Diya Gupta (SUS-01)'],
+        locations: ['Sanjivani Medico, Viman Nagar'],
+        objects: ['Concentrated Thallium Poison (EVID-004)', 'WhatsApp Reservation Record (EVID-002)'],
+        vehicles: ['Audi Q3 MH-12-FR-0007']
+      }
+    }
+  ];
+}
+
 
 
