@@ -125,11 +125,11 @@ export const TimelineEngine: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-8 pb-12">
       {/* Top Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-2">
             <Clock className="w-4 h-4 text-primary animate-pulse" />
             <span className="text-xs font-tactical-data uppercase text-primary font-bold tracking-widest">
               MULTI-SENSOR CHRONOLOGICAL FUSION ENGINE
@@ -204,16 +204,16 @@ export const TimelineEngine: React.FC = () => {
       </GlassCard>
 
       {/* Filter Toolbar */}
-      <GlassCard className="p-4 space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <GlassCard className="p-5 space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
           {/* Category Filters */}
-          <div className="flex flex-wrap items-center gap-1.5 font-tactical-data text-xs">
-            <Filter className="w-4 h-4 text-primary mr-1" />
+          <div className="flex flex-wrap items-center gap-2 font-tactical-data text-xs">
+            <Filter className="w-4 h-4 text-primary mr-2" />
             {['ALL', 'CCTV', 'AUDIO', 'NETWORK', 'WITNESS', 'BALLISTICS', 'VEHICLE', 'PLANNING'].map((cat) => (
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-3 py-1.5 rounded transition-all border text-[11px] ${
+                className={`px-4 py-2 rounded-md transition-all border text-xs ${
                   selectedCategory === cat
                     ? 'bg-secondary-container text-primary border-primary font-bold shadow-[0_0_10px_rgba(255,84,76,0.3)]'
                     : 'bg-surface-container text-on-surface-variant border-outline-variant hover:text-on-surface'
@@ -238,9 +238,9 @@ export const TimelineEngine: React.FC = () => {
         </div>
 
         {/* Attempt Phase Tabs */}
-        <div className="pt-3 border-t border-outline-variant/30 flex flex-wrap items-center gap-2 font-tactical-data text-xs">
-          <span className="text-on-surface-variant font-bold text-[10px] uppercase tracking-wider mr-2 flex items-center gap-1">
-            <Layers className="w-3.5 h-3.5 text-primary" />
+        <div className="pt-5 mt-2 border-t border-outline-variant/30 flex flex-wrap items-center gap-3 font-tactical-data text-xs">
+          <span className="text-on-surface-variant font-bold text-[11px] uppercase tracking-wider mr-3 flex items-center gap-1.5">
+            <Layers className="w-4 h-4 text-primary" />
             INCIDENT PHASE:
           </span>
           {[
@@ -253,7 +253,7 @@ export const TimelineEngine: React.FC = () => {
             <button
               key={phase.id}
               onClick={() => setSelectedAttemptPhase(phase.id)}
-              className={`px-3 py-1 rounded transition-all border text-[11px] ${
+              className={`px-4 py-1.5 rounded-md transition-all border text-xs ${
                 selectedAttemptPhase === phase.id
                   ? 'bg-primary text-on-primary border-primary font-bold shadow-[0_0_8px_rgba(255,84,76,0.4)]'
                   : 'bg-surface-container-low text-on-surface-variant border-outline-variant/60 hover:text-on-surface'
@@ -344,19 +344,19 @@ export const TimelineEngine: React.FC = () => {
 
                   {/* Extracted Entities Chips (Persons, Locations, Weapons/Vehicles) */}
                   {ev.entities && (
-                    <div className="mt-4 pt-3 border-t border-outline-variant/20 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs font-tactical-data">
+                    <div className="mt-5 pt-4 border-t border-outline-variant/20 grid grid-cols-1 md:grid-cols-2 gap-5 text-xs font-tactical-data">
                       {/* Persons Present */}
                       {ev.entities.persons && ev.entities.persons.length > 0 && (
-                        <div className="space-y-1">
-                          <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-bold block flex items-center gap-1">
-                            <UserCheck className="w-3 h-3 text-primary" />
+                        <div className="space-y-2">
+                          <span className="text-[11px] text-on-surface-variant uppercase tracking-wider font-bold block flex items-center gap-1.5">
+                            <UserCheck className="w-3.5 h-3.5 text-primary" />
                             PERSONS INVOLVED:
                           </span>
-                          <div className="flex flex-wrap gap-1.5">
+                          <div className="flex flex-wrap gap-2">
                             {ev.entities.persons.map((person, pIdx) => (
                               <span
                                 key={pIdx}
-                                className="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-on-surface text-[11px]"
+                                className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 text-on-surface text-[11px] shadow-sm"
                               >
                                 {person}
                               </span>
@@ -367,16 +367,16 @@ export const TimelineEngine: React.FC = () => {
 
                       {/* Locations */}
                       {ev.entities.locations && ev.entities.locations.length > 0 && (
-                        <div className="space-y-1">
-                          <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-bold block flex items-center gap-1">
-                            <MapPin className="w-3 h-3 text-primary" />
+                        <div className="space-y-2">
+                          <span className="text-[11px] text-on-surface-variant uppercase tracking-wider font-bold block flex items-center gap-1.5">
+                            <MapPin className="w-3.5 h-3.5 text-primary" />
                             LOCATION / ZONE:
                           </span>
-                          <div className="flex flex-wrap gap-1.5">
+                          <div className="flex flex-wrap gap-2">
                             {ev.entities.locations.map((loc, lIdx) => (
                               <span
                                 key={lIdx}
-                                className="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-emerald-400 text-[11px]"
+                                className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 text-emerald-400 text-[11px] shadow-sm"
                               >
                                 {loc}
                               </span>
@@ -387,16 +387,16 @@ export const TimelineEngine: React.FC = () => {
 
                       {/* Objects & Weapons */}
                       {ev.entities.objects && ev.entities.objects.length > 0 && (
-                        <div className="space-y-1">
-                          <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-bold block flex items-center gap-1">
-                            <Crosshair className="w-3 h-3 text-primary" />
+                        <div className="space-y-2">
+                          <span className="text-[11px] text-on-surface-variant uppercase tracking-wider font-bold block flex items-center gap-1.5">
+                            <Crosshair className="w-3.5 h-3.5 text-primary" />
                             WEAPONS & PHYSICAL EXHIBITS:
                           </span>
-                          <div className="flex flex-wrap gap-1.5">
+                          <div className="flex flex-wrap gap-2">
                             {ev.entities.objects.map((obj, oIdx) => (
                               <span
                                 key={oIdx}
-                                className="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-primary text-[11px]"
+                                className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 text-primary text-[11px] shadow-sm"
                               >
                                 {obj}
                               </span>
@@ -407,16 +407,16 @@ export const TimelineEngine: React.FC = () => {
 
                       {/* Vehicles */}
                       {ev.entities.vehicles && ev.entities.vehicles.length > 0 && (
-                        <div className="space-y-1">
-                          <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-bold block flex items-center gap-1">
-                            <Car className="w-3 h-3 text-primary" />
+                        <div className="space-y-2">
+                          <span className="text-[11px] text-on-surface-variant uppercase tracking-wider font-bold block flex items-center gap-1.5">
+                            <Car className="w-3.5 h-3.5 text-primary" />
                             VEHICLES IDENTIFIED:
                           </span>
-                          <div className="flex flex-wrap gap-1.5">
+                          <div className="flex flex-wrap gap-2">
                             {ev.entities.vehicles.map((veh, vIdx) => (
                               <span
                                 key={vIdx}
-                                className="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-on-surface text-[11px]"
+                                className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 text-on-surface text-[11px] shadow-sm"
                               >
                                 {veh}
                               </span>

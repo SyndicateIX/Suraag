@@ -481,6 +481,9 @@ app.get('/api/evidence/predictions', async (req: Request, res: Response) => {
       supportingEvidenceIds: ['EVID-016', 'EVID-020'],
       linkedTimelineEventIds: ['EV-REP-08']
     }
+  ]);
+});
+
 app.get('/api/evidence/graph', async (req: Request, res: Response) => {
   return res.json({
     nodes: [
