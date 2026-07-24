@@ -102,11 +102,11 @@ export const WitnessAnalysis: React.FC = () => {
   });
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-8 pb-12">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          <div className="flex items-center gap-2 mb-2">
             <Users className="w-4 h-4 text-primary animate-pulse" />
             <span className="text-xs font-tactical-data uppercase text-primary font-bold tracking-widest">
               NATURAL LANGUAGE ENTITY EXTRACTION & WITNESS CORRELATION ENGINE
@@ -131,9 +131,9 @@ export const WitnessAnalysis: React.FC = () => {
       </div>
 
       {/* Correlation & Extraction Statistics Overview Banner */}
-      <GlassCard glow className="p-4 border-l-4 border-l-primary bg-secondary-container/10">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+      <GlassCard glow className="p-6 border-l-4 border-l-primary bg-secondary-container/10">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
             <div className="p-2.5 rounded bg-primary/20 border border-primary shrink-0">
               <Sparkles className="w-5 h-5 text-primary" />
             </div>
@@ -150,31 +150,31 @@ export const WitnessAnalysis: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-tactical-data">
-            <div className="px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-center">
-              <span className="text-on-surface-variant block text-[10px] uppercase">TESTIMONIES INGESTED</span>
-              <strong className="text-primary font-bold text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-5 text-xs font-tactical-data">
+            <div className="px-4 py-3 rounded-md bg-surface-container border border-outline-variant/40 text-center flex flex-col justify-center">
+              <span className="text-on-surface-variant block text-[11px] uppercase mb-1">TESTIMONIES INGESTED</span>
+              <strong className="text-primary font-bold text-base">
                 {correlatedData.stats.totalTestimoniesIngested} DEPOSITIONS
               </strong>
             </div>
-            <div className="px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-center">
-              <span className="text-on-surface-variant block text-[10px] uppercase">ENTITIES NORMALIZED</span>
-              <strong className="text-emerald-400 font-bold text-sm">
+            <div className="px-4 py-3 rounded-md bg-surface-container border border-outline-variant/40 text-center flex flex-col justify-center">
+              <span className="text-on-surface-variant block text-[11px] uppercase mb-1">ENTITIES NORMALIZED</span>
+              <strong className="text-emerald-400 font-bold text-base">
                 {correlatedData.stats.totalEntitiesNormalized.people +
                   correlatedData.stats.totalEntitiesNormalized.locations +
                   correlatedData.stats.totalEntitiesNormalized.evidenceAndObjects}{' '}
                 ENTITIES
               </strong>
             </div>
-            <div className="px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-center">
-              <span className="text-on-surface-variant block text-[10px] uppercase">CORROBORATIONS</span>
-              <strong className="text-primary font-bold text-sm">
+            <div className="px-4 py-3 rounded-md bg-surface-container border border-outline-variant/40 text-center flex flex-col justify-center">
+              <span className="text-on-surface-variant block text-[11px] uppercase mb-1">CORROBORATIONS</span>
+              <strong className="text-primary font-bold text-base">
                 {correlatedData.stats.corroborationsMapped} MATCHED
               </strong>
             </div>
-            <div className="px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-center">
-              <span className="text-on-surface-variant block text-[10px] uppercase">DISCREPANCIES</span>
-              <strong className="text-emerald-400 font-bold text-sm">
+            <div className="px-4 py-3 rounded-md bg-surface-container border border-outline-variant/40 text-center flex flex-col justify-center">
+              <span className="text-on-surface-variant block text-[11px] uppercase mb-1">DISCREPANCIES</span>
+              <strong className="text-emerald-400 font-bold text-base">
                 {correlatedData.stats.discrepanciesIdentified} FLAG CONTRADICTIONS
               </strong>
             </div>
@@ -183,11 +183,11 @@ export const WitnessAnalysis: React.FC = () => {
       </GlassCard>
 
       {/* Filter Toolbar */}
-      <GlassCard className="p-4 space-y-3">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <GlassCard className="p-5 space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
           {/* Witness Role Filters */}
-          <div className="flex flex-wrap items-center gap-1.5 font-tactical-data text-xs">
-            <Filter className="w-4 h-4 text-primary mr-1" />
+          <div className="flex flex-wrap items-center gap-2 font-tactical-data text-xs">
+            <Filter className="w-4 h-4 text-primary mr-2" />
             {[
               { id: 'ALL', label: 'ALL TESTIMONIES' },
               { id: 'KEY_EYEWITNESSES', label: 'KEY EYEWITNESSES' },
@@ -197,7 +197,7 @@ export const WitnessAnalysis: React.FC = () => {
               <button
                 key={role.id}
                 onClick={() => setSelectedRoleFilter(role.id)}
-                className={`px-3 py-1.5 rounded transition-all border text-[11px] ${
+                className={`px-4 py-2 rounded-md transition-all border text-xs ${
                   selectedRoleFilter === role.id
                     ? 'bg-secondary-container text-primary border-primary font-bold shadow-[0_0_10px_rgba(255,84,76,0.3)]'
                     : 'bg-surface-container text-on-surface-variant border-outline-variant hover:text-on-surface'
@@ -222,9 +222,9 @@ export const WitnessAnalysis: React.FC = () => {
         </div>
 
         {/* Incident Phase Tabs */}
-        <div className="pt-3 border-t border-outline-variant/30 flex flex-wrap items-center gap-2 font-tactical-data text-xs">
-          <span className="text-on-surface-variant font-bold text-[10px] uppercase tracking-wider mr-2 flex items-center gap-1">
-            <Layers className="w-3.5 h-3.5 text-primary" />
+        <div className="pt-5 mt-2 border-t border-outline-variant/30 flex flex-wrap items-center gap-3 font-tactical-data text-xs">
+          <span className="text-on-surface-variant font-bold text-[11px] uppercase tracking-wider mr-3 flex items-center gap-1.5">
+            <Layers className="w-4 h-4 text-primary" />
             INCIDENT PHASE:
           </span>
           {[
@@ -237,7 +237,7 @@ export const WitnessAnalysis: React.FC = () => {
             <button
               key={phase.id}
               onClick={() => setSelectedAttemptPhase(phase.id)}
-              className={`px-3 py-1 rounded transition-all border text-[11px] ${
+              className={`px-4 py-1.5 rounded-md transition-all border text-xs ${
                 selectedAttemptPhase === phase.id
                   ? 'bg-primary text-on-primary border-primary font-bold shadow-[0_0_8px_rgba(255,84,76,0.4)]'
                   : 'bg-surface-container-low text-on-surface-variant border-outline-variant/60 hover:text-on-surface'
@@ -307,21 +307,21 @@ export const WitnessAnalysis: React.FC = () => {
                 </div>
 
                 {/* Normalized NLP Extracted Entity Claims Categorized Grid */}
-                <div className="space-y-2 pt-2 border-t border-outline-variant/20">
-                  <span className="text-[10px] font-tactical-data uppercase tracking-widest text-on-surface-variant block font-bold">
+                <div className="space-y-3 pt-3 border-t border-outline-variant/20">
+                  <span className="text-[11px] font-tactical-data uppercase tracking-widest text-on-surface-variant block font-bold">
                     NORMALIZED NLP ENTITY EXTRACTIONS:
                   </span>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-tactical-data text-xs">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5 font-tactical-data text-xs">
                     {/* People */}
                     {norm?.people && norm.people.length > 0 && (
-                      <div className="space-y-1">
-                        <span className="text-[10px] text-on-surface-variant uppercase flex items-center gap-1 font-bold">
-                          <UserCheck className="w-3 h-3 text-primary" />
+                      <div className="space-y-2">
+                        <span className="text-[11px] text-on-surface-variant uppercase flex items-center gap-1.5 font-bold">
+                          <UserCheck className="w-3.5 h-3.5 text-primary" />
                           PEOPLE ENTITIES:
                         </span>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2">
                           {norm.people.map((p, idx) => (
-                            <span key={idx} className="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-on-surface text-[11px]">
+                            <span key={idx} className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 text-on-surface text-[11px] shadow-sm">
                               {p}
                             </span>
                           ))}
@@ -331,19 +331,19 @@ export const WitnessAnalysis: React.FC = () => {
 
                     {/* Locations & Organizations */}
                     {(norm?.locations || norm?.organizations) && (
-                      <div className="space-y-1">
-                        <span className="text-[10px] text-on-surface-variant uppercase flex items-center gap-1 font-bold">
-                          <MapPin className="w-3 h-3 text-primary" />
+                      <div className="space-y-2">
+                        <span className="text-[11px] text-on-surface-variant uppercase flex items-center gap-1.5 font-bold">
+                          <MapPin className="w-3.5 h-3.5 text-primary" />
                           LOCATIONS & ORGS:
                         </span>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2">
                           {norm?.locations?.map((loc, idx) => (
-                            <span key={`l-${idx}`} className="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-emerald-400 text-[11px]">
+                            <span key={`l-${idx}`} className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 text-emerald-400 text-[11px] shadow-sm">
                               {loc}
                             </span>
                           ))}
                           {norm?.organizations?.map((org, idx) => (
-                            <span key={`o-${idx}`} className="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-on-surface text-[11px]">
+                            <span key={`o-${idx}`} className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 text-on-surface text-[11px] shadow-sm">
                               {org}
                             </span>
                           ))}
@@ -353,14 +353,14 @@ export const WitnessAnalysis: React.FC = () => {
 
                     {/* Evidence & Weapons */}
                     {norm?.evidenceAndObjects && norm.evidenceAndObjects.length > 0 && (
-                      <div className="space-y-1">
-                        <span className="text-[10px] text-on-surface-variant uppercase flex items-center gap-1 font-bold">
-                          <Crosshair className="w-3 h-3 text-primary" />
+                      <div className="space-y-2">
+                        <span className="text-[11px] text-on-surface-variant uppercase flex items-center gap-1.5 font-bold">
+                          <Crosshair className="w-3.5 h-3.5 text-primary" />
                           EVIDENCE & OBJECTS:
                         </span>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2">
                           {norm.evidenceAndObjects.map((ev, idx) => (
-                            <span key={idx} className="px-2 py-0.5 rounded bg-surface-container border border-outline-variant/40 text-primary text-[11px]">
+                            <span key={idx} className="px-2.5 py-1 rounded-md bg-surface-container border border-outline-variant/40 text-primary text-[11px] shadow-sm">
                               {ev}
                             </span>
                           ))}
