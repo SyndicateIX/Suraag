@@ -30,15 +30,16 @@ let mockCasesFallback: any[] = [
   {
     id: 'case-1',
     caseNumber: 'CASE-2026-884A',
-    title: 'Project Genesis Breach',
+    title: 'The Doomed Triangle',
     status: 'CRITICAL',
     priority: 'CRITICAL',
-    assignedTo: 'Agent Sarah Jenkins (Cyber-Physical Div)',
-    location: 'Sector 4, High-Security Research Facility, Zurich',
-    incidentDate: '2026-07-15T23:14:00Z',
-    summary: 'Unauthorized physical and cyber infiltration into Sub-Level 3 vault. High-grade classified bio-quantum assets compromised under anomalous sensor blackout conditions.',
-    confidenceScore: 94.2,
+    assignedTo: 'SI Santosh Jadhav & Dr. Neha Patwardhan',
+    location: 'Lohegaon Hill & Viman Nagar, Pune',
+    incidentDate: '2026-06-21T17:15:00Z',
+    summary: 'Comprehensive multi-phase investigation into Diya Gupta (SUS-01) and Chetany Sharma (SUS-02) conspiracy to murder Keshan Malhotra across 4 attempt phases.',
+    confidenceScore: 91.0,
   },
+
   {
     id: 'case-2',
     caseNumber: 'CASE-2026-712B',

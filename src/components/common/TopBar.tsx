@@ -94,7 +94,8 @@ export const TopBar: React.FC<TopBarProps> = ({ onMenuClick }) => {
           <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-surface-container border border-outline-variant/40">
             <Activity className="w-4 h-4 text-emerald-400 animate-pulse" />
             <span className="text-xs font-tactical-data text-on-surface">MULTI-SENSOR FUSION:</span>
-            <Badge variant="active" pulse>94.2% CONFIDENCE</Badge>
+            <Badge variant="active" pulse>91% CONFIDENCE</Badge>
+
           </div>
 
           <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-surface-container border border-outline-variant/40">

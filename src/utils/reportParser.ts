@@ -877,6 +877,72 @@ export function getReportReasoningChains(): ExplainableReasoningChain[] {
 }
 
 /**
+ * Returns structured Mission Control tactical dashboard metrics
+ * extracted from the official investigation report dossier.
+ */
+export function getMissionControlMetrics() {
+  return {
+    timelineConfidenceData: [
+      { time: '04-14 19:00', confidence: 98.5, phase: 'Attempt 1: Thallium Poisoning' },
+      { time: '05-13 02:30', confidence: 99.8, phase: 'Attempt 2: Resort Knife Attack' },
+      { time: '06-10 10:00', confidence: 100.0, phase: 'Attempt 3: IT Park Hit & Run' },
+      { time: '06-18 16:00', confidence: 99.1, phase: 'Planning: Café Strategy Meeting' },
+      { time: '06-21 17:15', confidence: 99.95, phase: 'Final Incident: Rifle Ambush' }
+    ],
+    aiRadarData: [
+      { metric: 'Physics & Ballistics', value: 99.8 },
+      { metric: 'CCTV & Vision', value: 99.2 },
+      { metric: 'Timeline Consistency', value: 99.5 },
+      { metric: 'Witness Credibility', value: 85.0 },
+      { metric: 'Line of Sight', value: 98.6 },
+      { metric: 'Financial Correlation', value: 100.0 }
+    ],
+    evidencePieData: [
+      { name: 'Weapons & Ballistics', value: 6, color: '#ff544c' },
+      { name: 'CCTV & Video', value: 4, color: '#ffb4ac' },
+      { name: 'Documents & Wire', value: 4, color: '#e53935' },
+      { name: 'Blood & Biology', value: 3, color: '#93000a' },
+      { name: 'Phones & Digital', value: 3, color: '#5b403d' }
+    ],
+    notifications: [
+      {
+        id: 'notif-1',
+        type: 'CRITICAL',
+        title: 'Lohegaon Sniper Trajectory Verified (EV-REP-08)',
+        description: 'Autopsy scapular wound (14° downward angle) precedes 45m cliff fall. Remington 700 rifle recovered with Chetany\'s DNA on trigger guard.',
+        time: 'Just now',
+        link: '/trajectory'
+      },
+      {
+        id: 'notif-2',
+        type: 'CRITICAL',
+        title: '₹6,000,000 RTGS Wire Transfer Intercepted (EV-REP-05)',
+        description: 'HDFC audit ledger TXN-6000000-0 confirms Chetany wired hitman Vikram Rathod 45 mins before IT Park hit-and-run collision.',
+        time: '12 mins ago',
+        link: '/evidence'
+      },
+      {
+        id: 'notif-3',
+        type: 'AI',
+        title: 'Resort Knife Fingerprint Dactyloscopy Matched (EV-REP-04)',
+        description: '14 minutiae points on tactical knife EVID-005 match Chetany Sharma with 99.8% certainty; refutes residence alibi.',
+        time: '25 mins ago',
+        link: '/contradiction-matrix'
+      },
+      {
+        id: 'notif-4',
+        type: 'AI',
+        title: 'Sanjivani Medico Poison CCTV Ingested (EV-REP-01)',
+        description: 'CCTV CAM-01 recorded Chetany buying Thallium sulphate using forged vet license #VET-9942 2 hours before Diya\'s dinner reservation.',
+        time: '42 mins ago',
+        link: '/witness-analysis'
+      }
+    ]
+  };
+}
+
+
+/**
  * Returns structured system audit records & security compliance logs
  * extracted from the official investigation report dossier.
  */
@@ -1120,14 +1186,15 @@ export function getReportCaseDossiers(): Case[] {
     {
       id: 'CASE-2026-088',
       caseNumber: 'CASE-2026-088',
-      title: 'Project Syndicate: Keshan Malhotra Attempted Homicide & Ambush Investigation',
+      title: 'The Doomed Triangle',
       status: 'CRITICAL',
       priority: 'CRITICAL',
       assignedTo: 'SI Santosh Jadhav & Dr. Neha Patwardhan (Crime Branch Unit 4)',
       location: 'Lohegaon Hill, Apex IT Park Kharadi, Skyline Resort & Viman Nagar, Pune',
       incidentDate: '2026-06-21T17:15:00.000Z',
       summary: 'Comprehensive multi-phase investigation into Diya Gupta (SUS-01) and Chetany Sharma (SUS-02) conspiracy to murder Keshan Malhotra across 4 attempt phases (Olive Terrace Thallium Poisoning, Resort Birthday Knife Attack, Apex IT Park Hit-and-Run, Lohegaon Hill Rifle Ambush). 20 physical exhibits ingested.',
-      confidenceScore: 99.95,
+      confidenceScore: 91.0,
+
       attemptPhases: [
         'Attempt 1 – Dinner and Deception (Thallium Poisoning)',
         'Attempt 2 – Birthday Resort Knife Attack',

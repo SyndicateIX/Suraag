@@ -167,12 +167,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
           <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
         </div>
         <div className="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
-          <div className="bg-primary h-full w-[94.2%] transition-all duration-500 shadow-[0_0_8px_#ff544c]" />
+          <div className="bg-primary h-full w-[91%]" style={{ width: '91%' }} />
         </div>
         <div className="flex justify-between text-[10px] font-tactical-data text-on-surface-variant/80 mt-1.5">
           <span>GEMINI 3.1 PRO (HIGH)</span>
-          <span className="text-primary font-bold">94.2%</span>
+          <span className="text-primary font-bold">91%</span>
         </div>
+
       </div>
 
       {/* User Profile Quick Link */}
