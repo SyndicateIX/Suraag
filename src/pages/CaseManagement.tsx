@@ -28,7 +28,9 @@ import { GlassCard } from '../components/common/GlassCard';
 import { Badge } from '../components/common/Badge';
 import { Modal } from '../components/common/Modal';
 import { LoadingSkeleton } from '../components/common/LoadingSkeleton';
+import { DisclaimerModal } from '../components/common/DisclaimerModal';
 import { getReportCaseDossiers } from '../utils/reportParser';
+
 
 const caseSchema = z.object({
   caseNumber: z.string().min(3, 'Case number is required (e.g. CASE-2026-999Z)'),
@@ -168,7 +170,9 @@ export const CaseManagement: React.FC = () => {
 
   return (
     <div className="w-full max-w-full min-w-0 space-y-4 sm:space-y-6 pb-8 sm:pb-12">
+      <DisclaimerModal />
       {/* Header & Action Bar */}
+
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
