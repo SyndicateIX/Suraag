@@ -1,4 +1,5 @@
-import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile } from '../types';
+import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile } from '../types';
+
 
 
 export interface ExtractionStats {
@@ -644,3 +645,141 @@ export function getReportTrajectoryVectorProfiles(): TrajectoryVectorProfile[] {
     }
   ];
 }
+
+/**
+ * Returns structured 3D spatial geometric triangulation profiles
+ * extracted from the official investigation report dossier.
+ */
+export function getReportTriangulationProfiles(): AttackerTriangulationProfile[] {
+  return [
+    {
+      id: 'TRI-REP-01',
+      presetId: 'PRESET-TRI-01',
+      title: 'Lohegaon Hill Cliff Ambush Sniper Position',
+      attemptPhase: 'Final Incident – Lohegaon Hill Cliff Ambush',
+      eventId: 'EV-REP-08',
+      evidenceId: 'EVID-016',
+      category: 'BALLISTICS',
+      weaponOrVehicle: 'Remington Model 700 Suppressed Rifle (7.62×51mm)',
+      timestamp: '2026-06-21 17:15',
+      originCoords: { x: 15.0, y: 8.0, z: 15.0, sectorLabel: 'Lohegaon Boulder Ridge Sector 1-West [Z=15m]' },
+      targetCoords: { x: 0.0, y: 1.6, z: 0.0, sectorLabel: 'Sunset Point Viewpoint Cliff Edge [Z=0m]' },
+      estimatedAttackerHeightMeters: 1.78,
+      heightMarginMeters: 0.03,
+      stance: 'Prone / Concealed Ridge Monopod Rest',
+      weaponElevationMeters: 1.70,
+      suspectName: 'Chetany Sharma (SUS-02)',
+      suspectBiometricHeight: '1.78m (5 ft 10 in)',
+      matchProbabilityScore: 99.4,
+      lineOfSightScore: 98.6,
+      primaryObstacle: 'Granite Boulder Ridge Topography',
+      forensicSummary: 'Inverse raycasting from scapular entry hole (14° downward) and 120m range back to boulder ridge pinpoints shooter origin at [15.0m, 8.0m, 15.0m]. Estimated stance height (1.78m) matches Chetany Sharma with 99.4% probability.',
+      alibiClaim: 'Diya Gupta claimed Keshan slipped on loose gravel taking a selfie at Sunset Point.',
+      forensicRefutation: 'Autopsy by Dr. Neha Patwardhan confirms a 7.62mm entry gunshot trajectory through shoulder blade BEFORE cliff fall. Remington Model 700 rifle recovered on boulder ridge with Chetany\'s DNA on trigger guard.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Diya Gupta (SUS-01)', 'Keshan Malhotra (Victim)', 'Dr. Neha Patwardhan (WIT-008)'],
+        locations: ['Lohegaon Hill Sunset Point & Boulder Ridge'],
+        objects: ['Remington Model 700 Rifle (EVID-016)', 'Spent 7.62mm Casing'],
+        vehicles: []
+      },
+      supportingEvidenceIds: ['EVID-016', 'EVID-020']
+    },
+    {
+      id: 'TRI-REP-02',
+      presetId: 'PRESET-TRI-02',
+      title: 'Apex Tech IT Park Pedestrian Collision Vector',
+      attemptPhase: 'Attempt 3 – Blood on the Streets',
+      eventId: 'EV-REP-06',
+      evidenceId: 'EVID-010',
+      category: 'VEHICLE',
+      weaponOrVehicle: 'Tata 407 Cargo Truck (MH-12-QX-4412)',
+      timestamp: '2026-06-10 10:00',
+      originCoords: { x: -25.0, y: 0.0, z: 0.0, sectorLabel: 'Kharadi Approach Lane & Crosswalk Boundary' },
+      targetCoords: { x: 0.0, y: 0.0, z: 0.0, sectorLabel: 'Apex Tech Pedestrian Crosswalk' },
+      estimatedAttackerHeightMeters: 1.75,
+      heightMarginMeters: 0.05,
+      stance: 'Seated Commercial Truck Driver Stance',
+      weaponElevationMeters: 2.10,
+      suspectName: 'Vikram Rathod (Hitman / WIT-004)',
+      suspectBiometricHeight: '1.75m (5 ft 9 in)',
+      matchProbabilityScore: 96.8,
+      lineOfSightScore: 99.2,
+      primaryObstacle: 'Pedestrian Crossing Curb',
+      forensicSummary: 'CCTV collision trajectory and vehicle telemetry prove deliberate steering correction into pedestrian zone at 10:00 AM following ₹6,000,000 RTGS wire transfer.',
+      alibiClaim: 'Reported as an accidental steering failure by an unknown commercial driver.',
+      forensicRefutation: 'Vikram Rathod confessed under interrogation; CCTV telemetry proves deliberate steering alignment into crosswalk.',
+      entities: {
+        persons: ['Keshan Malhotra (Victim)', 'Vikram Rathod (Hitman/WIT-004)', 'Chetany Sharma (SUS-02)'],
+        locations: ['Apex Tech IT Park Pedestrian Crossing, Kharadi'],
+        objects: ['HDFC Wire Audit Manifest (EVID-010)', 'Burner Voice Recordings (EVID-011)'],
+        vehicles: ['Tata 407 Cargo Truck (MH-12-QX-4412)']
+      },
+      supportingEvidenceIds: ['EVID-010', 'EVID-011']
+    },
+    {
+      id: 'TRI-REP-03',
+      presetId: 'PRESET-TRI-03',
+      title: 'Resort Corridor 300 Tactical Knife Flight & Drop Trajectory',
+      attemptPhase: 'Attempt 2 – Birthday Resort Knife Attack',
+      eventId: 'EV-REP-04',
+      evidenceId: 'EVID-005',
+      category: 'WITNESS',
+      weaponOrVehicle: 'Tactical Hunting Knife (EVID-005)',
+      timestamp: '2026-05-13 02:30',
+      originCoords: { x: -4.2, y: 1.4, z: 0.0, sectorLabel: 'Skyline Resort Room 304 Threshold' },
+      targetCoords: { x: -1.5, y: 0.0, z: 0.0, sectorLabel: 'Corridor 300 Carpet Surface' },
+      estimatedAttackerHeightMeters: 1.78,
+      heightMarginMeters: 0.04,
+      stance: 'Fleeing Sprint / Low Hood Stance',
+      weaponElevationMeters: 1.40,
+      suspectName: 'Chetany Sharma (SUS-02)',
+      suspectBiometricHeight: '1.78m (5 ft 10 in)',
+      matchProbabilityScore: 98.2,
+      lineOfSightScore: 94.5,
+      primaryObstacle: 'Emergency Stairwell Door',
+      forensicSummary: '3D Raycast from Room 306 doorway confirms Archita Deshmukh had unobstructed line of sight to Room 304 exit. Dropped knife EVID-005 bears 14 minutiae fingerprint points matching Chetany.',
+      alibiClaim: 'Chetany claimed he was at his residence in Viman Nagar all night.',
+      forensicRefutation: 'Latent fingerprints on knife match Chetany; eyewitness Archita Deshmukh identified him fleeing Room 304 at 02:30 AM.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Archita Deshmukh (WIT-001)', 'Keshan Malhotra (Victim)'],
+        locations: ['Skyline Valley Resort, Corridor 300'],
+        objects: ['Tactical Hunting Knife (EVID-005)', 'Resort CCTV CAM-04'],
+        vehicles: []
+      },
+      supportingEvidenceIds: ['EVID-005', 'EVID-006']
+    },
+    {
+      id: 'TRI-REP-04',
+      presetId: 'PRESET-TRI-04',
+      title: 'Olive Terrace Thallium Administration Geometry',
+      attemptPhase: 'Attempt 1 – Dinner and Deception',
+      eventId: 'EV-REP-01',
+      evidenceId: 'EVID-004',
+      category: 'CCTV',
+      weaponOrVehicle: 'Concentrated Thallium Sulphate (EVID-004)',
+      timestamp: '2026-04-14 19:00',
+      originCoords: { x: -10.0, y: 0.0, z: 0.0, sectorLabel: 'Sanjivani Medico Counter' },
+      targetCoords: { x: 0.0, y: 0.85, z: 0.0, sectorLabel: 'The Olive Terrace Table 4 Glass' },
+      estimatedAttackerHeightMeters: 1.65,
+      heightMarginMeters: 0.05,
+      stance: 'Seated Secluded Dining Stance',
+      weaponElevationMeters: 0.85,
+      suspectName: 'Diya Gupta & Chetany Sharma',
+      suspectBiometricHeight: '1.65m (Diya) / 1.78m (Chetany)',
+      matchProbabilityScore: 99.1,
+      lineOfSightScore: 97.0,
+      primaryObstacle: 'Restaurant Waiter Oversight',
+      forensicSummary: 'Sanjivani Medico CCTV CAM-01 recorded Chetany buying Thallium sulphate at 19:00 using fake vet license #VET-9942 prior to Diya\'s 21:00 dinner reservation.',
+      alibiClaim: 'Diya claimed Keshan suffered an unexpected organic stomach bug during dinner.',
+      forensicRefutation: 'Pharmacy CCTV timestamps and UPI transaction ₹1,450 link Chetany to poison purchase 2 hours before dinner.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Diya Gupta (SUS-01)', 'Keshan Malhotra (Victim)'],
+        locations: ['Sanjivani Medico, Viman Nagar', 'The Olive Terrace Restaurant'],
+        objects: ['Concentrated Thallium Poison (EVID-004)', 'WhatsApp Reservation Record (EVID-002)'],
+        vehicles: ['Audi Q3 MH-12-FR-0007']
+      },
+      supportingEvidenceIds: ['EVID-001', 'EVID-004']
+    }
+  ];
+}
+
