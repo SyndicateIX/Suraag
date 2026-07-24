@@ -376,7 +376,7 @@ export const LandingPage: React.FC = () => {
                     </div>
                   </div>
                   <Link
-                    to="/reconstruction"
+                    to="/auth?redirect=/reconstruction"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded bg-primary text-on-primary font-tactical-data text-xs font-bold uppercase mt-4 hover:bg-surface-tint transition-all"
                   >
                     <span>Launch Interactive 3D Room</span>
@@ -421,7 +421,7 @@ export const LandingPage: React.FC = () => {
                     </span>
                   </div>
                   <Link
-                    to="/contradiction-matrix"
+                    to="/auth?redirect=/contradiction-matrix"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded bg-primary text-on-primary font-tactical-data text-xs font-bold uppercase mt-4 hover:bg-surface-tint transition-all"
                   >
                     <span>Examine Contradiction Matrix</span>
@@ -480,7 +480,7 @@ export const LandingPage: React.FC = () => {
                     </div>
                   </div>
                   <Link
-                    to="/missing-evidence"
+                    to="/auth?redirect=/missing-evidence"
                     className="inline-flex items-center gap-2 px-6 py-3 rounded bg-primary text-on-primary font-tactical-data text-xs font-bold uppercase mt-4 hover:bg-surface-tint transition-all"
                   >
                     <span>Launch Missing Evidence Predictor</span>

@@ -155,9 +155,9 @@ export const TimelineEngine: React.FC = () => {
       </div>
 
       {/* Extraction Statistics Overview Banner */}
-      <GlassCard glow className="p-4 border-l-4 border-l-primary bg-secondary-container/10">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+      <GlassCard glow className="p-6 border-l-4 border-l-primary bg-secondary-container/10">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
             <div className="p-2.5 rounded bg-primary/20 border border-primary shrink-0">
               <Sparkles className="w-5 h-5 text-primary" />
             </div>
@@ -174,28 +174,28 @@ export const TimelineEngine: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-tactical-data">
-            <div className="px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-center">
-              <span className="text-on-surface-variant block text-[10px] uppercase">EVENTS PARSED</span>
-              <strong className="text-primary font-bold text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-5 text-xs font-tactical-data">
+            <div className="px-4 py-3 rounded-md bg-surface-container border border-outline-variant/40 text-center flex flex-col justify-center">
+              <span className="text-on-surface-variant block text-[11px] uppercase mb-1">EVENTS PARSED</span>
+              <strong className="text-primary font-bold text-base">
                 {extractedData.stats.totalEventsExtracted} CHRONO
               </strong>
             </div>
-            <div className="px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-center">
-              <span className="text-on-surface-variant block text-[10px] uppercase">ENTITIES EXTRACTED</span>
-              <strong className="text-emerald-400 font-bold text-sm">
+            <div className="px-4 py-3 rounded-md bg-surface-container border border-outline-variant/40 text-center flex flex-col justify-center">
+              <span className="text-on-surface-variant block text-[11px] uppercase mb-1">ENTITIES EXTRACTED</span>
+              <strong className="text-emerald-400 font-bold text-base">
                 {extractedData.stats.entitiesExtracted.persons + extractedData.stats.entitiesExtracted.locations} ENTITIES
               </strong>
             </div>
-            <div className="px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-center">
-              <span className="text-on-surface-variant block text-[10px] uppercase">RELATIONSHIPS</span>
-              <strong className="text-primary font-bold text-sm">
+            <div className="px-4 py-3 rounded-md bg-surface-container border border-outline-variant/40 text-center flex flex-col justify-center">
+              <span className="text-on-surface-variant block text-[11px] uppercase mb-1">RELATIONSHIPS</span>
+              <strong className="text-primary font-bold text-base">
                 {extractedData.stats.relationshipsMapped} MAPPED
               </strong>
             </div>
-            <div className="px-3 py-2 rounded bg-surface-container border border-outline-variant/40 text-center">
-              <span className="text-on-surface-variant block text-[10px] uppercase">ATTEMPT PHASES</span>
-              <strong className="text-emerald-400 font-bold text-sm">
+            <div className="px-4 py-3 rounded-md bg-surface-container border border-outline-variant/40 text-center flex flex-col justify-center">
+              <span className="text-on-surface-variant block text-[11px] uppercase mb-1">ATTEMPT PHASES</span>
+              <strong className="text-emerald-400 font-bold text-base">
                 {extractedData.stats.attemptsIdentified} ATTEMPTS
               </strong>
             </div>
