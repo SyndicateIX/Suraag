@@ -248,6 +248,26 @@ export interface ExplainableReasoningChain {
   linkedWitnessIds: string[];
 }
 
+export interface SystemAuditRecord {
+  id: string;
+  auditId: string;
+  timestamp: string;
+  attemptPhase: string;
+  eventId: string;
+  actionType: string;
+  evidenceId: string;
+  actor: string;
+  details: string;
+  securityStatus: 'COMPLIANT' | 'CRITICAL_DISCREPANCY' | 'FORGERY_DETECTED' | string;
+  sha256Checksum: string;
+  entities: {
+    persons: string[];
+    locations: string[];
+    objects: string[];
+    vehicles: string[];
+  };
+}
+
 
 export interface Scenario {
   id: string;
