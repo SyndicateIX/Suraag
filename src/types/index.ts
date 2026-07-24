@@ -161,6 +161,39 @@ export interface ReportPhysicsPreset {
   };
 }
 
+export interface TrajectoryVectorProfile {
+  id: string;
+  vectorId: string;
+  title: string;
+  attemptPhase: string;
+  eventId: string;
+  evidenceId: string;
+  category: 'PRIMARY_SHOT' | 'RICOCHET_DEFLECTION' | 'SPATTER_VECTOR' | 'VEHICULAR_MOMENTUM' | string;
+  weaponOrObject: string;
+  timestamp: string;
+  originCoords: { x: number; y: number; z: number; label: string };
+  impactCoords: { x: number; y: number; z: number; label: string };
+  entryAngleDeg: number;
+  azimuthAngleDeg: number;
+  muzzleVelocityMps: number;
+  postImpactVelocityMps: number;
+  kineticEnergyLossPercent: number;
+  ellipticityRatio: number;
+  spatterDropletCount: number;
+  spatterOriginAngleDeg: number;
+  primaryObstacleOrDeflection: string;
+  forensicSummary: string;
+  alibiClaim: string;
+  forensicRefutation: string;
+  entities: {
+    persons: string[];
+    locations: string[];
+    objects: string[];
+    vehicles: string[];
+  };
+  supportingEvidenceIds: string[];
+}
+
 
 export interface Scenario {
   id: string;
