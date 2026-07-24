@@ -227,6 +227,27 @@ export interface AttackerTriangulationProfile {
   supportingEvidenceIds: string[];
 }
 
+export interface ExplainableReasoningChain {
+  id: string;
+  chainId: string;
+  title: string;
+  attemptPhase: string;
+  eventId: string;
+  confidence: string;
+  confidenceScore: number;
+  summary: string;
+  evidenceIds: string[];
+  physicsMath: string;
+  rejectedHypothesis: string;
+  entities: {
+    persons: string[];
+    locations: string[];
+    objects: string[];
+    vehicles: string[];
+  };
+  linkedWitnessIds: string[];
+}
+
 
 export interface Scenario {
   id: string;
