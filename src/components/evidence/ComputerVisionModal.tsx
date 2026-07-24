@@ -181,10 +181,11 @@ export const ComputerVisionModal: React.FC<ComputerVisionModalProps> = ({
                 <span className="text-emerald-400 font-semibold">VERIFIED</span>
               </div>
               <p className="text-xs text-on-surface-variant leading-relaxed font-body-md">
-                {categoryDescriptions[evidence.category] || 'Multi-spectral sensor analysis confirms object presence with zero tampering signatures.'}
+                {evidence.forensicObservation || categoryDescriptions[evidence.category] || 'Multi-spectral sensor analysis confirms object presence with zero tampering signatures.'}
               </p>
             </div>
           </div>
+
 
           <div className="pt-4 border-t border-outline-variant/30 flex justify-between gap-3">
             <button

@@ -1,4 +1,5 @@
-import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile, ExplainableReasoningChain, SystemAuditRecord } from '../types';
+import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile, ExplainableReasoningChain, SystemAuditRecord, Evidence } from '../types';
+
 
 
 
@@ -958,6 +959,157 @@ export function getReportAuditRecords(): SystemAuditRecord[] {
     }
   ];
 }
+
+/**
+ * Returns structured multi-modal evidence items with YOLOv9 bounding boxes
+ * extracted from the official investigation report dossier.
+ */
+export function getReportEvidenceArtifacts(): Evidence[] {
+  return [
+    {
+      id: 'EV-ART-016',
+      caseId: 'CASE-2026-088',
+      evidenceId: 'EVID-016',
+      title: 'Remington Model 700 Suppressed Rifle (7.62×51mm)',
+      category: 'WEAPON',
+      fileUrl: 'https://images.unsplash.com/photo-1595590424283-b8f17842773f?auto=format&fit=crop&w=800&q=80',
+      fileType: 'image/jpeg',
+      confidence: 99.8,
+      processedStatus: 'COMPLETED',
+      attemptPhase: 'Final Incident – Lohegaon Hill Cliff Ambush',
+      eventId: 'EV-REP-08',
+      forensicObservation: 'Ballistic signature matches 7.62mm scapular wound trajectory. Latent epithelial DNA on trigger guard matches Chetany Sharma with 99.95% certainty.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Dr. Neha Patwardhan (WIT-008)'],
+        locations: ['Lohegaon Hill Boulder Ridge'],
+        objects: ['Remington Model 700 Rifle (EVID-016)', 'Spent 7.62mm Casing'],
+        vehicles: []
+      },
+      boundingBoxes: [
+        { x: 120, y: 80, width: 340, height: 180, label: 'Remington Model 700 Receiver (99.8%)', confidence: 0.998 },
+        { x: 420, y: 140, width: 120, height: 80, label: 'Baffle Suppressor Barrel Extension (98.5%)', confidence: 0.985 }
+      ]
+    },
+    {
+      id: 'EV-ART-010',
+      caseId: 'CASE-2026-088',
+      evidenceId: 'EVID-010',
+      title: 'HDFC Bank RTGS Wire Audit Manifest (₹6,000,000)',
+      category: 'DOCUMENT',
+      fileUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=800&q=80',
+      fileType: 'application/pdf',
+      confidence: 100.0,
+      processedStatus: 'COMPLETED',
+      attemptPhase: 'Attempt 3 – Blood on the Streets',
+      eventId: 'EV-REP-05',
+      forensicObservation: 'Immutable banking transaction TXN-6000000-0 confirms Chetany Sharma wired ₹6,000,000 to hitman Vikram Rathod 45 mins before staged truck collision.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Vikram Rathod (WIT-004)'],
+        locations: ['HDFC Viman Nagar Branch'],
+        objects: ['HDFC Wire Audit Manifest (EVID-010)'],
+        vehicles: []
+      },
+      boundingBoxes: [
+        { x: 90, y: 60, width: 400, height: 220, label: 'RTGS Financial Wire Transfer Ledger (100%)', confidence: 1.0 },
+        { x: 180, y: 220, width: 200, height: 90, label: 'Authorized Beneficiary Account Stamp (99.4%)', confidence: 0.994 }
+      ]
+    },
+    {
+      id: 'EV-ART-005',
+      caseId: 'CASE-2026-088',
+      evidenceId: 'EVID-005',
+      title: 'Tactical Hunting Knife (Corridor 300 Dropped Weapon)',
+      category: 'WEAPON',
+      fileUrl: 'https://images.unsplash.com/photo-1588619379201-9257e84920fa?auto=format&fit=crop&w=800&q=80',
+      fileType: 'image/jpeg',
+      confidence: 99.5,
+      processedStatus: 'COMPLETED',
+      attemptPhase: 'Attempt 2 – Birthday Resort Knife Attack',
+      eventId: 'EV-REP-04',
+      forensicObservation: '14 minutiae dactyloscopic fingerprint points on knife hilt match Chetany Sharma with 99.8% certainty. Recovered outside Room 304 doorway.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Archita Deshmukh (WIT-001)'],
+        locations: ['Skyline Valley Resort, Corridor 300'],
+        objects: ['Tactical Hunting Knife (EVID-005)'],
+        vehicles: []
+      },
+      boundingBoxes: [
+        { x: 150, y: 100, width: 300, height: 160, label: '8-inch Carbon Steel Serrated Blade (99.5%)', confidence: 0.995 },
+        { x: 160, y: 120, width: 110, height: 80, label: 'Dactyloscopic Fingerprint Latent Ridge (99.8%)', confidence: 0.998 }
+      ]
+    },
+    {
+      id: 'EV-ART-004',
+      caseId: 'CASE-2026-088',
+      evidenceId: 'EVID-004',
+      title: 'Concentrated Thallium Sulphate Poison Vial',
+      attemptPhase: 'Attempt 1 – Dinner and Deception',
+      category: 'BLOOD',
+      eventId: 'EV-REP-01',
+      fileUrl: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80',
+      fileType: 'image/jpeg',
+      confidence: 98.6,
+      processedStatus: 'COMPLETED',
+      forensicObservation: 'Toxicological spectrometry confirms 500mg/L Thallium concentration matching Keshan\'s stomach lavage from April 14 dinner at Olive Terrace.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Diya Gupta (SUS-01)'],
+        locations: ['Sanjivani Medico, Viman Nagar'],
+        objects: ['Concentrated Thallium Poison (EVID-004)'],
+        vehicles: []
+      },
+      boundingBoxes: [
+        { x: 200, y: 80, width: 220, height: 240, label: 'Thallium Sulphate Chemical Reagent Vial (98.6%)', confidence: 0.986 }
+      ]
+    },
+    {
+      id: 'EV-ART-001',
+      caseId: 'CASE-2026-088',
+      evidenceId: 'EVID-001',
+      title: 'Sanjivani Medico CCTV CAM-01 Video Feed (19:00:14 PM)',
+      category: 'CCTV',
+      attemptPhase: 'Attempt 1 – Dinner and Deception',
+      eventId: 'EV-REP-01',
+      fileUrl: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=800&q=80',
+      fileType: 'video/mp4',
+      confidence: 99.2,
+      processedStatus: 'COMPLETED',
+      forensicObservation: 'Facial recognition (99.2% match) confirms Chetany Sharma purchasing Thallium poison using forged vet credentials 2 hours before Diya\'s dinner date.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)'],
+        locations: ['Sanjivani Medico, Viman Nagar'],
+        objects: ['CCTV CAM-01 Footage (EVID-001)'],
+        vehicles: []
+      },
+      boundingBoxes: [
+        { x: 180, y: 70, width: 210, height: 260, label: 'Chetany Sharma Facial Bounding Box (99.2%)', confidence: 0.992 }
+      ]
+    },
+    {
+      id: 'EV-ART-008',
+      caseId: 'CASE-2026-088',
+      evidenceId: 'EVID-008',
+      title: 'Tata 407 Cargo Truck Bumper Impact & Paint Scrapes',
+      category: 'VEHICLE',
+      attemptPhase: 'Attempt 3 – Blood on the Streets',
+      eventId: 'EV-REP-06',
+      fileUrl: 'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=800&q=80',
+      fileType: 'image/jpeg',
+      confidence: 97.4,
+      processedStatus: 'COMPLETED',
+      forensicObservation: 'Front steel bumper paint transfer matches Keshan\'s laptop bag fabric fibers. Telemetry proves intentional crosswalk acceleration.',
+      entities: {
+        persons: ['Vikram Rathod (WIT-004)', 'Keshan Malhotra (Victim)'],
+        locations: ['Apex Tech IT Park Pedestrian Crossing'],
+        objects: [],
+        vehicles: ['Tata 407 Cargo Truck (MH-12-QX-4412)']
+      },
+      boundingBoxes: [
+        { x: 100, y: 120, width: 420, height: 200, label: 'Tata 407 Steel Bumper Structure (97.4%)', confidence: 0.974 }
+      ]
+    }
+  ];
+}
+
 
 
 

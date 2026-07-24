@@ -23,6 +23,7 @@ export interface Case {
 export interface Evidence {
   id: string;
   caseId: string;
+  evidenceId?: string;
   title: string;
   category: 'WEAPON' | 'BLOOD' | 'FOOTPRINT' | 'VEHICLE' | 'PHONE' | 'FINGERPRINT' | 'BALLISTICS' | 'CCTV' | 'DOCUMENT' | string;
   fileUrl: string;
@@ -30,9 +31,19 @@ export interface Evidence {
   confidence: number;
   boundingBoxes?: BoundingBox[];
   processedStatus: 'PENDING' | 'PROCESSING' | 'COMPLETED' | string;
+  attemptPhase?: string;
+  eventId?: string;
+  forensicObservation?: string;
+  entities?: {
+    persons?: string[];
+    locations?: string[];
+    objects?: string[];
+    vehicles?: string[];
+  };
   metadata?: Record<string, any>;
   createdAt?: string | Date;
 }
+
 
 export interface WitnessStatement {
   id: string;
