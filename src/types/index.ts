@@ -194,6 +194,39 @@ export interface TrajectoryVectorProfile {
   supportingEvidenceIds: string[];
 }
 
+export interface AttackerTriangulationProfile {
+  id: string;
+  presetId: string;
+  title: string;
+  attemptPhase: string;
+  eventId: string;
+  evidenceId: string;
+  category: string;
+  weaponOrVehicle: string;
+  timestamp: string;
+  originCoords: { x: number; y: number; z: number; sectorLabel: string };
+  targetCoords: { x: number; y: number; z: number; sectorLabel: string };
+  estimatedAttackerHeightMeters: number;
+  heightMarginMeters: number;
+  stance: string;
+  weaponElevationMeters: number;
+  suspectName: string;
+  suspectBiometricHeight: string;
+  matchProbabilityScore: number;
+  lineOfSightScore: number;
+  primaryObstacle: string;
+  forensicSummary: string;
+  alibiClaim: string;
+  forensicRefutation: string;
+  entities: {
+    persons: string[];
+    locations: string[];
+    objects: string[];
+    vehicles: string[];
+  };
+  supportingEvidenceIds: string[];
+}
+
 
 export interface Scenario {
   id: string;
