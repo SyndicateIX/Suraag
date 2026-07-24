@@ -1,4 +1,5 @@
-import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile } from '../types';
+import { TimelineEvent, ReportPhysicsPreset, TrajectoryVectorProfile, AttackerTriangulationProfile, ExplainableReasoningChain } from '../types';
+
 
 
 
@@ -782,4 +783,94 @@ export function getReportTriangulationProfiles(): AttackerTriangulationProfile[]
     }
   ];
 }
+
+/**
+ * Returns structured transparent explainable reasoning inference chains
+ * extracted from the official investigation report dossier.
+ */
+export function getReportReasoningChains(): ExplainableReasoningChain[] {
+  return [
+    {
+      id: 'CHAIN-REP-01',
+      chainId: 'INFERENCE-01',
+      title: 'Lohegaon Hill Cliff Ambush Homicide & Ballistic Trajectory Synthesis',
+      attemptPhase: 'Final Incident – Lohegaon Hill Cliff Ambush',
+      eventId: 'EV-REP-08',
+      confidence: '99.95% Certainty',
+      confidenceScore: 99.95,
+      summary: 'Chetany Sharma fired a suppressed 7.62mm bullet from a Remington Model 700 rifle from a concealed boulder ridge at coordinates [X: 15.0m, Y: 8.0m, Z: 15.0m] into Keshan Malhotra\'s right scapula at 120m range BEFORE Keshan fell 45m off the cliff.',
+      evidenceIds: ['EVID-016 (Remington Model 700 Rifle)', 'EVID-020 (Deleted WhatsApp Voice Notes)', 'WIT-008 (Dr. Neha Patwardhan Autopsy Report #881)', 'EV-REP-08 (Cliff Ambush Timeline Event)'],
+      physicsMath: 'Calculated using 3D inverse raycasting from right scapular entry hole (14.0° downward angle, 38.2° azimuth East) back to boulder ridge [15.0m, 8.0m, 15.0m]. Scapular wound trajectory precedes 45m cliff fall. Epithelial DNA recovered on trigger guard matches Chetany Sharma with 99.95% certainty.',
+      rejectedHypothesis: 'Rejected Accidental Selfie Slip Claim: Diya Gupta claimed Keshan slipped taking a selfie at Sunset Point. Pathological autopsy proves 7.62mm gunshot trauma preceded fall, and Brew & Bean Café planning receipt EVID-014 confirms premeditated cliff ambush strategy.',
+      entities: {
+        persons: ['Diya Gupta (SUS-01)', 'Chetany Sharma (SUS-02)', 'Keshan Malhotra (Victim)', 'Dr. Neha Patwardhan (WIT-008)'],
+        locations: ['Lohegaon Hill Sunset Point & Boulder Ridge'],
+        objects: ['Remington Model 700 Rifle (EVID-016)', 'Spent 7.62mm Casing'],
+        vehicles: []
+      },
+      linkedWitnessIds: ['WIT-008']
+    },
+    {
+      id: 'CHAIN-REP-02',
+      chainId: 'INFERENCE-02',
+      title: 'Apex Tech IT Park Staged Truck Collision & Financial Contract Homicide',
+      attemptPhase: 'Attempt 3 – Blood on the Streets',
+      eventId: 'EV-REP-06',
+      confidence: '100.0% Financial & Telemetry Proof',
+      confidenceScore: 100.0,
+      summary: 'Chetany Sharma executed RTGS bank wire transfers totaling ₹6,000,000 to hired truck driver Vikram Rathod to stage a fatal vehicular crash outside Keshan\'s office at 10:00 AM on June 10.',
+      evidenceIds: ['EVID-010 (HDFC Bank RTGS Wire Audit)', 'EVID-011 (Burner Voice Intercepts)', 'WIT-004 (Vikram Rathod Confession)', 'EV-REP-06 (Truck Collision Timeline Event)'],
+      physicsMath: 'Collision trajectory modeling and Kharadi CCTV telemetry prove deliberate steering alignment into pedestrian crosswalk at 54 km/h (472,500 Joules kinetic momentum). Impact force 68,500 N caused critical poly-trauma.',
+      rejectedHypothesis: 'Rejected Commercial Brake Failure Claim: Chetany & Diya claimed crash was an accidental steering failure by an unknown driver. Hitman Vikram Rathod confessed money wire paid for contract assault, confirmed by HDFC RTGS logs.',
+      entities: {
+        persons: ['Keshan Malhotra (Victim)', 'Vikram Rathod (Hitman/WIT-004)', 'Chetany Sharma (SUS-02)'],
+        locations: ['Apex Tech IT Park Pedestrian Crossing, Kharadi'],
+        objects: ['HDFC Wire Audit Manifest (EVID-010)', 'Burner Voice Recordings (EVID-011)'],
+        vehicles: ['Tata 407 Cargo Truck (MH-12-QX-4412)']
+      },
+      linkedWitnessIds: ['WIT-004']
+    },
+    {
+      id: 'CHAIN-REP-03',
+      chainId: 'INFERENCE-03',
+      title: 'Resort Birthday Knife Attack & Dactyloscopic Eyewitness Correlation',
+      attemptPhase: 'Attempt 2 – Birthday Resort Knife Attack',
+      eventId: 'EV-REP-04',
+      confidence: '99.8% Dactyloscopy Certainty',
+      confidenceScore: 99.8,
+      summary: 'Chetany Sharma snuck into Room 304 with a tactical hunting knife during Keshan\'s birthday after 18 nocturnal calls from Diya; fled in panic when Keshan stirred, dropping weapon in Corridor 300.',
+      evidenceIds: ['EVID-005 (Tactical Hunting Knife)', 'WIT-001 (Archita Deshmukh Eyewitness Deposition)', 'EVID-006 (Resort CCTV CAM-04)', 'EV-REP-04 (Resort Flight Timeline Event)'],
+      physicsMath: '14 minutiae dactyloscopy points on knife hilt match Chetany Sharma with 99.8% certainty. 3D raycast from Room 306 doorway confirms Archita Deshmukh had unobstructed line of sight to Room 304 exit at 02:30 AM.',
+      rejectedHypothesis: 'Rejected Viman Nagar Residence Alibi: Chetany claimed he was at his residence all night on May 13. Latent fingerprints on dropped weapon EVID-005 and CDR tower pings directly refute residence claim.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Archita Deshmukh (WIT-001)', 'Keshan Malhotra (Victim)'],
+        locations: ['Skyline Valley Resort, Corridor 300 & Room 304'],
+        objects: ['Tactical Hunting Knife (EVID-005)', 'Resort CCTV CAM-04'],
+        vehicles: []
+      },
+      linkedWitnessIds: ['WIT-001']
+    },
+    {
+      id: 'CHAIN-REP-04',
+      chainId: 'INFERENCE-04',
+      title: 'Olive Terrace Thallium Poison Procurement & Veterinary Forgery',
+      attemptPhase: 'Attempt 1 – Dinner and Deception',
+      eventId: 'EV-REP-01',
+      confidence: '98.5% CCTV & Pharmacy Proof',
+      confidenceScore: 98.5,
+      summary: 'Chetany Sharma purchased concentrated Thallium poison at Sanjivani Medico at 19:00 using fake vet credentials (#VET-9942) prior to Diya\'s 21:00 dinner date with Keshan at Olive Terrace.',
+      evidenceIds: ['EVID-001 (Sanjivani Medico CCTV CAM-01)', 'EVID-004 (Thallium Poison Vial)', 'EVID-002 (WhatsApp Olive Terrace Reservation)', 'EV-REP-01 (Poison Purchase Timeline Event)'],
+      physicsMath: 'Timestamp intersection between pharmacy CCTV CAM-01 (19:00:14) and deleted WhatsApp coordination threads (18:45 PM). UPI payment receipt ₹1,450 logged directly to Chetany\'s account.',
+      rejectedHypothesis: 'Rejected Spontaneous Organic Stomach Bug Claim: Diya claimed Keshan suffered an unexpected organic illness during dinner. Sanjivani Medico CCTV and forged vet credentials prove premeditated poison procurement.',
+      entities: {
+        persons: ['Chetany Sharma (SUS-02)', 'Diya Gupta (SUS-01)', 'Keshan Malhotra (Victim)'],
+        locations: ['Sanjivani Medico, Viman Nagar', 'The Olive Terrace Restaurant'],
+        objects: ['Concentrated Thallium Poison (EVID-004)', 'WhatsApp Reservation Record (EVID-002)'],
+        vehicles: ['Audi Q3 MH-12-FR-0007']
+      },
+      linkedWitnessIds: []
+    }
+  ];
+}
+
 
