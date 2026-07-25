@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldAlert, Mail, Lock, User as UserIcon, ArrowRight, Activity, Terminal, AlertTriangle } from 'lucide-react';
+import { ShieldAlert, Mail, Lock, User as UserIcon, ArrowRight, Activity, Terminal, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import { ScanlineOverlay } from '../components/common/ScanlineOverlay';
 import { useSuraagStore } from '../store/useSuraagStore';
 
 export const AuthPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const navigate = useNavigate();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -117,15 +118,27 @@ export const AuthPage: React.FC = () => {
             <div className="space-y-1.5">
               <label className="text-[10px] font-tactical-data text-on-surface-variant uppercase tracking-wider block">Passcode</label>
               <div className="relative group">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant group-focus-within:text-primary transition-colors" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant group-focus-within:text-primary transition-colors pointer-events-none" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-surface-container-high border border-outline-variant/50 rounded pl-10 pr-4 py-2.5 text-sm font-body-md text-on-surface focus:outline-none focus:border-primary/70 transition-all placeholder:text-on-surface-variant/50"
+                  className="w-full bg-surface-container-high border border-outline-variant/50 rounded pl-10 pr-10 py-2.5 text-sm font-body-md text-on-surface focus:outline-none focus:border-primary/70 transition-all placeholder:text-on-surface-variant/50"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary focus:text-primary focus:outline-none transition-colors p-0.5 rounded"
+                  aria-label={showPassword ? 'Hide passcode' : 'Show passcode'}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
               </div>
             </div>
 
