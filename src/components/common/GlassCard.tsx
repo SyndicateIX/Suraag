@@ -49,7 +49,9 @@ export const GlassCard: React.FC<GlassCardProps> = ({
         </div>
       )}
 
-      <div className="p-4">{children}</div>
+      <div className={clsx('p-4', (className?.includes('flex') || className?.includes('h-')) && 'h-full flex flex-col min-h-0 p-4')}>
+        {children}
+      </div>
 
       {footer && (
         <div className="px-4 py-3 border-t border-outline-variant/30 bg-surface-container-lowest/50">
