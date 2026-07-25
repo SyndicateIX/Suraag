@@ -11,6 +11,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+import { buildCaseContext } from './services/contextBuilder.js';
+import { buildSystemPrompt } from './services/promptBuilder.js';
+import { processChatRequest } from './services/aiAgentService.js';
+
 dotenv.config();
 
 const app = express();
@@ -1506,95 +1510,43 @@ app.get('/api/reconstruction/:caseId', async (req: Request, res: Response) => {
 });
 
 // ==========================================
-// AI REASONING & ASSISTANT CHAT API
+// AI REASONING & ASSISTANT CHAT API (/api/chat & /api/ai/assistant/chat)
 // ==========================================
-app.post('/api/ai/assistant/chat', async (req: Request, res: Response) => {
+const handleChatRequest = async (req: Request, res: Response) => {
   const { message, caseId, history } = req.body;
 
-  try {
-    if (!process.env.GEMINI_API_KEY) {
-      throw new Error('GEMINI_API_KEY is not configured in .env');
-    }
-
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-    // Fetch case context for grounding the AI
-    let caseContext = 'No specific case data provided.';
-    if (caseId) {
-      try {
-        const c = await prisma.case.findFirst({
-          where: { OR: [{ id: caseId }, { caseNumber: caseId }] },
-          include: { suspects: true, evidence: true, witnesses: true, timelineEvents: true, reconstruction: true }
-        });
-        if (c) {
-          caseContext = JSON.stringify(c, null, 2);
-        } else {
-          const fallback = mockCasesFallback.find(x => x.id === caseId || x.caseNumber === caseId);
-          if (fallback) caseContext = JSON.stringify(fallback, null, 2);
-        }
-      } catch (e) {
-        const fallback = mockCasesFallback.find(x => x.id === caseId || x.caseNumber === caseId);
-        if (fallback) caseContext = JSON.stringify(fallback, null, 2);
-      }
-    }
-
-    const systemInstruction = `You are a highly advanced AI Evidence Analysis model (Suraag Bot) working for Suraag AI, a forensic intelligence platform. You analyze crime scene data, 3D reconstructions, ballistic trajectories, witness statements, and sensor telemetry.
-You must politely reply to general greetings like "hello", "hi", etc. But always remember and remind users of your primary identity as an AI Evidence Analysis model for Suraag AI.
-Adopt a tactical, analytical, and highly precise tone when discussing cases. Provide structured, concise intelligence briefings when asked questions. Always format with markdown for readability.
-Use the following case context to answer questions about the active investigation and seamlessly sync your answers with the added cases data:\n\n${caseContext}`;
-
-    const model = genAI.getGenerativeModel({ 
-      model: 'gemini-3.6-flash',
-      systemInstruction,
-    });
-
-    // Format chat history to match Gemini's expected Content[] type
-    let formattedHistory: any[] = [];
-    let lastRole = null;
-    const rawHistory = Array.isArray(history) ? history : [];
-    
-    for (const msg of rawHistory) {
-      const role = msg.role === 'model' ? 'model' : 'user';
-      if (role !== lastRole) {
-        formattedHistory.push({
-          role,
-          parts: [{ text: msg.text || '' }]
-        });
-        lastRole = role;
-      } else if (formattedHistory.length > 0) {
-        formattedHistory[formattedHistory.length - 1].parts[0].text += '\n\n' + (msg.text || '');
-      }
-    }
-
-    // Gemini strictly requires the first message to be from 'user'
-    if (formattedHistory.length > 0 && formattedHistory[0].role === 'model') {
-      formattedHistory.shift();
-    }
-
-    const chat = model.startChat({
-      history: formattedHistory,
-    });
-
-    const result = await chat.sendMessage(message);
-    const responseText = result.response.text();
-
-    return res.json({
-      role: 'model',
-      text: responseText,
-      timestamp: new Date().toISOString(),
-      confidence: parseFloat((92.0 + Math.random() * 7.5).toFixed(1)),
-    });
-  } catch (error: any) {
-    console.error('[Suraag AI] Gemini API Error:', error);
-    // Return a fallback response so the frontend still functions gracefully
-    return res.status(200).json({
-      role: 'model',
-      text: `**ERROR**: AI Reasoning Core offline or unreachable.\n\nDetails: ${error.message}`,
-      confidence: 0,
-      timestamp: new Date().toISOString()
+  if (!message || typeof message !== 'string' || !message.trim()) {
+    return res.status(400).json({
+      error: 'Invalid input',
+      message: 'Prompt message is required and cannot be empty.'
     });
   }
-});
+
+  try {
+    // 1. Build real, structured case context from DB and dataset
+    const caseContext = await buildCaseContext(caseId, prisma);
+
+    // 2. Build system prompt for Suraag Bot
+    const systemPrompt = buildSystemPrompt(caseContext);
+
+    // 3. Process request via LLM Service (Gemini -> OpenAI -> Local Rule Engine)
+    const result = await processChatRequest(message, systemPrompt, history || []);
+
+    return res.json(result);
+  } catch (error: any) {
+    console.error('[Suraag AI Agent] Error handling chat request:', error);
+    return res.status(500).json({
+      role: 'model',
+      text: `**SYSTEM ERROR**: AI Reasoning Core encountered an unexpected error.\n\nDetails: ${error?.message || 'Internal Server Error'}`,
+      confidence: 0,
+      timestamp: new Date().toISOString(),
+      provider: 'Error Recovery Handler'
+    });
+  }
+};
+
+app.post('/api/chat', handleChatRequest);
+app.post('/api/ai/assistant/chat', handleChatRequest);
 
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {

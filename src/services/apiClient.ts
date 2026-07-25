@@ -71,7 +71,7 @@ export const apiClient = {
   },
   ai: {
     chat: (message: string, caseId: string, history?: any[]) =>
-      fetchJSON<{ role: string; text: string; timestamp: string; confidence: number }>('/ai/assistant/chat', {
+      fetchJSON<{ role: string; text: string; timestamp: string; confidence: number; provider?: string }>('/chat', {
         method: 'POST',
         body: JSON.stringify({ message, caseId, history }),
       }),

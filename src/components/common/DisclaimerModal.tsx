@@ -19,8 +19,12 @@ export const DisclaimerModal: React.FC = () => {
 
   useEffect(() => {
     if (isOpen) {
+      // Prevent background scrolling while modal is active
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+
       // Focus OK button on open
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         okButtonRef.current?.focus();
       }, 50);
 
@@ -36,7 +40,9 @@ export const DisclaimerModal: React.FC = () => {
 
       window.addEventListener('keydown', handleKeyDown);
       return () => {
+        document.body.style.overflow = originalOverflow;
         window.removeEventListener('keydown', handleKeyDown);
+        clearTimeout(timer);
       };
     }
   }, [isOpen]);
