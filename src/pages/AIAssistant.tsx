@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Bot, Send, Sparkles, User, ShieldAlert, Radio, HelpCircle } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import { Bot, Send, Sparkles, User, ShieldAlert, Radio, HelpCircle, ArrowDown } from 'lucide-react';
 import { apiClient } from '../services/apiClient';
 import { useSuraagStore } from '../store/useSuraagStore';
 import { GlassCard } from '../components/common/GlassCard';
@@ -9,15 +10,42 @@ export const AIAssistant: React.FC = () => {
   const { selectedCaseId, chatHistory, addChatMessage, clearChatHistory } = useSuraagStore();
   const [inputMessage, setInputMessage] = useState('');
   const [isThinking, setIsThinking] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const [isUserScrolledUp, setIsUserScrolledUp] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToBottom = (smooth = true) => {
+    if (!chatContainerRef.current) return;
+    const behavior: ScrollBehavior = smooth ? 'smooth' : 'auto';
+    chatContainerRef.current.scrollTo({
+      top: chatContainerRef.current.scrollHeight,
+      behavior,
+    });
+    setIsUserScrolledUp(false);
+    setShowScrollButton(false);
+  };
+
+  const handleScroll = () => {
+    if (!chatContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = chatContainerRef.current;
+    const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+    const isUp = distanceFromBottom > 60;
+    setIsUserScrolledUp(isUp);
+    setShowScrollButton(isUp);
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [chatHistory, isThinking]);
+    if (!isUserScrolledUp) {
+      scrollToBottom(true);
+      const timer1 = setTimeout(() => scrollToBottom(true), 50);
+      const timer2 = setTimeout(() => scrollToBottom(true), 250);
+      return () => {
+        clearTimeout(timer1);
+        clearTimeout(timer2);
+      };
+    }
+  }, [chatHistory, isThinking, isUserScrolledUp]);
 
   const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || inputMessage;
@@ -26,6 +54,8 @@ export const AIAssistant: React.FC = () => {
     if (!textToSend) setInputMessage('');
     addChatMessage({ role: 'user', text });
     setIsThinking(true);
+    setIsUserScrolledUp(false);
+    scrollToBottom(true);
 
     try {
       const activeCase = selectedCaseId || 'CASE-2026-DT01';
@@ -43,6 +73,10 @@ export const AIAssistant: React.FC = () => {
       });
     } finally {
       setIsThinking(false);
+      if (!isUserScrolledUp) {
+        setTimeout(() => scrollToBottom(true), 50);
+        setTimeout(() => scrollToBottom(true), 250);
+      }
     }
   };
 
@@ -104,9 +138,13 @@ export const AIAssistant: React.FC = () => {
         </GlassCard>
 
         {/* Right 3 Columns: Chat Box & Input */}
-        <GlassCard className="lg:col-span-3 p-5 flex flex-col h-[600px] border-primary/50 shadow-[0_0_25px_rgba(255,84,76,0.2)]">
+        <GlassCard className="lg:col-span-3 p-5 flex flex-col h-[600px] border-primary/50 shadow-[0_0_25px_rgba(255,84,76,0.2)] relative">
           {/* Chat Messages Stream */}
-          <div className="flex-1 overflow-y-scroll custom-scrollbar space-y-4 pr-2">
+          <div
+            ref={chatContainerRef}
+            onScroll={handleScroll}
+            className="flex-1 min-h-0 overflow-y-auto custom-scrollbar space-y-4 pr-2"
+          >
             {chatHistory.map((msg) => (
               <div
                 key={msg.id}
@@ -136,8 +174,8 @@ export const AIAssistant: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-surface-variant prose-pre:border prose-pre:border-outline-variant">
-                    <div className="whitespace-pre-wrap">{msg.text}</div>
+                  <div className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed prose-p:my-1.5 prose-ul:my-1.5 prose-ol:my-1.5 prose-li:my-0.5 prose-headings:my-2 prose-headings:text-on-surface prose-strong:text-on-surface prose-pre:bg-surface-variant prose-pre:border prose-pre:border-outline-variant text-on-surface">
+                    <ReactMarkdown>{msg.text}</ReactMarkdown>
                   </div>
                 </div>
 
@@ -163,13 +201,24 @@ export const AIAssistant: React.FC = () => {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Scroll to Bottom Button */}
+          {showScrollButton && (
+            <button
+              onClick={() => scrollToBottom(true)}
+              className="absolute bottom-20 right-8 p-2 rounded-full bg-primary text-on-primary shadow-lg border border-outline-variant/60 hover:bg-surface-tint transition-all animate-bounce z-10 flex items-center gap-1 text-xs font-tactical-data px-3"
+            >
+              <ArrowDown className="w-4 h-4" />
+              <span>Latest</span>
+            </button>
+          )}
+
           {/* Chat Input Bar */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
               handleSendMessage();
             }}
-            className="mt-4 pt-4 border-t border-outline-variant/40 flex items-center gap-3"
+            className="shrink-0 mt-4 pt-4 border-t border-outline-variant/40 flex items-center gap-3"
           >
             <input
               type="text"
