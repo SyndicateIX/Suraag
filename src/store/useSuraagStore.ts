@@ -110,7 +110,7 @@ export const useSuraagStore = create<SuraagStoreState>()(
         {
           id: 'msg-init',
           role: 'model',
-          text: 'Suraag AI Tactical Intelligence online. Case **CASE-2026-901M** loaded. Multi-sensor fusion active with 98.4% confidence. How may I assist in your investigation?',
+          text: 'Suraag AI Tactical Intelligence online. Active investigation **The Doomed Triangle (CASE-2026-DT01)** loaded. Multi-sensor fusion active. How may I assist in your investigation?',
           timestamp: new Date().toISOString(),
           confidence: 99.8,
         },

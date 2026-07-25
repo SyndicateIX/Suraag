@@ -21,24 +21,25 @@ export const AIAssistant: React.FC = () => {
 
   const handleSendMessage = async (textToSend?: string) => {
     const text = textToSend || inputMessage;
-    if (!text.trim()) return;
+    if (!text.trim() || isThinking) return;
 
     if (!textToSend) setInputMessage('');
     addChatMessage({ role: 'user', text });
     setIsThinking(true);
 
     try {
-      const res = await apiClient.ai.chat(text, selectedCaseId, chatHistory);
+      const activeCase = selectedCaseId || 'CASE-2026-DT01';
+      const res = await apiClient.ai.chat(text, activeCase, chatHistory);
       addChatMessage({
         role: 'model',
         text: res.text,
         confidence: res.confidence || 96.8,
       });
-    } catch (err) {
+    } catch (err: any) {
       addChatMessage({
         role: 'model',
-        text: `Based on our multi-sensor fusion matrix for **${selectedCaseId}**, our mathematical model confirms that Dr. Julian Vance's statement is occluded by Server Rack #4. The ballistic trajectory points to suspect Viktor Krell on the elevated walkway.`,
-        confidence: 94.2,
+        text: `**SYSTEM WARNING**: AI Reasoning Core encountered a communication error.\n\n*Details*: ${err?.message || 'Unable to connect to Suraag Backend API'}. Please ensure backend server is running and try again.`,
+        confidence: 0,
       });
     } finally {
       setIsThinking(false);
@@ -46,10 +47,10 @@ export const AIAssistant: React.FC = () => {
   };
 
   const presetQueries = [
-    'Explain the ballistic trajectory calculation and entry angle.',
-    'Why was Dr. Vance flagged for critical contradictions?',
-    'What is the risk score and evidence link for Viktor Krell?',
-    'Recommend top search sector for missing CCTV buffer.',
+    'Explain the ballistic trajectory calculation and entry angle for Lohegaon Hill.',
+    'Why was Diya Gupta flagged for critical contradictions regarding the cliff fall?',
+    'What is the risk score and evidence link for Chetany Sharma?',
+    'Recommend top search sector for missing CCTV buffer in Sector B-4.',
   ];
 
   return (
@@ -68,7 +69,7 @@ export const AIAssistant: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <Badge variant="confidence" pulse>GEMINI LATTICE ONLINE</Badge>
+          <Badge variant="confidence" pulse>SURAAG AI ONLINE</Badge>
           <button
             onClick={clearChatHistory}
             className="px-3 py-1 rounded bg-surface-container hover:bg-secondary-container text-on-surface-variant hover:text-primary transition-all font-tactical-data text-xs border border-outline-variant/50"
@@ -91,14 +92,14 @@ export const AIAssistant: React.FC = () => {
                 key={idx}
                 onClick={() => handleSendMessage(q)}
                 disabled={isThinking}
-                className="w-full text-left p-3 rounded bg-surface-container-low hover:bg-secondary-container/60 hover:border-primary text-xs font-body-md text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-all leading-relaxed"
+                className="w-full text-left p-3 rounded bg-surface-container-low hover:bg-secondary-container/60 hover:border-primary text-xs font-body-md text-on-surface-variant hover:text-on-surface border border-outline-variant/40 transition-all leading-relaxed disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 "{q}"
               </button>
             ))}
           </div>
           <div className="pt-3 border-t border-outline-variant/30 font-tactical-data text-[11px] text-on-surface-variant/80">
-            <span>● Context Synced: <strong>{selectedCaseId}</strong></span>
+            <span>● Context Synced: <strong>{selectedCaseId || 'CASE-2026-DT01'}</strong></span>
           </div>
         </GlassCard>
 
@@ -127,7 +128,7 @@ export const AIAssistant: React.FC = () => {
                   {msg.role === 'model' && (
                     <div className="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant/30 font-tactical-data text-xs">
                       <span className="text-primary font-bold">SURAAG AI REASONING CORE</span>
-                      {msg.confidence && (
+                      {msg.confidence !== undefined && msg.confidence > 0 && (
                         <Badge variant="active" className="text-[10px]">
                           {msg.confidence}% CONFIDENCE
                         </Badge>
@@ -172,16 +173,16 @@ export const AIAssistant: React.FC = () => {
           >
             <input
               type="text"
-              placeholder={`Ask Suraag Bot anything regarding ${selectedCaseId} entities, math, or contradictions...`}
+              placeholder={`Ask Suraag Bot anything regarding ${selectedCaseId || 'CASE-2026-DT01'} entities, math, or contradictions...`}
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               disabled={isThinking}
-              className="flex-1 h-11 bg-surface-container-low text-xs font-tactical-data text-on-surface rounded border border-outline-variant px-4 focus:outline-none focus:border-primary transition-all placeholder:text-on-surface-variant/60"
+              className="flex-1 h-11 bg-surface-container-low text-xs font-tactical-data text-on-surface rounded border border-outline-variant px-4 focus:outline-none focus:border-primary transition-all placeholder:text-on-surface-variant/60 disabled:opacity-50"
             />
             <button
               type="submit"
               disabled={isThinking || !inputMessage.trim()}
-              className="px-6 h-11 rounded bg-primary text-on-primary font-tactical-data text-xs font-bold uppercase tracking-wider hover:bg-surface-tint disabled:opacity-50 transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(255,84,76,0.35)]"
+              className="px-6 h-11 rounded bg-primary text-on-primary font-tactical-data text-xs font-bold uppercase tracking-wider hover:bg-surface-tint disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(255,84,76,0.35)]"
             >
               <span>Transmit</span>
               <Send className="w-4 h-4" />

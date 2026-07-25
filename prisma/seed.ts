@@ -248,7 +248,7 @@ async function main() {
               severity: 'HIGH',
             },
           ]
-          : null,
+          : [],
       },
     });
   }
