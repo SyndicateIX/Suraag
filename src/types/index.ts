@@ -487,3 +487,153 @@ export interface SimulationState {
   cinematicMode?: CinematicCameraMode;
   activeSubjectId?: string;
 }
+
+// ----------------------------------------------------
+// Social Network Analysis & Key Influencer Detection
+// ----------------------------------------------------
+
+export type NetworkEntityRole =
+  | 'KINGPIN'
+  | 'INTERMEDIARY'
+  | 'OPERATIVE'
+  | 'FACILITATOR'
+  | 'FINANCIAL_CONDUIT'
+  | 'VICTIM'
+  | 'WITNESS'
+  | 'INVESTIGATOR';
+
+export type NetworkLayerChannel =
+  | 'FINANCIAL'
+  | 'COMMUNICATION'
+  | 'OPERATIONAL'
+  | 'SURVEILLANCE_WITNESS'
+  | 'FORENSIC';
+
+export interface NetworkEntityNode {
+  id: string;
+  label: string;
+  name: string;
+  role: NetworkEntityRole;
+  category: 'SUSPECT' | 'FACILITATOR' | 'VICTIM' | 'WITNESS' | 'INVESTIGATOR';
+  avatarInitials: string;
+  threatLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'NEUTRAL';
+  color: string;
+  description: string;
+  organizationOrFaction: string;
+  operationalPhases: string[];
+  phoneOrHandle?: string;
+  financialVolumeInr?: number;
+  directEvidenceIds: string[];
+  alibiStatus?: string;
+  centrality?: NodeCentralityMetrics;
+  x?: number;
+  y?: number;
+  vx?: number;
+  vy?: number;
+  fx?: number | null;
+  fy?: number | null;
+}
+
+export interface NetworkRelationshipLink {
+  id: string;
+  source: string;
+  target: string;
+  channel: NetworkLayerChannel;
+  label: string;
+  weight: number; // 1 to 10 intensity
+  transactionAmountInr?: number;
+  frequencyCount?: number;
+  communicationMedium?: string;
+  evidenceExhibitIds: string[];
+  isCriticalConduit?: boolean;
+  isDirectional?: boolean;
+  timestamps?: string[];
+  investigativeNote?: string;
+}
+
+export interface NodeCentralityMetrics {
+  degreeCentrality: number; // Normalized degree 0-1
+  inDegree: number;
+  outDegree: number;
+  totalDegree: number;
+  betweennessCentrality: number; // Brandes fraction 0-1
+  closenessCentrality: number; // Normalized closeness 0-1
+  eigenvectorCentrality: number; // Power iteration 0-1
+  burtsConstraint: number; // Structural holes / constraint index
+  kingpinScore: number; // Composite 0-100
+  intermediaryScore: number; // Composite 0-100
+  structuralRoleTitle: string;
+  disruptionImpactPct: number; // % network efficiency loss if isolated
+}
+
+export interface GlobalNetworkTopology {
+  nodeCount: number;
+  edgeCount: number;
+  graphDensity: number;
+  averageDegree: number;
+  globalClusteringCoefficient: number;
+  networkDiameter: number;
+  averageShortestPathLength: number;
+  degreeCentralization: number;
+  betweennessCentralization: number;
+  vulnerabilityIndex: number; // 0-100
+}
+
+export interface KeyInfluencerRanking {
+  entityId: string;
+  name: string;
+  role: NetworkEntityRole;
+  rank: number;
+  score: number;
+  primaryMetric: string;
+  summary: string;
+  structuralVulnerability: string;
+  tacticalTakedownRecommendation: string;
+}
+
+export interface DisruptionSimulationResult {
+  isolatedNodeId: string;
+  isolatedNodeName: string;
+  isolatedRole: NetworkEntityRole;
+  preFragmentationComponents: number;
+  postFragmentationComponents: number;
+  severedEdgesCount: number;
+  affectedEntitiesCount: number;
+  networkDisruptionScorePct: number;
+  reachabilityDropPct: number;
+  isolatedClusterDetails: Array<{
+    clusterName: string;
+    members: string[];
+  }>;
+  tacticalVerdict: string;
+}
+
+export interface ConduitPathResult {
+  sourceId: string;
+  targetId: string;
+  shortestPaths: string[][]; // Node ID sequences
+  hopCount: number;
+  bottleneckIntermediaryIds: string[];
+  totalFinancialVolumeInr: number;
+  primaryChannelsUsed: NetworkLayerChannel[];
+  forensicEvidenceEnRoute: string[];
+}
+
+export interface SocialNetworkAnalysisPayload {
+  caseId: string;
+  caseTitle: string;
+  topology: GlobalNetworkTopology;
+  nodes: NetworkEntityNode[];
+  links: NetworkRelationshipLink[];
+  kingpins: KeyInfluencerRanking[];
+  intermediaries: KeyInfluencerRanking[];
+  operatives: KeyInfluencerRanking[];
+  aiSyndicateReport: {
+    executiveSummary: string;
+    commandHierarchyAssessment: string;
+    criticalIntermediaryVulnerabilities: string;
+    financialConduitFindings: string;
+    courtAdmissibilityEvaluation: string;
+  };
+}
+

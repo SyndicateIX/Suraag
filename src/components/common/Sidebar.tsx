@@ -80,6 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
         { name: 'Missing Evidence', path: '/missing-evidence', icon: AlertTriangle },
         { name: 'Scenario Simulator', path: '/scenarios', icon: GitBranch },
         { name: 'Suspect Intelligence', path: '/suspects', icon: UserCheck },
+        { name: 'Social Network (SNA)', path: '/social-network-analysis', icon: GitCompare },
         { name: 'Evidence Graph', path: '/correlation-graph', icon: Network },
       ],
     },
