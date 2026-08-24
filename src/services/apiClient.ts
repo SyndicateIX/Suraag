@@ -1,4 +1,4 @@
-import { Case, Evidence, WitnessStatement, Suspect, TimelineEvent, ReconstructionData, MissingEvidencePrediction, CorrelationGraphData } from '../types';
+import { Case, Evidence, WitnessStatement, Suspect, TimelineEvent, ReconstructionData, MissingEvidencePrediction, CorrelationGraphData, SocialNetworkAnalysisPayload } from '../types';
 
 const BASE_URL = '/api';
 
@@ -68,6 +68,10 @@ export const apiClient = {
   },
   reconstruction: {
     getByCaseId: (caseId: string) => fetchJSON<ReconstructionData>(`/reconstruction/${caseId}`),
+  },
+  network: {
+    getAnalysis: (caseId?: string) =>
+      fetchJSON<SocialNetworkAnalysisPayload>(`/network/analysis${caseId ? `?caseId=${caseId}` : ''}`),
   },
   ai: {
     chat: (message: string, caseId: string, history?: any[]) =>

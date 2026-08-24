@@ -20,6 +20,7 @@ import { MissingEvidence } from './pages/MissingEvidence';
 import { ScenarioSimulator } from './pages/ScenarioSimulator';
 import { SuspectIntelligence } from './pages/SuspectIntelligence';
 import { EvidenceCorrelationGraph } from './pages/EvidenceCorrelationGraph';
+import { SocialNetworkAnalysis } from './pages/SocialNetworkAnalysis';
 import { AIReasoning } from './pages/AIReasoning';
 import { AIAssistant } from './pages/AIAssistant';
 import { InvestigationReport } from './pages/InvestigationReport';
@@ -71,6 +72,7 @@ export const App: React.FC = () => {
             <Route path="/scenarios" element={<ScenarioSimulator />} />
             <Route path="/suspects" element={<SuspectIntelligence />} />
             <Route path="/correlation-graph" element={<EvidenceCorrelationGraph />} />
+            <Route path="/social-network-analysis" element={<SocialNetworkAnalysis />} />
             <Route path="/ai-reasoning" element={<AIReasoning />} />
             <Route path="/ai-assistant" element={<AIAssistant />} />
             <Route path="/report" element={<InvestigationReport />} />

@@ -172,6 +172,13 @@ export const SuspectIntelligence: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <Badge variant="critical" pulse>PRIMARY CONSPIRACY IDENTIFIED</Badge>
+          <Link
+            to="/social-network-analysis"
+            className="px-4 py-2.5 rounded bg-surface-container-high hover:bg-surface-container-highest text-primary border border-primary/50 font-tactical-data text-xs font-bold tracking-wider uppercase transition-all flex items-center gap-1.5"
+          >
+            <Activity className="w-4 h-4 text-primary" />
+            <span>SNA & Centrality</span>
+          </Link>
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
