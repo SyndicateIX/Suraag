@@ -11,6 +11,17 @@ import { TimelineEngine } from './pages/TimelineEngine';
 import { WitnessAnalysis } from './pages/WitnessAnalysis';
 import { SuspectIntelligence } from './pages/SuspectIntelligence';
 import { EvidenceCorrelationGraph } from './pages/EvidenceCorrelationGraph';
+import { SocialNetworkAnalysis } from './pages/SocialNetworkAnalysis';
+import { AIReasoning } from './pages/AIReasoning';
+import { CrimeScene3D } from './pages/CrimeScene3D';
+import { PhysicsEngine } from './pages/PhysicsEngine';
+import { TrajectoryLab } from './pages/TrajectoryLab';
+import { AttackerEstimation } from './pages/AttackerEstimation';
+import { TimelineConfidence } from './pages/TimelineConfidence';
+import { ContradictionMatrix } from './pages/ContradictionMatrix';
+import { LineOfSight } from './pages/LineOfSight';
+import { MissingEvidence } from './pages/MissingEvidence';
+import { ScenarioSimulator } from './pages/ScenarioSimulator';
 import { AIAssistant } from './pages/AIAssistant';
 import { InvestigationReport } from './pages/InvestigationReport';
 import { Settings } from './pages/Settings';
@@ -47,11 +58,22 @@ export const App: React.FC = () => {
             <Route path="/evidence-dashboard" element={<EvidenceDashboard />} />
             <Route path="/digital-dashboard" element={<DigitalDashboard />} />
             <Route path="/cases" element={<CaseManagement />} />
-            <Route path="/data-ingestion" element={<EvidenceVault />} />
-            <Route path="/entity-extraction" element={<WitnessAnalysis />} />
-            <Route path="/pattern-detection" element={<TimelineEngine />} />
-            <Route path="/influencer-analysis" element={<SuspectIntelligence />} />
-            <Route path="/network-map" element={<EvidenceCorrelationGraph />} />
+            <Route path="/evidence" element={<EvidenceVault />} />
+            <Route path="/reconstruction" element={<CrimeScene3D />} />
+            <Route path="/physics" element={<PhysicsEngine />} />
+            <Route path="/trajectory" element={<TrajectoryLab />} />
+            <Route path="/attacker-estimation" element={<AttackerEstimation />} />
+            <Route path="/timeline" element={<TimelineEngine />} />
+            <Route path="/timeline-confidence" element={<TimelineConfidence />} />
+            <Route path="/witnesses" element={<WitnessAnalysis />} />
+            <Route path="/contradiction-matrix" element={<ContradictionMatrix />} />
+            <Route path="/line-of-sight" element={<LineOfSight />} />
+            <Route path="/missing-evidence" element={<MissingEvidence />} />
+            <Route path="/scenarios" element={<ScenarioSimulator />} />
+            <Route path="/suspects" element={<SuspectIntelligence />} />
+            <Route path="/correlation-graph" element={<EvidenceCorrelationGraph />} />
+            <Route path="/social-network-analysis" element={<SocialNetworkAnalysis />} />
+            <Route path="/ai-reasoning" element={<AIReasoning />} />
             <Route path="/ai-assistant" element={<AIAssistant />} />
             <Route path="/report" element={<InvestigationReport />} />
             <Route path="/profile" element={<Profile />} />

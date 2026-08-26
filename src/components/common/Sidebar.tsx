@@ -56,10 +56,30 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
     {
       title: 'NETWORK INTELLIGENCE',
       items: [
-        { name: 'Entity Extraction', path: '/entity-extraction', icon: Users },
-        { name: 'Relationship Map', path: '/network-map', icon: Network },
-        { name: 'Influencer Analysis', path: '/influencer-analysis', icon: UserCheck },
-        { name: 'Pattern Detection', path: '/pattern-detection', icon: AlertTriangle },
+        { name: 'Crime Scene 3D', path: '/reconstruction', icon: Box },
+        { name: 'Physics Engine', path: '/physics', icon: Cpu },
+        { name: 'Trajectory Lab', path: '/trajectory', icon: Compass },
+        { name: 'Attacker Estimation', path: '/attacker-estimation', icon: Crosshair },
+      ],
+    },
+    {
+      title: 'TIMELINE & WITNESS ANALYSIS',
+      items: [
+        { name: 'Timeline Engine', path: '/timeline', icon: Clock },
+        { name: 'Timeline Confidence', path: '/timeline-confidence', icon: Gauge },
+        { name: 'Witness Analysis', path: '/witnesses', icon: Users },
+        { name: 'Contradiction Matrix', path: '/contradiction-matrix', icon: GitCompare },
+      ],
+    },
+    {
+      title: 'TACTICAL PREDICTION & SCENARIOS',
+      items: [
+        { name: 'Line of Sight', path: '/line-of-sight', icon: Eye },
+        { name: 'Missing Evidence', path: '/missing-evidence', icon: AlertTriangle },
+        { name: 'Scenario Simulator', path: '/scenarios', icon: GitBranch },
+        { name: 'Suspect Intelligence', path: '/suspects', icon: UserCheck },
+        { name: 'Social Network (SNA)', path: '/social-network-analysis', icon: GitCompare },
+        { name: 'Evidence Graph', path: '/correlation-graph', icon: Network },
       ],
     },
     {

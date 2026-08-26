@@ -1,3 +1,5 @@
 node_modules
 .npm-cache
+npm-cache-local
 .env
+dist
