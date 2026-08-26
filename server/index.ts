@@ -6,6 +6,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
+import multer from 'multer';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -28,6 +29,22 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const cctvPath = path.join(__dirname, '../public/cctv/');
+    if (!fs.existsSync(cctvPath)) {
+      fs.mkdirSync(cctvPath, { recursive: true });
+    }
+    cb(null, cctvPath);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, uniqueSuffix + '-' + file.originalname)
+  }
+});
+const upload = multer({ storage: storage });
+app.use('/cctv', express.static(path.join(__dirname, '../public/cctv')));
 
 // Helper fallback data if DB is not connected / seeded yet or running in memory mode
 let mockCasesFallback: any[] = [
@@ -74,16 +91,28 @@ try {
       incidentDate: '2026-06-21T11:30:00Z',
       summary: doomedTriangleDataset.case_metadata.summary,
       confidenceScore: 99.98,
-      evidence: (doomedTriangleDataset.module_2_evidence_vault?.exhibits || []).map((e: any) => ({
-        id: e.id,
-        title: e.title,
-        category: e.category,
-        fileUrl: e.fileUrl,
-        fileType: e.fileType,
-        confidence: e.confidence,
-        processedStatus: e.processedStatus,
-        description: `${e.attempt ? `[${e.attempt}] ` : ''}${e.description}`
-      })),
+      evidence: [
+        ...(doomedTriangleDataset.module_2_evidence_vault?.exhibits || []).map((e: any) => ({
+          id: e.id,
+          title: e.title,
+          category: e.category,
+          fileUrl: e.fileUrl,
+          fileType: e.fileType,
+          confidence: e.confidence,
+          processedStatus: e.processedStatus,
+          description: `${e.attempt ? `[${e.attempt}] ` : ''}${e.description}`
+        })),
+        {
+          id: 'EVID-LOH-CCTV',
+          title: 'Lohegaon Hill CCTV Footage',
+          category: 'CCTV',
+          fileUrl: '/cctv/lohegaon-cctv.mp4',
+          fileType: 'video/mp4',
+          confidence: 99.9,
+          processedStatus: 'COMPLETED',
+          description: 'CCTV Footage capturing the Lohegaon Hill incident'
+        }
+      ],
       witnesses: doomedTriangleDataset.module_3_witness_statements_and_nlp_entity_extraction.witnesses.map((w: any) => ({
         id: w.witness_id,
         witnessName: w.name,
@@ -363,9 +392,11 @@ app.get('/api/evidence', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/api/evidence/process', async (req: Request, res: Response) => {
+app.post('/api/evidence/process', upload.single('file'), async (req: Request, res: Response) => {
   // Simulates computer vision object detection pipeline
   const { fileName, fileType, caseId, category } = req.body;
+  const file = req.file;
+  const fileUrl = file ? `/cctv/${file.filename}` : 'https://images.unsplash.com/photo-1580000000000?auto=format&fit=crop&w=800&q=80';
   
   const mockCategories = ['WEAPON', 'BLOOD', 'FOOTPRINT', 'VEHICLE', 'PHONE', 'FINGERPRINT', 'BALLISTICS', 'CCTV', 'DOCUMENT'];
   const assignedCategory = category || mockCategories[Math.floor(Math.random() * mockCategories.length)];
@@ -388,8 +419,8 @@ app.post('/api/evidence/process', async (req: Request, res: Response) => {
         caseId: caseId || 'case-1',
         title: fileName || 'Uploaded Tactical Evidence Item',
         category: assignedCategory,
-        fileUrl: 'https://images.unsplash.com/photo-1580000000000?auto=format&fit=crop&w=800&q=80',
-        fileType: fileType || 'image/jpeg',
+        fileUrl: fileUrl,
+        fileType: fileType || (file?.mimetype) || 'image/jpeg',
         confidence,
         boundingBoxes,
         processedStatus: 'COMPLETED',
@@ -406,8 +437,8 @@ app.post('/api/evidence/process', async (req: Request, res: Response) => {
       caseId: caseId || 'case-1',
       title: fileName || 'Uploaded Tactical Evidence Item',
       category: assignedCategory,
-      fileUrl: 'https://images.unsplash.com/photo-1580000000000?auto=format&fit=crop&w=800&q=80',
-      fileType: fileType || 'image/jpeg',
+      fileUrl: fileUrl,
+      fileType: fileType || (file?.mimetype) || 'image/jpeg',
       confidence,
       boundingBoxes,
     });
