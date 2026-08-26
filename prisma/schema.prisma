@@ -26,6 +26,67 @@ model Case {
   suspects       Suspect[]
   timelineEvents TimelineEvent[]
   reconstruction ReconstructionData?
+  cdrDatasets    CDRDataset[]
+  canonicalIdentities CanonicalIdentity[]
+  extractedEntities   ExtractedEntity[]
+}
+
+model CDRDataset {
+  id           String      @id @default(uuid())
+  caseId       String
+  case         Case        @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  fileName     String
+  operatorName String      @default("AUTO") // Airtel, Jio, Vi, BSNL, AT&T, Vodafone
+  recordCount  Int         @default(0)
+  targetNumber String?
+  uploadDate   DateTime    @default(now())
+  records      CDRRecord[]
+  createdAt    DateTime    @default(now())
+}
+
+model CDRRecord {
+  id              String      @id @default(uuid())
+  datasetId       String
+  dataset         CDRDataset  @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+  callingNumber   String
+  calledNumber    String
+  imeiCalling     String?
+  imeiCalled      String?
+  timestamp       DateTime
+  durationSeconds Int         @default(0)
+  callType        String      @default("VOICE") // VOICE, SMS, DATA, ROAMING, MISSED
+  cellTowerId     String?
+  lac             String?
+  latitude        Float?
+  longitude       Float?
+  azimuth         Int?
+  firstLocation   String?
+  lastLocation    String?
+  createdAt       DateTime    @default(now())
+}
+
+model CellTower {
+  id           String   @id @default(uuid())
+  towerId      String   @unique
+  operator     String?
+  locationName String
+  latitude     Float
+  longitude    Float
+  azimuth      Int?
+  rangeMeters  Float?   @default(1500)
+  createdAt    DateTime @default(now())
+}
+
+model SuspectPhoneMapping {
+  id          String   @id @default(uuid())
+  caseId      String
+  suspectId   String?
+  phoneNumber String
+  imei        String?
+  ownerName   String?
+  role        String?  // TARGET, SUSPECT, ASSOCIATE, VICTIM, WITNESS, BURNER
+  notes       String?
+  createdAt   DateTime @default(now())
 }
 
 model Evidence {
@@ -113,3 +174,66 @@ model User {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
+
+model CanonicalIdentity {
+  id             String         @id @default(uuid())
+  caseId         String
+  case           Case           @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  primaryName    String
+  type           String         @default("SUSPECT") // SUSPECT, WITNESS, VICTIM, ASSOCIATE
+  riskScore      Float          @default(50.0)
+  notes          String?
+  penalCharges   Json?          // Array of legal codes e.g. ["IPC-302", "BNS-103"]
+  metadata       Json?
+  aliasMappings  AliasMapping[]
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model ExtractedEntity {
+  id              String         @id @default(uuid())
+  documentId      String
+  caseId          String?
+  case            Case?          @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  entityType      String         // PERSON, ALIAS, PENAL_CODE, LOCATION, VEHICLE, WEAPON, TIMESTAMP, ORGANIZATION, PHONE
+  textValue       String
+  startIndex      Int
+  endIndex        Int
+  confidenceScore Float          @default(0.9)
+  contextSnippet  String?
+  metadata        Json?          // { penalCodeDetails?: any, coOccurrence?: any, documentTitle?: string, attemptPhase?: string }
+  aliasMappings   AliasMapping[]
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+model AliasMapping {
+  id                  String            @id @default(uuid())
+  extractedEntityId   String
+  extractedEntity     ExtractedEntity   @relation(fields: [extractedEntityId], references: [id], onDelete: Cascade)
+  canonicalIdentityId String
+  canonicalIdentity   CanonicalIdentity @relation(fields: [canonicalIdentityId], references: [id], onDelete: Cascade)
+  resolutionMethod    String            @default("AUTOMATIC_FUZZY") // AUTOMATIC_FUZZY, AUTOMATIC_LLM, MANUAL_OVERRIDE
+  confidence          Float             @default(0.85)
+  isApproved          Boolean           @default(false)
+  reasoning           String?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+}
+
+model LegalPenalCode {
+  id             String   @id @default(uuid())
+  code           String   @unique // e.g. "IPC-302", "BNS-103"
+  sectionNumber  String   // e.g. "302", "103"
+  statute        String   // "IPC" or "BNS"
+  title          String
+  category       String   // "HOMICIDE", "CONSPIRACY", "ASSAULT", "EVIDENCE_TAMPERING", "FRAUD", etc.
+  severityLevel  String   // "CRITICAL", "HIGH", "MEDIUM", "ROUTINE"
+  description    String
+  punishment     String?
+  bnsEquivalent  String?
+  ipcEquivalent  String?
+  keyElements    Json?    // string[]
+  createdAt      DateTime @default(now())
+}
+

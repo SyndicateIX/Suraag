@@ -1,4 +1,5 @@
 import { Case, Evidence, WitnessStatement, Suspect, TimelineEvent, ReconstructionData, MissingEvidencePrediction, CorrelationGraphData, SocialNetworkAnalysisPayload } from '../types';
+import { ingestionService } from './ingestionService';
 
 const BASE_URL = '/api';
 
@@ -80,4 +81,5 @@ export const apiClient = {
         body: JSON.stringify({ message, caseId, history }),
       }),
   },
+  ingestion: ingestionService,
 };

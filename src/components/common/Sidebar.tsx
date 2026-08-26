@@ -17,12 +17,16 @@ import {
   GitBranch,
   UserCheck,
   Network,
+  Radio,
   Sparkles,
   Bot,
   FileText,
   Settings,
   ChevronDown,
-  User
+  User,
+  GitMerge,
+  Scale,
+  Database
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -52,6 +56,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
       items: [
         { name: 'Mission Control', path: '/dashboard', icon: LayoutDashboard },
         { name: 'Case Intelligence', path: '/cases', icon: FolderKanban },
+        { name: 'Data Ingestion & OSINT', path: '/data-ingestion', icon: Database },
         { name: 'Evidence Vault', path: '/evidence', icon: Vault },
       ],
     },
@@ -76,6 +81,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
     {
       title: 'TACTICAL PREDICTION & SCENARIOS',
       items: [
+        { name: 'Telecom & CDR Intel', path: '/telecom', icon: Radio },
+        { name: 'Legal NER & Aliases', path: '/legal-ner', icon: GitMerge },
         { name: 'Line of Sight', path: '/line-of-sight', icon: Eye },
         { name: 'Missing Evidence', path: '/missing-evidence', icon: AlertTriangle },
         { name: 'Scenario Simulator', path: '/scenarios', icon: GitBranch },

@@ -26,6 +26,9 @@ import { AIAssistant } from './pages/AIAssistant';
 import { InvestigationReport } from './pages/InvestigationReport';
 import { Settings } from './pages/Settings';
 import { Profile } from './pages/Profile';
+import { TelecomIntelligence } from './pages/TelecomIntelligence';
+import { LegalNERIntelligence } from './pages/LegalNERIntelligence';
+import { DataIngestion } from './pages/DataIngestion';
 import { AdminDashboard, OfficerDashboard, InvestigatorDashboard, EvidenceDashboard, DigitalDashboard } from './pages/RoleDashboards';
 import { useSuraagStore } from './store/useSuraagStore';
 
@@ -58,6 +61,7 @@ export const App: React.FC = () => {
             <Route path="/evidence-dashboard" element={<EvidenceDashboard />} />
             <Route path="/digital-dashboard" element={<DigitalDashboard />} />
             <Route path="/cases" element={<CaseManagement />} />
+            <Route path="/data-ingestion" element={<DataIngestion />} />
             <Route path="/evidence" element={<EvidenceVault />} />
             <Route path="/reconstruction" element={<CrimeScene3D />} />
             <Route path="/physics" element={<PhysicsEngine />} />
@@ -71,8 +75,10 @@ export const App: React.FC = () => {
             <Route path="/missing-evidence" element={<MissingEvidence />} />
             <Route path="/scenarios" element={<ScenarioSimulator />} />
             <Route path="/suspects" element={<SuspectIntelligence />} />
+            <Route path="/legal-ner" element={<LegalNERIntelligence />} />
             <Route path="/correlation-graph" element={<EvidenceCorrelationGraph />} />
             <Route path="/social-network-analysis" element={<SocialNetworkAnalysis />} />
+            <Route path="/telecom" element={<TelecomIntelligence />} />
             <Route path="/ai-reasoning" element={<AIReasoning />} />
             <Route path="/ai-assistant" element={<AIAssistant />} />
             <Route path="/report" element={<InvestigationReport />} />

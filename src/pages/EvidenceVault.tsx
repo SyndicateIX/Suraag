@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   UploadCloud,
@@ -17,7 +18,8 @@ import {
   RefreshCw,
   Layers,
   Shield,
-  Tag
+  Tag,
+  Database
 } from 'lucide-react';
 import { apiClient } from '../services/apiClient';
 import { Evidence } from '../types';
@@ -29,6 +31,7 @@ import { ComputerVisionModal } from '../components/evidence/ComputerVisionModal'
 import { getReportEvidenceArtifacts } from '../utils/reportParser';
 
 export const EvidenceVault: React.FC = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { selectedCaseId } = useSuraagStore();
   const reportEvidence = useMemo(() => getReportEvidenceArtifacts(), []);
@@ -216,6 +219,13 @@ export const EvidenceVault: React.FC = () => {
         <div className="flex flex-wrap items-center gap-3">
           <Badge variant="confidence" pulse>YOLOv9 VISION ONLINE</Badge>
           <Badge variant="routine">{filteredEvidence.length} ITEMS CATALOGED</Badge>
+          <button
+            onClick={() => navigate('/data-ingestion')}
+            className="px-4 py-2 rounded bg-primary text-on-primary hover:bg-primary-dark font-tactical-data text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 shadow-[0_0_15px_rgba(255,84,76,0.3)] cursor-pointer"
+          >
+            <Database className="w-3.5 h-3.5" />
+            <span>Universal Ingestion & OCR Hub</span>
+          </button>
           <button
             onClick={handleSynchronizeTimeline}
             disabled={isSyncing}

@@ -637,3 +637,156 @@ export interface SocialNetworkAnalysisPayload {
   };
 }
 
+// ==========================================
+// LEGAL NER & CROSS-DOCUMENT ALIAS RESOLUTION (PHASE 2)
+// ==========================================
+
+export type LegalStatute = 'IPC' | 'BNS';
+
+export interface LegalPenalCode {
+  id?: string;
+  code: string; // e.g. "IPC-302" or "BNS-103"
+  sectionNumber: string; // "302"
+  statute: LegalStatute;
+  title: string;
+  category: 'HOMICIDE' | 'CONSPIRACY' | 'ASSAULT' | 'EVIDENCE_TAMPERING' | 'FRAUD' | 'WEAPONS' | 'NARCOTICS' | 'CYBERCRIME' | 'OTHER' | string;
+  severityLevel: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'ROUTINE';
+  description: string;
+  punishment?: string;
+  bnsEquivalent?: string;
+  ipcEquivalent?: string;
+  keyElements?: string[];
+}
+
+export type ExtractedEntityType =
+  | 'PERSON'
+  | 'ALIAS'
+  | 'PENAL_CODE'
+  | 'LOCATION'
+  | 'VEHICLE'
+  | 'WEAPON'
+  | 'TIMESTAMP'
+  | 'ORGANIZATION'
+  | 'PHONE'
+  | 'FINANCIAL';
+
+export interface ExtractedEntity {
+  id: string;
+  documentId: string;
+  caseId?: string;
+  entityType: ExtractedEntityType;
+  textValue: string;
+  startIndex: number;
+  endIndex: number;
+  confidenceScore: number;
+  contextSnippet?: string;
+  metadata?: {
+    penalCodeDetails?: LegalPenalCode;
+    roleHint?: 'SUSPECT' | 'WITNESS' | 'VICTIM' | 'ASSOCIATE';
+    documentTitle?: string;
+    documentType?: string;
+    sourceSection?: string;
+    coOccurrence?: {
+      phoneNumbers?: string[];
+      locations?: string[];
+      timestamps?: string[];
+      associates?: string[];
+    };
+    [key: string]: any;
+  };
+  createdAt?: string | Date;
+}
+
+export interface AliasMappingItem {
+  mappingId: string;
+  extractedEntityId: string;
+  aliasName: string;
+  documentId: string;
+  documentTitle?: string;
+  resolutionMethod: 'AUTOMATIC_FUZZY' | 'AUTOMATIC_LLM' | 'MANUAL_OVERRIDE';
+  confidence: number;
+  isApproved: boolean;
+  reasoning?: string;
+  contextSnippet?: string;
+}
+
+export interface IdentityCitation {
+  documentId: string;
+  documentTitle: string;
+  snippet: string;
+  entityType: ExtractedEntityType;
+  confidence: number;
+}
+
+export interface CanonicalIdentity {
+  id: string;
+  caseId: string;
+  primaryName: string;
+  type: 'SUSPECT' | 'WITNESS' | 'VICTIM' | 'ASSOCIATE';
+  riskScore: number;
+  notes?: string;
+  penalCharges?: string[];
+  penalCodeDetails?: LegalPenalCode[];
+  aliases?: AliasMappingItem[];
+  citations?: IdentityCitation[];
+  coOccurrenceSummary?: {
+    sharedPhoneNumbers: string[];
+    associatedLocations: string[];
+    knownAssociates: string[];
+    timelineSpan?: string;
+  };
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+}
+
+export interface AliasMapping {
+  id: string;
+  extractedEntityId: string;
+  canonicalIdentityId: string;
+  resolutionMethod: 'AUTOMATIC_FUZZY' | 'AUTOMATIC_LLM' | 'MANUAL_OVERRIDE';
+  confidence: number;
+  isApproved: boolean;
+  reasoning?: string;
+  extractedEntity?: ExtractedEntity;
+  canonicalIdentity?: CanonicalIdentity;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+}
+
+export interface AliasMergeCandidate {
+  id: string;
+  sourceEntity: ExtractedEntity;
+  targetIdentity: CanonicalIdentity;
+  proposedName: string;
+  matchType: 'PHONETIC_SOUNDEX' | 'FUZZY_JARO_WINKLER' | 'LLM_CONTEXTUAL_COOCCURRENCE' | 'HYBRID_HIGH_CONFIDENCE';
+  fuzzyScore: number;
+  soundexMatch: boolean;
+  doubleMetaphoneKeys: {
+    source: [string, string];
+    target: [string, string];
+  };
+  coOccurrenceScore: number;
+  coOccurrenceFactors: {
+    sharedPhoneNumbers: string[];
+    sharedLocations: string[];
+    sharedAssociates: string[];
+    temporalProximityHours?: number;
+  };
+  llmDisambiguationReasoning: string;
+  overallConfidence: number;
+  status: 'PENDING_REVIEW' | 'APPROVED' | 'REJECTED';
+  suggestedAction: 'MERGE' | 'FLAG_REVIEW' | 'SEPARATE';
+}
+
+export interface NERDocument {
+  id: string;
+  caseId: string;
+  title: string;
+  documentType: 'FIR' | 'CHARGE_SHEET' | 'WITNESS_STATEMENT' | 'FORENSIC_REPORT' | 'INTERCEPT_TRANSCRIPT' | 'DIGITAL_EXTRACTION';
+  rawText: string;
+  processedDate: string;
+  entitiesCount: number;
+  penalCodesCount: number;
+  entities: ExtractedEntity[];
+}
+

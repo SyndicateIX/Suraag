@@ -14,6 +14,9 @@ const __dirname = path.dirname(__filename);
 import { buildCaseContext } from './services/contextBuilder.js';
 import { buildSystemPrompt } from './services/promptBuilder.js';
 import { processChatRequest } from './services/aiAgentService.js';
+import { createCDRRouter } from './routes/cdr.js';
+import { createNERRouter } from './routes/ner.js';
+import { createIngestionRouter } from './routes/ingestion.js';
 
 dotenv.config();
 
@@ -27,7 +30,17 @@ try {
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Mount Telecommunication CDR Processing Router
+app.use('/api/cdr', createCDRRouter(prisma));
+
+// Mount Legal NER & Alias Resolution Processing Router
+app.use('/api/ner', createNERRouter(prisma));
+
+// Mount Universal Data Ingestion & OSINT Processing Router
+app.use('/api/ingestion', createIngestionRouter(prisma));
 
 // Helper fallback data if DB is not connected / seeded yet or running in memory mode
 let mockCasesFallback: any[] = [
