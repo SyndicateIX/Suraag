@@ -36,11 +36,9 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => {
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    'COMMAND & CONTROL': true,
-    '3D RECONSTRUCTION & PHYSICS': false,
-    'TIMELINE & WITNESS ANALYSIS': false,
-    'TACTICAL PREDICTION & SCENARIOS': false,
-    'EXPLAINABLE AI & REPORTING': false,
+    'DATA & INGESTION': true,
+    'NETWORK INTELLIGENCE': true,
+    'EXPLAINABLE AI & REPORTING': true,
   });
 
   const toggleGroup = (title: string) => {
@@ -52,16 +50,16 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
 
   const navGroups = [
     {
-      title: 'COMMAND & CONTROL',
+      title: 'DATA & INGESTION',
       items: [
-        { name: 'Mission Control', path: '/dashboard', icon: LayoutDashboard },
+        { name: 'Network Dashboard', path: '/dashboard', icon: LayoutDashboard },
         { name: 'Case Intelligence', path: '/cases', icon: FolderKanban },
         { name: 'Data Ingestion & OSINT', path: '/data-ingestion', icon: Database },
         { name: 'Evidence Vault', path: '/evidence', icon: Vault },
       ],
     },
     {
-      title: '3D RECONSTRUCTION & PHYSICS',
+      title: 'NETWORK INTELLIGENCE',
       items: [
         { name: 'Crime Scene 3D', path: '/reconstruction', icon: Box },
         { name: 'Physics Engine', path: '/physics', icon: Cpu },
@@ -94,7 +92,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen = false, onClose }) => 
     {
       title: 'EXPLAINABLE AI & REPORTING',
       items: [
-        { name: 'AI Reasoning Engine', path: '/ai-reasoning', icon: Sparkles },
         { name: 'AI Assistant', path: '/ai-assistant', icon: Bot },
         { name: 'Investigation Report', path: '/report', icon: FileText },
         { name: 'Settings & Audit', path: '/settings', icon: Settings },

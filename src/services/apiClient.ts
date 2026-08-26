@@ -42,6 +42,14 @@ export const apiClient = {
       fetchJSON<CorrelationGraphData>(`/evidence/graph${caseId ? `?caseId=${caseId}` : ''}`),
     processUpload: (data: { fileName: string; fileType: string; caseId?: string; category?: string }) =>
       fetchJSON<Evidence>('/evidence/process', { method: 'POST', body: JSON.stringify(data) }),
+    processFileUpload: (formData: FormData) =>
+      fetch(`${BASE_URL}/evidence/process`, {
+        method: 'POST',
+        body: formData,
+      }).then(res => {
+        if (!res.ok) throw new Error(`API Error: ${res.statusText}`);
+        return res.json() as Promise<Evidence>;
+      }),
   },
   witnesses: {
     getAll: (caseId?: string) => fetchJSON<WitnessStatement[]>(`/witnesses${caseId ? `?caseId=${caseId}` : ''}`),

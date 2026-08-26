@@ -68,11 +68,19 @@ export const ComputerVisionModal: React.FC<ComputerVisionModalProps> = ({
           </div>
 
           <div className="relative rounded-lg overflow-hidden border border-tactical aspect-video bg-black flex items-center justify-center select-none shadow-[0_0_30px_rgba(0,0,0,0.8)]">
-            <img
-              src={evidence.fileUrl}
-              alt={evidence.title}
-              className="w-full h-full object-cover opacity-85"
-            />
+            {(evidence.fileType?.startsWith('video/') || evidence.category === 'CCTV') ? (
+              <video
+                src={evidence.fileUrl}
+                controls
+                className="w-full h-full object-cover opacity-85"
+              />
+            ) : (
+              <img
+                src={evidence.fileUrl}
+                alt={evidence.title}
+                className="w-full h-full object-cover opacity-85"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30 pointer-events-none" />
 
             {/* Bounding Box Overlays */}

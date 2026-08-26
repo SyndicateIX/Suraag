@@ -95,11 +95,11 @@ export const MissionControl: React.FC = () => {
           <div className="flex flex-wrap items-center gap-2 mb-1">
             <span className="w-2 h-2 rounded-full bg-primary animate-ping shrink-0" />
             <span className="text-xs font-tactical-data uppercase text-primary font-bold tracking-widest break-words">
-              MISSION COMMAND & CONTROL TERMINAL
+              NETWORK INTELLIGENCE DASHBOARD
             </span>
           </div>
           <h1 className="font-display-lg text-2xl sm:text-3xl font-bold uppercase tracking-tight text-on-surface flex flex-wrap items-center gap-2 sm:gap-3">
-            <span>Tactical Overview:</span>
+            <span>Network Overview:</span>
             <span className="text-primary glow-red break-all">{selectedCaseId || 'CASE-2026-088'}</span>
           </h1>
         </div>
@@ -112,15 +112,9 @@ export const MissionControl: React.FC = () => {
             className="justify-center px-4 py-2 rounded bg-primary/20 hover:bg-primary text-primary hover:text-on-primary border border-primary/50 transition-all font-tactical-data text-xs font-bold uppercase flex items-center gap-2 shadow-[0_0_12px_rgba(255,84,76,0.2)] disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-            <span>{isSyncing ? 'SYNCHRONIZING...' : 'SYNCHRONIZE WITH TIMELINE'}</span>
+            <span>{isSyncing ? 'SYNCHRONIZING...' : 'SYNCHRONIZE DATA LAKES'}</span>
           </button>
-          <Link
-            to="/reconstruction"
-            className="justify-center px-4 py-2 rounded bg-surface-container-high hover:bg-secondary-container text-on-surface hover:text-primary border border-outline-variant transition-all font-tactical-data text-xs uppercase flex items-center gap-2"
-          >
-            <Crosshair className="w-4 h-4 text-primary" />
-            <span>3D Crime Scene</span>
-          </Link>
+
           <Link
             to="/report"
             className="justify-center px-4 py-2 rounded bg-surface-container-high hover:bg-secondary-container text-on-surface hover:text-primary border border-outline-variant transition-all font-tactical-data text-xs uppercase flex items-center gap-2"
@@ -141,12 +135,12 @@ export const MissionControl: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-tactical-data text-xs font-bold uppercase text-primary tracking-wider">
-                  INVESTIGATION REPORT MISSION INTELLIGENCE INGESTED
+                  NETWORK DATA SOURCES INGESTED
                 </span>
                 <Badge variant="active">91% BAYESIAN VERDICT</Badge>
               </div>
               <p className="text-xs text-on-surface-variant font-body-md mt-0.5">
-                Ingested 4 attempt phases, 20 evidence exhibits, 8 timeline events, and 4 disproven suspect defense claims into Mission Command.
+                Ingested structured and unstructured data across 20 source nodes, extracting 450 key entities and linking 8 distinct organizational hierarchies.
               </p>
             </div>
           </div>
@@ -219,13 +213,13 @@ export const MissionControl: React.FC = () => {
             <div className="flex items-start justify-between">
               <div>
                 <span className="text-[10px] font-tactical-data text-on-surface-variant uppercase tracking-widest">
-                  EVIDENCE VAULT INGESTION
+                  DATA SOURCES PROCESSED
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
                   <span className="font-display-lg text-3xl font-bold text-on-surface">
                     20
                   </span>
-                  <span className="text-xs font-tactical-data text-on-surface-variant">EXHIBITS CATALOGED</span>
+                  <span className="text-xs font-tactical-data text-on-surface-variant">SOURCES INDEXED</span>
                 </div>
               </div>
               <div className="p-2 rounded bg-surface-container border border-outline-variant/40">
@@ -233,8 +227,8 @@ export const MissionControl: React.FC = () => {
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-xs font-tactical-data">
-              <span className="text-on-surface-variant">VISION DETECTIONS:</span>
-              <span className="text-emerald-400 font-bold">100% YOLOv9 BOUNDING BOXED</span>
+              <span className="text-on-surface-variant">ENTITY EXTRACTION:</span>
+              <span className="text-emerald-400 font-bold">100% NLP PARSED</span>
             </div>
           </GlassCard>
 
@@ -243,11 +237,11 @@ export const MissionControl: React.FC = () => {
             <div className="flex items-start justify-between">
               <div>
                 <span className="text-[10px] font-tactical-data text-primary uppercase tracking-widest font-bold">
-                  TACTICAL CONTRADICTIONS
+                  SUSPICIOUS PATTERNS DETECTED
                 </span>
                 <div className="flex items-baseline gap-2 mt-1">
                   <span className="font-display-lg text-3xl font-bold text-primary">4</span>
-                  <span className="text-xs font-tactical-data text-on-surface-variant font-bold">DEFENSE ALIBIS REFUTED</span>
+                  <span className="text-xs font-tactical-data text-on-surface-variant font-bold">ANOMALIES DETECTED</span>
                 </div>
               </div>
               <div className="p-2 rounded bg-primary/20 border border-primary animate-pulse">
@@ -255,8 +249,8 @@ export const MissionControl: React.FC = () => {
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-xs font-tactical-data">
-              <span className="text-on-surface-variant">PHYSICS DISCREPANCIES:</span>
-              <span className="text-primary font-bold">4 FORENSIC REFUTATIONS</span>
+              <span className="text-on-surface-variant">FINANCIAL DISCREPANCIES:</span>
+              <span className="text-primary font-bold">4 HIGH-RISK TRANSACTIONS</span>
             </div>
           </GlassCard>
         </div>
@@ -272,7 +266,7 @@ export const MissionControl: React.FC = () => {
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-primary" />
                 <span className="font-display-lg text-sm font-bold uppercase tracking-wider text-on-surface">
-                  Attempt Phase Timeline Confidence & Anomaly Curves
+                  Network Connectivity & Anomaly Trends
                 </span>
               </div>
               <Badge variant="confidence">BAYESIAN PROOF CURVE</Badge>
@@ -301,8 +295,8 @@ export const MissionControl: React.FC = () => {
           </div>
           <div className="mt-4 pt-3 border-t border-outline-variant/30 flex items-center justify-between text-xs font-tactical-data text-on-surface-variant">
             <span>KEY TIMELINE RANGE: <strong className="text-primary">04-14 19:00 TO 06-21 17:15 UTC</strong></span>
-            <Link to="/timeline" className="text-primary hover:underline flex items-center gap-1 font-bold">
-              <span>Launch Timeline Engine</span>
+            <Link to="/pattern-detection" className="text-primary hover:underline flex items-center gap-1 font-bold">
+              <span>Launch Pattern Detection</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -315,7 +309,7 @@ export const MissionControl: React.FC = () => {
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-primary" />
               <span className="font-display-lg text-sm font-bold uppercase tracking-wider text-on-surface">
-                AI Reasoning Weights
+                Network Centrality Metrics
               </span>
             </div>
           }
@@ -346,9 +340,9 @@ export const MissionControl: React.FC = () => {
           header={
             <div className="flex items-center justify-between w-full">
               <span className="font-display-lg text-sm font-bold uppercase tracking-wider text-on-surface">
-                Evidence Categories
+                Data Source Distribution
               </span>
-              <Badge variant="neutral">20 EXHIBITS</Badge>
+              <Badge variant="neutral">20 SOURCES</Badge>
             </div>
           }
         >
@@ -391,7 +385,7 @@ export const MissionControl: React.FC = () => {
           header={
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 w-full">
               <span className="font-display-lg text-sm font-bold uppercase tracking-wider text-on-surface">
-                Live Tactical Notifications & Diagnostic Alerts
+                Live Network Intelligence & Pattern Alerts
               </span>
               <div className="flex gap-1.5 font-tactical-data text-[10px]">
                 {(['ALL', 'CRITICAL', 'AI'] as const).map((tab) => (

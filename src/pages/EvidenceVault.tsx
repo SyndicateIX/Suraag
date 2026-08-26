@@ -63,8 +63,8 @@ export const EvidenceVault: React.FC = () => {
   }, [reportEvidence, apiEvidenceList]);
 
   const uploadMutation = useMutation({
-    mutationFn: (data: { fileName: string; fileType: string; caseId?: string; category?: string }) =>
-      apiClient.evidence.processUpload(data),
+    mutationFn: (data: FormData) =>
+      apiClient.evidence.processFileUpload(data),
     onSuccess: (newEv) => {
       queryClient.invalidateQueries({ queryKey: ['evidence'] });
       setTimeout(() => {
@@ -74,7 +74,9 @@ export const EvidenceVault: React.FC = () => {
     },
   });
 
-  const simulateUploadPipeline = (fileName: string, fileType: string) => {
+  const simulateUploadPipeline = (file: File) => {
+    const fileName = file.name;
+    const fileType = file.type || 'image/jpeg';
     let progress = 10;
     setUploadingFile({ name: fileName, progress, step: 'Scanning file integrity & header extraction...' });
 
@@ -101,12 +103,14 @@ export const EvidenceVault: React.FC = () => {
           inferredCategory = 'FOOTPRINT';
         }
 
-        uploadMutation.mutate({
-          fileName,
-          fileType,
-          caseId: selectedCaseId,
-          category: inferredCategory,
-        });
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('fileName', fileName);
+        formData.append('fileType', fileType);
+        if (selectedCaseId) formData.append('caseId', selectedCaseId);
+        formData.append('category', inferredCategory);
+
+        uploadMutation.mutate(formData);
       }
     }, 600);
   };
@@ -116,14 +120,14 @@ export const EvidenceVault: React.FC = () => {
     setIsDragOver(false);
     const files = e.dataTransfer.files;
     if (files && files.length > 0) {
-      simulateUploadPipeline(files[0].name, files[0].type || 'image/jpeg');
+      simulateUploadPipeline(files[0]);
     }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length > 0) {
-      simulateUploadPipeline(files[0].name, files[0].type || 'image/jpeg');
+      simulateUploadPipeline(files[0]);
     }
   };
 
@@ -425,11 +429,19 @@ export const EvidenceVault: React.FC = () => {
               >
                 <div>
                   <div className="relative aspect-video rounded overflow-hidden bg-black mb-4 border border-outline-variant/40 group-hover:border-primary/50 transition-colors">
-                    <img
-                      src={ev.fileUrl}
-                      alt={ev.title}
-                      className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500"
-                    />
+                    {(ev.fileType.startsWith('video/') || ev.category === 'CCTV') ? (
+                      <video
+                        src={ev.fileUrl}
+                        controls
+                        className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <img
+                        src={ev.fileUrl}
+                        alt={ev.title}
+                        className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
                     <div className="absolute top-2 left-2 flex items-center gap-1.5">
